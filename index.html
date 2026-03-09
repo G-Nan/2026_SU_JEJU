@@ -2,731 +2,318 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>2026 청년 캠프 - Gnan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>2026 SU JEJU - Gnan</title>
   <meta name="description" content="2026 청년 캠프 소개 페이지" />
 
   <style>
-    /* Pretendard */
+    /* ===================================================
+       모바일 원본 코드 (수정하지 않음)
+       =================================================== */
     @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
-    :root{
-      --ink:#14324a;
-      --muted:#4f6476;
-      --line:rgba(20,50,74,.12);
-
-      --card:rgba(255,255,255,.72);
-      --card-strong:rgba(255,255,255,.86);
-      --shadow:0 18px 60px rgba(20,50,74,.12);
-
-      --brand:#1a7bd6;
-      --brand2:#00cecb;
-
-      --radius:22px;
-      --max:980px;
+    :root {
+      --ink: #14324a;
+      --muted: #647b8f;
+      --bg: #f5f8fa;
+      --brand: #1a7bd6;
+      --surface: #ffffff;
+      --glass: rgba(255, 255, 255, 0.18);
+      --glass-border: rgba(255, 255, 255, 0.28);
     }
 
-    *{box-sizing:border-box; font-family:"Pretendard", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;}
-    html{scroll-behavior:smooth;}
-    body{
-      margin:0;
-      padding:40px 20px;
-      color:var(--ink);
+    * { box-sizing: border-box; font-family: "Pretendard", system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; min-height: 100vh; background: #dfeaf0; color: var(--ink); }
 
-      /* ✅ 밝은 제주 바다 배경 (Unsplash) + 아주 옅은 화이트 오버레이 */
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,.28)),
-        url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2000&auto=format&fit=crop")
-          center/cover no-repeat fixed;
+    .page { width: 100%; max-width: 430px; min-height: 100vh; margin: 0 auto; background: var(--bg); box-shadow: 0 0 40px rgba(0, 0, 0, 0.08); overflow: hidden; position: relative; }
+    .hero { position: relative; min-height: 100svh; padding: 18px 16px 40px; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient( 180deg, rgba(94, 140, 166, 0.28) 0%, rgba(141, 193, 214, 0.10) 18%, rgba(255, 214, 152, 0.06) 45%, rgba(16, 54, 80, 0.16) 100% ), url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1200&auto=format&fit=crop") center center / cover no-repeat; }
+    .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient( 180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.00) 35%, rgba(9, 41, 66, 0.10) 75%, rgba(9, 41, 66, 0.18) 100% ); pointer-events: none; }
+    .top-panel-slot { position: relative; z-index: 2; width: 100%; min-height: 78px; }
+		.top-panel { position: fixed; top: 18px; left: 50%; transform: translateX(-50%) translateY(0); z-index: 100; width: calc(100% - 32px); max-width: 398px; padding: 12px 14px 14px; border-radius: 20px; background: var(--glass); border: 1px solid var(--glass-border); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: 0 10px 30px rgba(10, 35, 54, 0.10); transition: transform 0.28s ease, opacity 0.28s ease; }
+		.top-panel.hide { transform: translateX(-50%) translateY(-130%); opacity: 0; }
+    .panel-title { margin: 0 0 12px; text-align: center; font-size: 15px; font-weight: 900; color: #ffffff; letter-spacing: -0.3px; text-decoration: none; display: block; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.14); }
+    .nav-links { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .nav-pill { display: inline-flex; align-items: center; justify-content: center; min-width: 68px; height: 34px; padding: 0 14px; border-radius: 999px; text-decoration: none; font-size: 13px; font-weight: 800; color: rgba(255,255,255,0.92); background: rgba(255,255,255,0.22); border: 1px solid rgba(255,255,255,0.10); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+    .nav-pill:hover { background: rgba(255,255,255,0.30); }
+    .hero-main { position: relative; z-index: 2; text-align: center; padding: 0 12px 28px; margin-top: auto; }
+		.dday-wrap { display: inline-flex; align-items: center; gap: 9px; padding: 10px 16px; margin-bottom: 18px; border-radius: 999px; background: rgba(95, 118, 137, 0.28); border: 1px solid rgba(255,255,255,0.38); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #ffffff; box-shadow: 0 10px 26px rgba(14, 45, 66, 0.16); }
+		.dday-label { font-size: 11px; font-weight: 900; letter-spacing: 0.12em; opacity: 0.98; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.20); }
+		.dday-value { font-size: 17px; font-weight: 900; letter-spacing: -0.4px; color: #8fe3ff; text-shadow: 0 2px 12px rgba(11, 55, 78, 0.35); }
+		.hero-sub { margin: 0 auto 28px; max-width: none; width: 100%; color: rgba(255,255,255,0.98); font-size: 14px; font-weight: 850; line-height: 1.25; letter-spacing: 0.01em; white-space: nowrap; text-align: center; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.18); }
+    .hero-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 238px; min-height: 48px; padding: 0 24px; border-radius: 999px; background: rgba(255,255,255,0.96); color: #0f4f73; text-decoration: none; font-size: 16px; font-weight: 900; letter-spacing: -0.3px; box-shadow: 0 14px 32px rgba(17, 45, 68, 0.16); }
+		.scroll-cue { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 20px; color: rgba(255,255,255,0.92); text-decoration: none; font-size: 12px; font-weight: 800; letter-spacing: 0.04em; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.20); }
+		.scroll-cue-arrow { font-size: 18px; line-height: 1; animation: floatArrow 1.5s ease-in-out infinite; }
+		@keyframes floatArrow { 0%, 100% { transform: translateY(0); opacity: 0.85; } 50% { transform: translateY(5px); opacity: 1; } }
+    .content { padding: 36px 20px 60px; background: linear-gradient(180deg, #f8fbfd 0%, #f3f7fa 100%); }
+    .section-header { margin: 40px 0 20px; }
+    .section-header h2 { margin: 0 0 4px; font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
+    .section-header p { margin: 0; font-size: 13px; color: var(--muted); }
+    .vision-text { font-size: 22px; line-height: 1.5; font-weight: 800; color: var(--ink); word-break: keep-all; margin-bottom: 10px; }
+    .vision-text span { color: var(--brand); }
+    .vision-sub { font-size: 15px; line-height: 1.6; color: var(--muted); word-break: keep-all; }
+    .detail-group { background: #ffffff; border-radius: 24px; padding: 10px 24px; box-shadow: 0 8px 30px rgba(20,50,74,0.04); border: 1px solid rgba(20,50,74,0.06); }
+    .detail-item { display: flex; align-items: center; padding: 22px 0; border-bottom: 1px solid rgba(20,50,74,0.06); }
+    .detail-item:last-child { border-bottom: none; }
+    .detail-icon { display: flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 16px; background: linear-gradient(135deg, rgba(26,123,214,0.08), rgba(0,206,203,0.08)); color: var(--brand); margin-right: 18px; flex-shrink: 0; }
+    .detail-text h3 { margin: 0 0 6px; font-size: 16px; font-weight: 800; letter-spacing: -0.3px; color: #0f4b6a; }
+    .detail-text p { margin: 0; font-size: 14px; color: #5c7183; line-height: 1.5; font-weight: 500; }
+    .faq-list { display: flex; flex-direction: column; gap: 12px; }
+    details { background: var(--surface); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
+    summary { padding: 18px 20px; font-size: 15px; font-weight: 800; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; color: var(--ink); }
+    summary::-webkit-details-marker { display: none; }
+    .faq-ans { padding: 0 20px 20px; font-size: 14px; line-height: 1.6; color: var(--muted); }
+    .footer { text-align: center; margin-top: 40px; font-size: 12px; color: #a0b0c0; font-weight: 600; }
+    @media (max-width: 380px) { .hero-title { font-size: 29px; } .hero-btn { min-width: 220px; font-size: 15px; } .nav-pill { min-width: 62px; padding: 0 12px; } }
 
-      display:flex;
-      justify-content:center;
-    }
+    /* ===================================================
+       PC 반응형 스타일 (화면 너비 768px 이상일 때만 적용됨)
+       =================================================== */
+    @media (min-width: 768px) {
+      .page { max-width: 100%; box-shadow: none; overflow: visible; background: transparent; }
 
-    .container{
-      width:100%;
-      max-width:var(--max);
-      background:var(--card);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border:1px solid rgba(255,255,255,.75);
-      border-radius:28px;
-      box-shadow:var(--shadow);
-      padding:46px 44px;
-    }
+      /* 메인 컨테이너 정렬 및 플렉스 설정으로 버튼 옆으로 붙는 현상 해결 */
+      .hero-main {
+        display: flex;
+        flex-direction: column; /* 세로로 쌓이게 강제 */
+        align-items: center;
+        max-width: 1080px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      .hero-title { font-size: 64px; margin-bottom: 24px; }
+      .hero-sub { font-size: 20px; margin-bottom: 40px; }
+      
+      /* 버튼에 약간의 하단 여백 추가 */
+      .hero-btn {
+        min-width: 260px;
+        height: 54px;
+        font-size: 16px;
+        margin-bottom: 24px; 
+        transition: transform 0.2s;
+      }
+      .hero-btn:hover { transform: translateY(-2px); }
 
-    /* top nav */
-    .nav{
-      position:sticky;
-      top:12px;
-      z-index:20;
+      .top-panel { max-width: 1040px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding: 16px 32px; }
+      .panel-title { margin: 0; font-size: 20px; }
+      .nav-links { gap: 12px; }
+      .nav-pill { font-size: 15px; padding: 0 20px; height: 40px; }
+      .content { padding: 80px 20px 100px; }
+      .content > section, .content > .footer { max-width: 1080px; margin-left: auto; margin-right: auto; }
+      .section-header { text-align: center; margin-bottom: 40px; }
+      .section-header h2 { font-size: 28px; }
+      .vision-text { font-size: 36px; text-align: center; }
+      .vision-sub { font-size: 18px; text-align: center; }
 
-      display:flex;
-      gap:12px;
-      align-items:center;
-      justify-content:space-between;
-
-      padding:12px 14px;
-      margin:-22px auto 24px;
-
-      border:1px solid rgba(255,255,255,.7);
-      border-radius:999px;
-      background:rgba(255,255,255,.72);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      box-shadow: 0 10px 30px rgba(20,50,74,.10);
+      .detail-group { display: flex; flex-direction: row; gap: 24px; background: transparent; box-shadow: none; border: none; padding: 0; }
+      .detail-item { flex: 1; flex-direction: column; text-align: center; border-bottom: none; background: var(--surface); padding: 40px 24px; border-radius: 24px; box-shadow: 0 8px 30px rgba(20,50,74,0.04); border: 1px solid rgba(20,50,74,0.06); transition: transform 0.2s; }
+      .detail-item:hover { transform: translateY(-5px); }
+      .detail-icon { margin: 0 auto 20px auto; width: 64px; height: 64px; }
+      .faq-list { max-width: 800px; margin: 0 auto; }
     }
-    .nav .left{
-      display:flex; align-items:center; gap:10px;
-      font-weight:900; letter-spacing:-.2px;
-      white-space:nowrap;
-    }
-    .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.55);
-      color: var(--muted);
-      font-size:12px;
-      font-weight:700;
-    }
-    .nav .right{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;}
-    .pill{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.55);
-      color: var(--muted);
-      font-size:13px;
-      font-weight:700;
-      text-decoration:none;
-      transition: transform .12s ease, background .12s ease, border-color .12s ease;
-    }
-    .pill:hover{transform: translateY(-1px); background: rgba(255,255,255,.85); border-color: rgba(20,50,74,.18); color: var(--ink);}
-
-    header{
-      text-align:center;
-      margin-bottom:34px;
-    }
-    h1{
-      margin:0 0 10px;
-      font-size:46px;
-      font-weight:900;
-      letter-spacing:-1px;
-      color:#0f4b6a;
-      text-shadow: 1px 1px 2px rgba(255,255,255,.75);
-    }
-    .subtitle{
-      color:var(--muted);
-      font-weight:800;
-      letter-spacing:2px;
-    }
-
-    h2{
-      margin:46px 0 18px;
-      font-size:20px;
-      font-weight:900;
-      color:#0f4b6a;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    h2::before{
-      content:"";
-      width:6px;
-      height:24px;
-      border-radius:3px;
-      background: linear-gradient(180deg, var(--brand2), var(--brand));
-    }
-	.section-title{
-	  display:flex;
-	  align-items:flex-end;
-	  justify-content:space-between;
-	  gap:12px;
-	  margin:46px 0 18px; /* 기존 h2 margin과 동일 */
-	}
-	.section-title h2{
-	  margin:0; /* section-title이 margin을 가지므로 h2는 0 */
-	}
-	.section-title .hint{
-	  color: var(--muted);
-	  font-size:12px;
-	  font-weight:700;
-	  white-space:nowrap;
-	  opacity:.9;
-	}
-	@media (max-width: 560px){
-	  .section-title{
-		flex-direction:column;
-		align-items:flex-start;
-	  }
-	  .section-title .hint{
-		white-space:normal;
-	  }
-	}
-    /* intro box */
-    .intro-box{
-      background: linear-gradient(135deg, rgba(255,255,255,.92), rgba(255,255,255,.65));
-      border:1px solid rgba(255,255,255,.80);
-      border-radius:18px;
-      padding:28px 26px;
-      box-shadow: 0 10px 30px rgba(20,50,74,.08);
-      text-align:center;
-      transition: transform .18s ease;
-    }
-    .intro-box:hover{transform: translateY(-2px);}
-    .intro-box p{margin:10px 0; font-size:16px; color:#23445b;}
-    .highlight{color:#e67e22; font-weight:900;}
-
-    /* ====== (1번 스타일) 기본 카드 ====== */
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:16px;
-    }
-    @media (min-width: 740px){
-      .grid{grid-template-columns: 1fr 1fr;}
-    }
-    .card{
-      background: rgba(255,255,255,.74);
-      border:1px solid rgba(255,255,255,.82);
-      border-radius:18px;
-      padding:22px;
-      box-shadow: 0 10px 26px rgba(20,50,74,.06);
-      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
-    }
-    .card:hover{
-      transform: translateY(-3px);
-      background: rgba(255,255,255,.92);
-      box-shadow: 0 16px 38px rgba(20,50,74,.10);
-    }
-    .card h3{
-      margin:0 0 14px;
-      font-size:16px;
-      font-weight:900;
-      color:#1a5f7a;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    /* ====== ✅ (2번 “내용/구성”)을 1번 스타일 안에 넣기 ====== */
-    .info3{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:16px;
-    }
-    @media (min-width: 860px){
-      .info3{grid-template-columns: repeat(3, 1fr);}
-    }
-
-    .list{margin:10px 0 0; padding-left:18px; color:#2c3e50;}
-    .list li{margin:7px 0; color:#2c3e50; font-size:14px; line-height:1.55;}
-    .list li span{color:var(--muted);}
-
-    .jeju{
-      color:#0984e3;
-      font-weight:900;
-    }
-    .warn{
-      color:#d63031;
-      font-weight:900;
-    }
-
-    /* roadmap table */
-    .table-wrap{
-      background: rgba(255,255,255,.74);
-      border:1px solid rgba(255,255,255,.82);
-      border-radius:18px;
-      padding:18px;
-      box-shadow: 0 10px 26px rgba(20,50,74,.06);
-    }
-    table{
-      width:100%;
-      border-collapse: collapse;
-      overflow:hidden;
-      border-radius: 14px;
-      border:1px solid rgba(20,50,74,.12);
-      background: rgba(255,255,255,.78);
-    }
-    th, td{
-      padding:11px 11px;
-      border-bottom: 1px solid rgba(20,50,74,.10);
-      font-size:14px;
-      vertical-align: top;
-    }
-    th{
-      text-align:left;
-      color: var(--muted);
-      font-weight:900;
-      background: rgba(255,255,255,.95);
-    }
-    tr:last-child td{border-bottom:0;}
-    .tiny-note{margin-top:10px; color:var(--muted); font-size:12px;}
-
-    /* history details */
-    details{
-      border:1px solid rgba(255,255,255,.82);
-      border-radius:18px;
-      background: rgba(255,255,255,.70);
-      box-shadow: 0 10px 26px rgba(20,50,74,.06);
-      overflow:hidden;
-    }
-    details + details{margin-top:12px;}
-    summary{
-      cursor:pointer;
-      list-style:none;
-      padding:16px 18px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      font-weight:900;
-      color:#1a5f7a;
-    }
-    summary::-webkit-details-marker{display:none;}
-    .summary-left{display:flex; flex-direction:column; gap:4px;}
-    .summary-left small{color:var(--muted); font-weight:700;}
-    .chev{color:var(--muted); font-weight:900; transition: transform .12s ease;}
-    details[open] .chev{transform: rotate(90deg);}
-    .divider{height:1px; background: rgba(20,50,74,.10); margin:0 18px;}
-    .detail-body{padding:14px 18px 18px;}
-
-    .btn-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;}
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:9px 12px;
-      border-radius:10px;
-      border:1px solid rgba(20,50,74,.14);
-      background: rgba(255,255,255,.82);
-      color:#2c3e50;
-      font-size:13px;
-      font-weight:800;
-      text-decoration:none;
-      transition: transform .12s ease, background .12s ease;
-    }
-    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.98);}
-    .btn.primary{
-	  border: 1px solid rgba(20,50,74,.10);
-	  background: linear-gradient(90deg, rgba(0,206,203,.22), rgba(26,123,214,.18));
-	  color: #0f4b6a;
-	}
-	.btn.primary:hover{
-	  background: linear-gradient(90deg, rgba(0,206,203,.28), rgba(26,123,214,.22));
-	}
-
-    .two-col{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:12px;
-      margin-top:12px;
-    }
-    @media (min-width: 860px){
-      .two-col{grid-template-columns: 1fr 1fr;}
-    }
-
-    .footer{
-      margin-top:28px;
-      text-align:center;
-      color: var(--muted);
-      font-size:12px;
-      opacity:.9;
-    }
-	/* ===== 모바일 최적화 ===== */
-	@media (max-width: 560px){
-	  body{
-		padding: 22px 12px;
-		/* iOS에서 background fixed가 레이아웃/스크롤을 이상하게 만들기도 해서 모바일에서는 scroll 권장 */
-		background-attachment: scroll;
-	  }
-
-	  .container{
-		padding: 24px 18px;
-		border-radius: 22px;
-	  }
-
-	  h1{
-		/* 46px 고정 대신 화면폭에 맞춰 유동 */
-		font-size: clamp(28px, 9vw, 46px);
-		letter-spacing: -0.6px;
-	  }
-
-	  .subtitle{
-		font-size: 12px;
-		letter-spacing: 1px;
-	  }
-
-	  /* ✅ nav가 모바일에서 가장 많이 터집니다 */
-	  .nav{
-		flex-wrap: wrap;
-		justify-content: flex-start;
-		gap: 10px;
-		padding: 10px 12px;
-	  }
-	  .nav .left{
-		white-space: normal;      /* nowrap 해제 */
-		flex: 1 1 100%;
-	  }
-	  .nav .right{
-		flex: 1 1 100%;
-		justify-content: flex-start;
-	  }
-
-	  /* 배지가 길어서 터지면 모바일에서 숨기는 게 깔끔합니다 */
-	  .badge{
-		display: none;
-	  }
-
-	  /* pill 버튼도 살짝 작게 */
-	  .pill{
-		padding: 7px 9px;
-		font-size: 12px;
-	  }
-	}
-
-	/* ✅ 표는 모바일에서 가로 스크롤 허용(가장 간단하고 안정적) */
-	.table-wrap{
-	  overflow-x: auto;
-	  -webkit-overflow-scrolling: touch;
-	}
-	table{
-	  min-width: 560px; /* 표가 찌그러지지 않게 최소 폭 확보 */
-	}
-
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <div class="nav">
-      <div class="left">
-        2026 Summer Camp
-      </div>
-      <div class="right">
-        <a class="pill" href="#vision">Vision</a>
-        <a class="pill" href="#details">Details</a>
-        <a class="pill" href="#timeline">Timeline</a>
-        <a class="pill" href="#history">History</a>
-        <a class="pill" href="#faq">FAQ</a>
-		<a class="pill" href="./opinions.html">Opinions</a>
-      </div>
-    </div>
+  <div class="page">
+    <header class="hero">
+			<div class="top-panel-slot">
+				<div class="top-panel">
+					<a href="./index.html" class="panel-title">2026 SU JEJU</a>
 
-    <header>
-      <h1 id="vision">2026 청년 캠프</h1>
-      <div class="subtitle">- Gathered by the Beginning, Bound for the Beyond. -</div>
+					<div class="nav-links">
+						<a class="nav-pill" href="./log.html">일지</a>
+						<a class="nav-pill" href="./history.html">기록</a>
+						<a class="nav-pill" href="./opinions.html">의견</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="hero-main">
+        <div class="dday-wrap">
+          <span class="dday-label">D-DAY</span>
+          <span class="dday-value" id="ddayText">계산중...</span>
+        </div>
+
+        <h1 class="hero-title">2026 SU JEJU</h1>
+
+				<p class="hero-sub">Gathered by the Beginning,<br> Bound for the Beyond.</p>
+
+        <a href="./opinions.html" class="hero-btn">캠프 기획에 의견 보태기 ✍️</a>
+
+				<a href="#details" class="scroll-cue">
+					<span>아래로 내려 캠프 정보 보기</span>
+					<span class="scroll-cue-arrow">⌄</span>
+				</a>
+      </div>
     </header>
 
-    <section>
-      <h2>Vision</h2>
-      <div class="intro-box">
-        <p>이번 2026 청년 캠프는 <span class="highlight">청년들을 위한 교제 중심의 캠프</span>입니다.</p>
-        <p>
-          누군가 짜놓은 일정에 수동적으로 참여하는 것이 아니라,<br/>
-          <span class="highlight">우리 청년들이 스스로, 다 함께 기획하고 만들어나가는 캠프</span>입니다!
+    <main class="content">
+      <section>
+        <div class="vision-text">
+          짜여진 일정에 끌려가는 것이 아닌,<br />
+          <span>우리 스스로 만들어가는</span> 캠프
+        </div>
+        <p class="vision-sub">
+          이번 2026 청년 캠프는 청년들을 위한 교제 중심의 캠프입니다.
+          모두가 동역자가 되어 함께 기획하고 준비합니다.
         </p>
-      </div>
-    </section>
+      </section>
 
-    <!-- ✅ 여기: “1번 스타일” 유지 + “2번 구성(3블럭: 일정/인원/예산)” 적용 -->
-    <section id="details">
-	  <div class="section-title">
-		<h2>Details</h2>
-		<div class="hint">※ 변동 가능 항목은 추후 업데이트</div>
-	  </div>
-
-      <div class="info3">
-        <div class="card">
-		  <h3>장소 및 일정</h3>
-		  <ul class="list">
-			<li><b>장소:</b> <span class="jeju">제주도 🌴</span></li>
-			<li>3박 4일</li>
-			<li>8/19 ~ 8/22 <br><span style="color:#7f8c8d; font-size:0.9em;">(직장인을 배려한 수·목·금·토 일정)</span></li>
-		  </ul>
-		</div>
-
-		<div class="card">
-		  <h3>인원</h3>
-		  <ul class="list">
-			<li>청년만 최대 20명 <br><span style="color:#7f8c8d; font-size:0.9em;">(총무/간사 포함 최대 25명)</span></li>
-			<li>기획팀 + YLTC 리더 + 묵상나눔모임</li>
-			<li><b>공개 추가 모집 없음</b> <span>(선착순 마감)</span></li>
-		  </ul>
-		</div>
-
-        <div class="card">
-          <h3>예산</h3>
-          <ul class="list">
-            <li>항공은 별도 예매 <br><span style="color:#7f8c8d; font-size:0.9em;">(출발지/시간대/항공사 편차 고려)</span></li>
-            <li>참가비 예상 1인 15만원 <span>(미정)</span></li>
-            <li>숙소/렌트/식비 등 지원 </li>
-          </ul>
+      <section id="details">
+        <div class="section-header">
+          <h2>캠프 안내</h2>
+          <p>※ 변동 가능 항목은 추후 업데이트 됩니다.</p>
         </div>
-      </div>
-    </section>
 
-    <section id="timeline">
-	  <div class="section-title">
-		<h2>Timeline</h2>
-		<div class="hint">※ 회의 시간/장소는 확정되는 대로 업데이트</div>
-	  </div>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th style="width:72px;">회차</th>
-              <th style="width:150px;">시기</th>
-              <th style="width:190px;">주제</th>
-              <th>내용</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1회</td>
-              <td><b>2/20 22:00</b></td>
-              <td>캠프 ‘색깔’정하기</td>
-              <td>
-                - 캠프 주제 및 슬로건 확정<br/>
-                - 역할 분담(총무, 회계, 프로그램 등)
-              </td>
-            </tr>
-            <tr>
-			  <td>2회</td>
-			  <td><b>3/11 21:30</b></td>
-			  <td>동선 및 예산안</td>
-			  <td>
-				- 제주도 항공, 숙박 예약<br/>
-				- 이동 수단 결정 및 예약<br/>
-				- 대략적인 일정표 구성<br/>
-				- 1인 회비 및 전체 예산안 초안 작성
-			  </td>
-			</tr>
-            <tr>
-              <td>3회</td>
-              <td>5월 중</td>
-              <td>프로그램 기획</td>
-              <td>
-                - 리더십 세미나, 기도회, 투어 일정 구체화<br/>
-                - 식당 리스트업 및 방문지 확정<br/>
-                - 홍보 포스터 및 안내문 제작
-              </td>
-            </tr>
-            <tr>
-              <td>4회</td>
-              <td>6월 중</td>
-              <td>운영 물품 및 체크</td>
-              <td>
-                - 준비물 리스트 작성(교재, 간식, 상비약 등)<br/>
-                - 프로그램별 필요한 소품 및 장비 확정<br/>
-                - 최종 인원 확정 및 보험 가입
-              </td>
-            </tr>
-            <tr>
-              <td>5회</td>
-              <td>7월 중</td>
-              <td>최종 점검 및 기도회</td>
-              <td>
-                - 전체 시간표 시뮬레이션<br/>
-                - 역할별 최종 점검(큐시트 확인)<br/>
-                - 안전 수칙 및 비상 연락망 공유<br/>
-                - 캠프를 위한 합심 기도
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="history">
-	  <div class="section-title">
-		<h2>History</h2>
-		<div class="hint">※ 버튼을 누르면 기록을 바로 볼 수 있어요</div>
-	  </div>
-
-      <details>
-        <summary>
-          <div class="summary-left">
-            <div>Camp #1 · 제주도</div>
-            <small>일차별 기록 + 동영상 + 후속모임</small>
-          </div>
-          <div class="chev">›</div>
-        </summary>
-        <div class="divider"></div>
-        <div class="detail-body">
-          <div class="btn-row">
-            <a class="btn primary" href="https://pf.kakao.com/_xkxjxnxnb/101007906" target="_blank" rel="noopener">1일차</a>
-            <a class="btn primary" href="https://pf.kakao.com/_xkxjxnxnb/101009774" target="_blank" rel="noopener">2일차</a>
-            <a class="btn primary" href="https://pf.kakao.com/_xkxjxnxnb/101011388" target="_blank" rel="noopener">3일차</a>
-            <a class="btn primary" href="https://pf.kakao.com/_xkxjxnxnb/101011515" target="_blank" rel="noopener">4일차</a>
-            <a class="btn primary" href="https://tv.kakao.com/v/439572952" target="_blank" rel="noopener">동영상</a>
-            <a class="btn primary" href="https://pf.kakao.com/_xkxjxnxnb/103424878" target="_blank" rel="noopener">후속모임</a>
-          </div>
-        </div>
-      </details>
-
-      <details>
-        <summary>
-          <div class="summary-left">
-            <div>Camp #2 · 순천</div>
-            <small>종합 기록 + 후속모임</small>
-          </div>
-          <div class="chev">›</div>
-        </summary>
-        <div class="divider"></div>
-        <div class="detail-body">
-          <div class="btn-row">
-            <a class="btn primary" href="https://pf.kakao.com/_xkxjxnxnb/105919661" target="_blank" rel="noopener">종합</a>
-            <a class="btn primary" href="https://pf.kakao.com/_xkxjxnxnb/106871462" target="_blank" rel="noopener">후속모임</a>
-          </div>
-        </div>
-      </details>
-
-      <details>
-        <summary>
-          <div class="summary-left">
-            <div>Camp #3 · 공주 &amp; 군산</div>
-            <small>한 눈에 보는 3일 요약 + 숙소</small>
-          </div>
-          <div class="chev">›</div>
-        </summary>
-        <div class="divider"></div>
-        <div class="detail-body">
-          <div class="two-col">
-            <div class="card">
-              <h3>DAY 1 · 대전</h3>
-              <ul class="list">
-                <li>대전 집결 &amp; 함께 저녁 식사 및 공동체 나눔</li>
-                <li>성심당 빵 타임</li>
-                <li>대전지부 1박</li>
-              </ul>
+        <div class="detail-group">
+          <div class="detail-item">
+            <div class="detail-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+                <path d="M8 14h.01"></path>
+                <path d="M12 14h.01"></path>
+                <path d="M16 14h.01"></path>
+                <path d="M8 18h.01"></path>
+                <path d="M12 18h.01"></path>
+                <path d="M16 18h.01"></path>
+              </svg>
             </div>
-
-            <div class="card">
-              <h3>DAY 2 · 공주</h3>
-              <ul class="list">
-                <li>공주제일교회 방문</li>
-                <li>기독교 박물관 관람 (유관순 열사 관련 설명)</li>
-                <li>독채 2층 펜션에서 바베큐 파티</li>
-                <li>요한계시록 파트별 직접 강의하기</li>
-              </ul>
-              <div class="btn-row">
-              <a class="btn primary" href="https://blog.naver.com/handmade-dovetail/223831672764" target="_blank" rel="noopener">공주 숙소 보기 (블로그)</a>
-            </div>
+            <div class="detail-text">
+              <h3>장소 및 일정</h3>
+              <p>제주도 / 3박 4일<br />8월 19일(수) ~ 8월 22일(토)</p>
             </div>
           </div>
 
-          <div class="card" style="margin-top:12px;">
-            <h3>DAY 3 · 군산</h3>
-            <ul class="list">
-              <li>초원사진관 구경 <span class="muted">(드라마 촬영지)</span></li>
-              <li>이성당 빵 타임 (전국 3대 빵집)</li>
-              <li>선유도 해수욕장 물놀이</li>
-              <li>요한계시록 파트별 실습 (카드)</li>
-            </ul>
+          <div class="detail-item">
+            <div class="detail-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <div class="detail-text">
+              <h3>참여 인원</h3>
+              <p>청년 선착순 20명 마감<br />(기획팀 + YLTC 리더 등)</p>
+            </div>
           </div>
-        </div>
-      </details>
-    </section>
-	<section id="faq">
-      <div class="section-title">
-        <h2>FAQ</h2>
-        <div class="hint">※ 자주 묻는 질문</div>
-      </div>
 
-      <details>
-        <summary>
-          <div class="summary-left">
-            <div>Q. 직장 때문에 3박 4일 모두 참여가 어려우면 어떻게 하나요?</div>
-          </div>
-          <div class="chev">›</div>
-        </summary>
-        <div class="divider"></div>
-        <div class="detail-body">
-          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #2c3e50;">
-            <b>A.</b> 수요일 퇴근 후 저녁 비행기로 오셔도 괜찮습니다!<br>
-            이전에도 오전 비행기가 결항되어서 저녁 비행기를 급하게 잡아서 간 경험이 있습니다. 늦게 합류하시더라도 오시는 일정에 맞춰 픽업 등 동선을 안내해 드릴 테니 부담 없이 말씀해 주세요.
-          </p>
-        </div>
-      </details>
-
-      <details>
-        <summary>
-          <div class="summary-left">
-            <div>Q. 항공권은 각자 알아서 예매해야 하나요?</div>
-          </div>
-          <div class="chev">›</div>
-        </summary>
-        <div class="divider"></div>
-        <div class="detail-body">
-          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #2c3e50;">
-            <b>A.</b> 네, 맞습니다.<br>
-            참가자마다 출발하는 공항이나 직장 스케줄에 따른 선호 시간대가 다르기 때문에 항공권은 개별 발권으로 진행합니다. 캠프 일자가 최종 확정되면 원하시는 일정으로 예매해 주시면 됩니다.
-          </p>
-        </div>
-      </details>
-
-      <details>
-        <summary>
-          <div class="summary-left">
-            <div>Q. 회비 외에 개인적으로 챙겨야 할 경비가 있나요?</div>
-          </div>
-          <div class="chev">›</div>
-        </summary>
-        <div class="divider"></div>
-        <div class="detail-body">
-          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #2c3e50;">
-            <b>A.</b> 제주도에서의 숙소, 렌트카, 공식적인 식비 등은 모두 지원됩니다.<br>
-            다만, 자유 시간에 개인적으로 드실 간식이나 커피, 기념품 구매 등을 위한 약간의 개인 용돈만 따로 준비해 오시면 충분합니다.
-          </p>
-        </div>
-      </details>
-
-      <details>
-        <summary>
-          <div class="summary-left">
-            <div>Q. 준비 일정에 있는 월 1회 회의에 꼭 참석해야 하나요?</div>
-          </div>
-          <div class="chev">›</div>
-        </summary>
-        <div class="divider"></div>
-        <div class="detail-body">
-          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #2c3e50;">
-            <b>A.</b> 이번 캠프의 핵심은 '우리가 다 함께 기획하고 만들어가는 것'입니다.<br>
-            피치 못할 사정이 있다면 어쩔 수 없지만, 가능하면 정기 회의에 참석하셔서 어떤 캠프를 만들지 함께 의견을 나누고 색깔을 정해간다면 훨씬 더 의미 있고 즐거운 캠프가 될 것입니다!
-          </p>
-        </div>
-      </details>
-	 
-      <details>
-        <summary>
-          <div class="summary-left">
-            <div>Q. 캠프에 참여하고 싶다면 어떻게 하면 되나요?</div>
-          </div>
-          <div class="chev">›</div>
-        </summary>
-        <div class="divider"></div>
-        <div class="detail-body">
-          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #2c3e50;">
-            <b>A.</b> 아래 연락처로 문자나 전화 주시면 친절히 안내해 드리겠습니다!<br>
-            선착순 마감이므로 참여 의사가 있으시다면 편하게 연락해 주세요.
-          </p>
-          <div class="btn-row" style="margin-top: 15px;">
-            <div class="card" style="width: 100%; padding: 15px; background: rgba(26,123,214,0.05); border: 1px solid rgba(26,123,214,0.15);">
-              <p style="margin: 5px 0;">👤 <b>유태인 목사님:</b> 010-4466-0012</p>
-			  <p style="margin: 5px 0;">👤 <b>배종곤 목사님:</b> 010-9361-6115</p>
-              <p style="margin: 5px 0;">👤 <b>김근한 청년:</b> 010-4619-3128</p>
+          <div class="detail-item">
+            <div class="detail-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path>
+                <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path>
+                <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path>
+              </svg>
+            </div>
+            <div class="detail-text">
+              <h3>예상 경비</h3>
+              <p>참가비 1인 약 15만 원 (미정)<br />항공권 개별 / 숙소, 렌트 지원</p>
             </div>
           </div>
         </div>
-      </details>
-	  
-    </section>
-    <div class="footer">2026 청년 캠프 · Gathered by the Beginning, Bound for the Beyond.</div>
+      </section>
+
+      <section id="faq">
+        <div class="section-header">
+          <h2>자주 묻는 질문</h2>
+        </div>
+
+        <div class="faq-list">
+          <details>
+            <summary>직장 때문에 전 일정 참여가 어려워요 <span>+</span></summary>
+            <div class="faq-ans">
+              수요일 퇴근 후 저녁 비행기로 오셔도 괜찮습니다!
+              늦게 합류하시더라도 오시는 일정에 맞춰 픽업 등 동선을 안내해 드립니다.
+            </div>
+          </details>
+
+          <details>
+            <summary>항공권은 개별 예매인가요? <span>+</span></summary>
+            <div class="faq-ans">
+              네, 맞습니다. 참가자마다 선호 시간대와 출발 공항이 다르기 때문에,
+              캠프 일자가 최종 확정되면 개별 발권으로 진행합니다.
+            </div>
+          </details>
+
+          <details>
+            <summary>개인 경비가 따로 필요한가요? <span>+</span></summary>
+            <div class="faq-ans">
+              숙소, 렌트카, 공식 식비는 지원됩니다.
+              자유 시간용 간식비나 기념품 구매를 위한 약간의 개인 용돈만 준비하시면 됩니다.
+            </div>
+          </details>
+
+          <details>
+            <summary>참여 신청은 어떻게 하나요? <span>+</span></summary>
+            <div class="faq-ans">
+              선착순 마감이므로 편하게 연락 주세요!<br /><br />
+              • 유태인 목사님: 010-4466-0012<br />
+              • 배종곤 목사님: 010-9361-6115<br />
+              • 김근한 청년: 010-4619-3128
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <div class="footer">
+        2026 청년 캠프 관련 문의 <br>
+				김근한 · 010-4619-3128
+      </div>
+    </main>
   </div>
+
+  <script>
+    function updateDDay() {
+      const target = new Date("2026-08-19T00:00:00+09:00");
+      const now = new Date();
+      const diff = target.getTime() - now.getTime();
+      const dayMs = 1000 * 60 * 60 * 24;
+      const ddayText = document.getElementById("ddayText");
+
+      if (!ddayText) return;
+
+      if (diff > 0) {
+        const days = Math.ceil(diff / dayMs);
+        ddayText.textContent = `D-${days}`;
+      } else if (diff > -dayMs) {
+        ddayText.textContent = "D-Day";
+      } else {
+        const days = Math.floor(Math.abs(diff) / dayMs);
+        ddayText.textContent = `D+${days}`;
+      }
+    }
+
+    updateDDay();
+    setInterval(updateDDay, 60000);
+		
+		const topPanel = document.querySelector(".top-panel");
+		let lastScrollY = window.scrollY;
+
+		window.addEventListener(
+			"scroll",
+			() => {
+				if (!topPanel) return;
+
+				const currentScrollY = window.scrollY;
+
+				if (currentScrollY <= 20) {
+					topPanel.classList.remove("hide");
+				} else if (currentScrollY > lastScrollY && currentScrollY > 80) {
+					topPanel.classList.add("hide");
+				} else {
+					topPanel.classList.remove("hide");
+				}
+
+				lastScrollY = currentScrollY;
+			},
+			{ passive: true }
+		);
+  </script>
 </body>
 </html>

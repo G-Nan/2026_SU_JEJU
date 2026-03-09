@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>2026 청년 캠프 - 지난 기록</title>
+  <meta name="theme-color" content="#f5f8fa" />
+
+  <style>
+    /* ===================================================
+       모바일 원본 코드 (절대 수정하지 않음)
+       =================================================== */
+    @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+    :root {
+      --ink: #14324a;
+      --muted: #647b8f;
+      --bg: #f5f8fa;
+      --brand: #1a7bd6;
+      --brand-light: #e8f3fc;
+      --surface: #ffffff;
+      --radius: 24px;
+      --border: rgba(20,50,74,0.06);
+    }
+
+    * { box-sizing: border-box; font-family: "Pretendard", system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; 
+      padding: 0;
+      color: var(--ink);
+      background-color: var(--bg);
+      max-width: 500px;
+      margin: 0 auto;
+      box-shadow: 0 0 40px rgba(0,0,0,0.05);
+      min-height: 100vh;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .sub-top-slot { position: relative; width: 100%; min-height: 96px; }
+    .sub-top {
+      position: fixed; top: 0; left: 50%; transform: translateX(-50%) translateY(0);
+      width: 100%; max-width: 500px; z-index: 100; padding: 14px 16px 12px;
+      background: rgba(245, 248, 250, 0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); transition: transform 0.28s ease, opacity 0.28s ease;
+    }
+    .sub-top.hide { transform: translateX(-50%) translateY(-120%); opacity: 0; }
+    .sub-top-inner {
+      padding: 12px 14px 14px; border-radius: 20px; background: rgba(255, 255, 255, 0.68);
+      border: 1px solid rgba(255, 255, 255, 0.78); box-shadow: 0 8px 24px rgba(20, 50, 74, 0.05);
+    }
+    .sub-top-title { display: block; margin: 0 0 12px; text-align: center; font-size: 15px; font-weight: 900; color: #0f4b6a; text-decoration: none; letter-spacing: -0.3px; }
+    .sub-nav { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .sub-nav-pill {
+      display: inline-flex; align-items: center; justify-content: center; min-width: 68px; height: 34px; padding: 0 14px;
+      border-radius: 999px; text-decoration: none; font-size: 13px; font-weight: 800; color: var(--muted); background: #eef2f6; transition: all 0.2s ease;
+    }
+    .sub-nav-pill.active { background: #ffffff; color: #0f4b6a; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
+    .content { padding: 24px 20px 60px; }
+    .page-header { margin-bottom: 24px; }
+    .page-header h1 { margin: 0 0 8px; font-size: 26px; font-weight: 900; color: #0f4b6a; letter-spacing: -0.5px; }
+    .page-header p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.6; }
+    .history-card { background: var(--surface); border-radius: var(--radius); padding: 24px; box-shadow: 0 8px 30px rgba(20,50,74,0.03); border: 1px solid var(--border); margin-bottom: 20px; }
+    .card-header { margin-bottom: 16px; }
+    .badge { display: inline-block; padding: 5px 10px; background: linear-gradient(135deg, rgba(26,123,214,0.1), rgba(0,206,203,0.1)); color: var(--brand); font-size: 11px; font-weight: 800; border-radius: 8px; margin-bottom: 8px; }
+    .card-title { margin: 0 0 6px; font-size: 18px; font-weight: 900; color: #0f4b6a; }
+    .card-sub { margin: 0; font-size: 13px; color: var(--muted); font-weight: 600; }
+    .btn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; margin-top: 16px; }
+    .link-btn { display: flex; align-items: center; justify-content: center; padding: 10px 0; border-radius: 12px; background: #f4f7fa; color: #2c3e50; font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid rgba(20,50,74,0.05); transition: all 0.2s ease; }
+    .link-btn:active { transform: scale(0.96); background: #eef2f6; }
+    .link-btn.highlight { background: var(--brand-light); color: var(--brand); border-color: rgba(26,123,214,0.15); }
+    .mini-timeline { margin-top: 20px; padding-top: 16px; border-top: 1px dashed rgba(20,50,74,0.1); }
+    .tl-item { position: relative; padding-left: 20px; padding-bottom: 20px; border-left: 2px solid var(--brand-light); }
+    .tl-item:last-child { border-left-color: transparent; padding-bottom: 0; }
+    .tl-item::before { content: ""; position: absolute; left: -6px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 4px var(--surface); }
+    .tl-title { margin: 0 0 6px; font-size: 14px; font-weight: 800; color: #1f4f6b; line-height: 1; }
+    .tl-list { margin: 0; padding-left: 14px; color: #5c7183; }
+    .tl-list li { font-size: 13px; line-height: 1.6; margin-bottom: 4px; }
+    .tl-list li:last-child { margin-bottom: 0; }
+    .action-btn { display: inline-flex; margin-top: 10px; padding: 8px 14px; border-radius: 10px; background: #fff; border: 1px solid rgba(20,50,74,0.1); color: #0f4b6a; font-size: 12px; font-weight: 800; text-decoration: none; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+
+
+    /* ===================================================
+       PC 반응형 스타일 (화면 너비 768px 이상일 때만 적용됨)
+       =================================================== */
+    @media (min-width: 768px) {
+      /* 모바일의 500px 제한과 그림자 해제 */
+      body {
+        max-width: 100%;
+        box-shadow: none;
+      }
+
+      /* PC 해상도에 맞게 콘텐츠 넓이 제한 (최대 1080px) */
+      .content {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 120px 20px 80px; /* 헤더 공간 확보 */
+      }
+
+      /* 네비게이션 바 확장 */
+      .sub-top {
+        max-width: 100%;
+        padding: 18px 0;
+        background: transparent;
+        border: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      .sub-top-inner {
+        max-width: 1040px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 32px;
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+      }
+      .sub-top-title {
+        margin: 0;
+        font-size: 20px;
+      }
+      .sub-nav { gap: 12px; }
+      .sub-nav-pill {
+        font-size: 14px;
+        padding: 0 18px;
+        height: 38px;
+      }
+
+      .page-header { text-align: center; margin-bottom: 50px; }
+      .page-header h1 { font-size: 34px; margin-bottom: 12px; }
+      .page-header p { font-size: 16px; }
+
+      /* 카드 레이아웃: 강제 높이 통일 제거, 자연스럽게 위로 정렬(start) */
+      .history-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        align-items: start; /* 중요: 빈 여백 없애기 */
+      }
+      .history-card {
+        margin-bottom: 0;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .history-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 16px 40px rgba(20,50,74,0.06);
+      }
+      
+      .link-btn:hover { background: #eef2f6; }
+      .action-btn:hover { background: #f8fbfd; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sub-top-slot">
+    <header class="sub-top">
+      <div class="sub-top-inner">
+        <a href="./index.html" class="sub-top-title">2026 SU JEJU</a>
+        <nav class="sub-nav">
+          <a class="sub-nav-pill" href="./log.html">일지</a>
+          <a class="sub-nav-pill active" href="./history.html">기록</a>
+          <a class="sub-nav-pill" href="./opinions.html">의견</a>
+        </nav>
+      </div>
+    </header>
+  </div>
+  
+  <main class="content">
+    <div class="page-header">
+      <h1>Camp History 📚</h1>
+      <p>우리가 함께 걸어온 캠프의 기록들입니다.<br>버튼을 눌러 지난 시간들을 둘러보세요.</p>
+    </div>
+
+    <div class="history-grid">
+      <div class="history-card">
+        <div class="card-header">
+          <div class="badge">Camp #1</div>
+          <h2 class="card-title">제주도</h2>
+          <p class="card-sub">일차별 기록 + 동영상 + 후속모임</p>
+        </div>
+        <div class="btn-grid">
+          <a class="link-btn" href="https://pf.kakao.com/_xkxjxnxnb/101007906" target="_blank" rel="noopener">1일차</a>
+          <a class="link-btn" href="https://pf.kakao.com/_xkxjxnxnb/101009774" target="_blank" rel="noopener">2일차</a>
+          <a class="link-btn" href="https://pf.kakao.com/_xkxjxnxnb/101011388" target="_blank" rel="noopener">3일차</a>
+          <a class="link-btn" href="https://pf.kakao.com/_xkxjxnxnb/101011515" target="_blank" rel="noopener">4일차</a>
+          <a class="link-btn highlight" href="https://tv.kakao.com/v/439572952" target="_blank" rel="noopener">동영상 🎬</a>
+          <a class="link-btn" href="https://pf.kakao.com/_xkxjxnxnb/103424878" target="_blank" rel="noopener">후속모임</a>
+        </div>
+      </div>
+
+      <div class="history-card">
+        <div class="card-header">
+          <div class="badge">Camp #2</div>
+          <h2 class="card-title">순천</h2>
+          <p class="card-sub">종합 기록 + 후속모임</p>
+        </div>
+        <div class="btn-grid" style="grid-template-columns: repeat(2, 1fr);">
+          <a class="link-btn" href="https://pf.kakao.com/_xkxjxnxnb/105919661" target="_blank" rel="noopener">종합 기록</a>
+          <a class="link-btn" href="https://pf.kakao.com/_xkxjxnxnb/106871462" target="_blank" rel="noopener">후속모임</a>
+        </div>
+      </div>
+
+      <div class="history-card">
+        <div class="card-header">
+          <div class="badge">Camp #3</div>
+          <h2 class="card-title">공주 & 군산</h2>
+          <p class="card-sub">한 눈에 보는 3일 요약</p>
+        </div>
+        
+        <div class="mini-timeline">
+          <div class="tl-item">
+            <h3 class="tl-title">DAY 1 · 대전</h3>
+            <ul class="tl-list">
+              <li>대전 집결 & 함께 저녁 식사 및 공동체 나눔</li>
+              <li>성심당 빵 타임</li>
+              <li>대전지부 1박</li>
+            </ul>
+          </div>
+          
+          <div class="tl-item">
+            <h3 class="tl-title">DAY 2 · 공주</h3>
+            <ul class="tl-list">
+              <li>공주제일교회 방문</li>
+              <li>기독교 박물관 관람 (유관순 열사 관련 설명)</li>
+              <li>독채 2층 펜션에서 바베큐 파티</li>
+              <li>요한계시록 파트별 직접 강의하기</li>
+            </ul>
+            <a class="action-btn" href="https://blog.naver.com/handmade-dovetail/223831672764" target="_blank" rel="noopener">공주 숙소 보기 (블로그) 🏠</a>
+          </div>
+
+          <div class="tl-item">
+            <h3 class="tl-title">DAY 3 · 군산</h3>
+            <ul class="tl-list">
+              <li>초원사진관 구경 (드라마 촬영지)</li>
+              <li>이성당 빵 타임 (전국 3대 빵집)</li>
+              <li>선유도 해수욕장 물놀이</li>
+              <li>요한계시록 파트별 실습 (카드)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <script>
+    const subTop = document.querySelector('.sub-top');
+    let lastScrollY = window.scrollY;
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!subTop) return;
+
+        const currentScrollY = window.scrollY;
+
+        if (currentScrollY <= 20) {
+          subTop.classList.remove('hide');
+        } else if (currentScrollY > lastScrollY && currentScrollY > 80) {
+          subTop.classList.add('hide');
+        } else {
+          subTop.classList.remove('hide');
+        }
+
+        lastScrollY = currentScrollY;
+      },
+      { passive: true }
+    );
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>2026 청년 캠프 - 기획 일지</title>
+  <meta name="theme-color" content="#f5f8fa" />
+
+  <style>
+    /* ===================================================
+       모바일 원본 코드 (수정하지 않음)
+       =================================================== */
+    @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+    :root { --ink: #14324a; --muted: #647b8f; --bg: #f5f8fa; --brand: #1a7bd6; --brand-light: #e8f3fc; --exec-color: #00cecb; --exec-light: #e0f9f8; --surface: #ffffff; --border: rgba(20,50,74,0.08); }
+    * { box-sizing: border-box; font-family: "Pretendard", system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; padding: 0; color: var(--ink); background-color: var(--bg); max-width: 500px; margin: 0 auto; box-shadow: 0 0 40px rgba(0,0,0,0.05); min-height: 100vh; padding-bottom: env(safe-area-inset-bottom); }
+
+    .sub-top-slot { position: relative; width: 100%; min-height: 96px; }
+    .sub-top { position: fixed; top: 0; left: 50%; transform: translateX(-50%) translateY(0); width: 100%; max-width: 500px; z-index: 100; padding: 14px 16px 12px; background: rgba(245, 248, 250, 0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); transition: transform 0.28s ease, opacity 0.28s ease; }
+    .sub-top.hide { transform: translateX(-50%) translateY(-120%); opacity: 0; }
+    .sub-top-inner { padding: 12px 14px 14px; border-radius: 20px; background: rgba(255, 255, 255, 0.68); border: 1px solid rgba(255, 255, 255, 0.78); box-shadow: 0 8px 24px rgba(20, 50, 74, 0.05); }
+    .sub-top-title { display: block; margin: 0 0 12px; text-align: center; font-size: 15px; font-weight: 900; color: #0f4b6a; text-decoration: none; letter-spacing: -0.3px; }
+    .sub-nav { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+    .sub-nav-pill { display: inline-flex; align-items: center; justify-content: center; min-width: 68px; height: 34px; padding: 0 14px; border-radius: 999px; text-decoration: none; font-size: 13px; font-weight: 800; color: var(--muted); background: #eef2f6; transition: all 0.2s ease; }
+    .sub-nav-pill.active { background: #ffffff; color: #0f4b6a; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
+
+    .content { padding: 24px 20px 60px; }
+    .page-header { margin-bottom: 24px; }
+    .page-header h1 { margin: 0 0 8px; font-size: 26px; font-weight: 900; color: #0f4b6a; letter-spacing: -0.5px; }
+    .page-header p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+    .team-tabs { display: flex; gap: 8px; margin-bottom: 32px; background: #eef2f6; padding: 6px; border-radius: 16px; }
+    .tab-btn { flex: 1; padding: 10px 0; border: none; background: transparent; border-radius: 12px; font-size: 13.5px; font-weight: 700; color: var(--muted); cursor: pointer; transition: all 0.2s ease; }
+    .tab-btn.active { background: var(--surface); color: var(--ink); font-weight: 800; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+
+    .log-timeline { position: relative; padding-left: 28px; }
+    .log-timeline::before { content: ''; position: absolute; left: 7px; top: 10px; bottom: 20px; width: 2px; background: rgba(20,50,74,0.08); border-radius: 2px; }
+
+    .log-item { position: relative; margin-bottom: 32px; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .log-item:last-child { margin-bottom: 0; }
+
+    .log-node { position: absolute; left: -28px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid #cbd5e1; z-index: 2; }
+    .log-item.completed .log-node { background: var(--brand); border-color: var(--brand-light); box-shadow: 0 0 0 4px var(--brand-light); }
+    .log-item.upcoming .log-node { background: var(--surface); border-color: var(--brand); }
+
+    .badge-row { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+    .status-badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; }
+    .completed .status-badge { background: #f0f4f8; color: var(--muted); }
+    .upcoming .status-badge { background: #ffe9d4; color: #e67e22; }
+    .team-badge.plan { background: var(--brand-light); color: var(--brand); }
+    .team-badge.exec { background: var(--exec-light); color: #009997; }
+    .team-badge.all { background: #eef2f6; color: #475a6b; }
+
+    .log-card { background: var(--surface); border-radius: 20px; padding: 20px; box-shadow: 0 4px 20px rgba(20,50,74,0.03); border: 1px solid var(--border); }
+    .log-item.upcoming .log-card { border-color: rgba(26,123,214,0.3); box-shadow: 0 8px 25px rgba(26,123,214,0.08); }
+
+    .log-date { font-size: 12px; color: var(--muted); font-weight: 700; margin-bottom: 6px; }
+    .log-title { font-size: 17px; font-weight: 900; color: #0f4b6a; margin: 0 0 12px; line-height: 1.4; }
+    .log-desc { margin: 0; padding-left: 18px; color: #3b4d5e; font-size: 13.5px; }
+    .log-desc li { margin-bottom: 8px; line-height: 1.55; }
+    .log-desc li:last-child { margin-bottom: 0; }
+
+
+    /* ===================================================
+       PC 반응형 스타일 (화면 너비 768px 이상일 때만 적용됨)
+       =================================================== */
+    @media (min-width: 768px) {
+      /* 모바일의 500px 제한 해제 */
+      body {
+        max-width: 100%;
+        box-shadow: none;
+      }
+
+      /* PC 해상도에 맞춰 메인 콘텐츠 가운데 정렬 (너무 넓어지면 읽기 힘드므로 800px 제한) */
+      .content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 120px 20px 80px; /* 헤더가 가리지 않도록 상단 여백 확보 */
+      }
+
+      /* 네비게이션 바 PC 확장형 */
+      .sub-top {
+        max-width: 100%;
+        padding: 18px 0;
+        background: transparent;
+        border: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
+      .sub-top-inner {
+        max-width: 1040px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 32px;
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+      }
+      .sub-top-title { margin: 0; font-size: 20px; }
+      .sub-nav { gap: 12px; }
+      .sub-nav-pill { font-size: 14px; padding: 0 18px; height: 38px; }
+      .sub-nav-pill:hover { background: #e4eaf0; }
+      .sub-nav-pill.active:hover { background: #ffffff; }
+
+      /* 헤더 중앙 정렬 및 여백 조정 */
+      .page-header { text-align: center; margin-bottom: 40px; }
+      .page-header h1 { font-size: 34px; margin-bottom: 12px; }
+      .page-header p { font-size: 16px; }
+
+      /* 탭 버튼 중앙 정렬 (화면 전체를 쓰지 않고 적절한 너비만 사용) */
+      .team-tabs {
+        max-width: 480px;
+        margin: 0 auto 40px auto;
+        padding: 8px;
+        border-radius: 20px;
+      }
+      .tab-btn { font-size: 15px; padding: 12px 0; }
+      .tab-btn:hover:not(.active) { background: rgba(255,255,255,0.5); }
+
+      /* 타임라인 카드 세련된 여백과 호버 액션 추가 */
+      .log-card {
+        padding: 28px 32px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .log-item:hover .log-card {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(20,50,74,0.06);
+      }
+      .log-item.upcoming:hover .log-card {
+        box-shadow: 0 12px 35px rgba(26,123,214,0.12);
+      }
+      
+      /* PC용 폰트 사이즈 살짝 증량 */
+      .log-title { font-size: 20px; margin-bottom: 16px; }
+      .log-desc { font-size: 15px; }
+      .log-date { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+	<div class="sub-top-slot">
+		<header class="sub-top">
+			<div class="sub-top-inner">
+				<a href="./index.html" class="sub-top-title">2026 SU JEJU</a>
+				<nav class="sub-nav">
+					<a class="sub-nav-pill active" href="./log.html">일지</a>
+					<a class="sub-nav-pill" href="./history.html">기록</a>
+					<a class="sub-nav-pill" href="./opinions.html">의견</a>
+				</nav>
+			</div>
+		</header>
+	</div>
+	
+  <main class="content">
+    <div class="page-header">
+      <h1>Camp Log 📝</h1>
+      <p>수동적인 참여가 아닌 능동적인 동역!<br>우리가 다 함께 만들어가는 캠프의 발자취입니다.</p>
+    </div>
+
+    <div class="team-tabs">
+      <button class="tab-btn active" data-filter="all">전체보기</button>
+      <button class="tab-btn" data-filter="plan">💡 기획팀</button>
+      <button class="tab-btn" data-filter="exec">🏃‍♂️ 진행팀</button>
+    </div>
+
+    <div class="log-timeline" id="log-list">
+      
+      <div class="log-item completed" data-team="all">
+        <div class="log-node"></div>
+        <div class="log-card">
+          <div class="badge-row">
+            <span class="status-badge">완료</span>
+            <span class="status-badge team-badge all">🤝 공통</span>
+          </div>
+          <div class="log-date">1회차 · 2월 20일 (목) 22:00</div>
+          <h2 class="log-title">캠프 '색깔' 정하기</h2>
+          <ul class="log-desc">
+            <li>캠프 주제 및 슬로건 확정</li>
+            <li>역할 분담 (기획팀, 진행팀 세팅)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="log-item upcoming" data-team="exec">
+        <div class="log-node"></div>
+        <div class="log-card">
+          <div class="badge-row">
+            <span class="status-badge">다음 목표</span>
+            <span class="status-badge team-badge exec">🏃‍♂️ 진행팀</span>
+          </div>
+          <div class="log-date">2회차 · 3월 11일 (수) 21:30</div>
+          <h2 class="log-title">동선 및 예산안 초안</h2>
+          <ul class="log-desc">
+            <li>제주도 숙박 및 렌트카 예약</li>
+            <li>1인 회비 및 전체 예산안 초안 작성</li>
+            <li>항공권 예매 가이드라인 공지 준비</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="log-item planned" data-team="plan">
+        <div class="log-node"></div>
+        <div class="log-card">
+          <div class="badge-row">
+            <span class="status-badge">예정</span>
+            <span class="status-badge team-badge plan">💡 기획팀</span>
+          </div>
+          <div class="log-date">3회차 · 5월 중</div>
+          <h2 class="log-title">세부 프로그램 기획</h2>
+          <ul class="log-desc">
+            <li>리더십 세미나 및 기도회 순서 구체화</li>
+            <li>조별 아이스브레이킹 및 나눔 주제 선정</li>
+            <li>홍보 포스터 및 안내문 제작</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="log-item planned" data-team="exec">
+        <div class="log-node"></div>
+        <div class="log-card">
+          <div class="badge-row">
+            <span class="status-badge">예정</span>
+            <span class="status-badge team-badge exec">🏃‍♂️ 진행팀</span>
+          </div>
+          <div class="log-date">4회차 · 6월 중</div>
+          <h2 class="log-title">운영 물품 및 현지 체크</h2>
+          <ul class="log-desc">
+            <li>식당 리스트업 및 식비 예산 분배</li>
+            <li>준비물 리스트 작성 (간식, 상비약, 명찰 등)</li>
+            <li>최종 인원 점검 및 여행자 보험 가입</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="log-item planned" data-team="all">
+        <div class="log-node"></div>
+        <div class="log-card">
+          <div class="badge-row">
+            <span class="status-badge">예정</span>
+            <span class="status-badge team-badge all">🤝 공통</span>
+          </div>
+          <div class="log-date">5회차 · 7월 중</div>
+          <h2 class="log-title">최종 시뮬레이션 및 기도회</h2>
+          <ul class="log-desc">
+            <li>전체 시간표 동선 시뮬레이션</li>
+            <li>각 팀별 큐시트 최종 확인</li>
+            <li>캠프를 위한 합심 기도</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab-btn');
+    const logItems = document.querySelectorAll('.log-item');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        // 1. 탭 버튼 활성화 변경
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        // 2. 필터링 로직
+        const filter = tab.getAttribute('data-filter');
+        
+        logItems.forEach(item => {
+          const team = item.getAttribute('data-team');
+          // '전체보기'를 누르거나, 해당 카드가 내가 누른 팀이거나, '공통(all)' 카드일 경우 보여줌
+          if (filter === 'all' || team === filter || team === 'all') {
+            item.style.display = 'block';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+		
+  const subTop = document.querySelector('.sub-top');
+  let lastScrollY = window.scrollY;
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!subTop) return;
+
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY <= 20) {
+        subTop.classList.remove('hide');
+      } else if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        subTop.classList.add('hide');
+      } else {
+        subTop.classList.remove('hide');
+      }
+
+      lastScrollY = currentScrollY;
+    },
+    { passive: true }
+  );
+	
+  </script>
+</body>
+</html>
