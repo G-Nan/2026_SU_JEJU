@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2026 청년 캠프 - Gnan</title>
+  <meta name="description" content="2026 청년 캠프 소개 페이지" />
+
+  <style>
+    /* Pretendard */
+    @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+    :root{
+      --ink:#14324a;
+      --muted:#4f6476;
+      --line:rgba(20,50,74,.12);
+
+      --card:rgba(255,255,255,.72);
+      --card-strong:rgba(255,255,255,.86);
+      --shadow:0 18px 60px rgba(20,50,74,.12);
+
+      --brand:#1a7bd6;
+      --brand2:#00cecb;
+
+      --radius:22px;
+      --max:980px;
+    }
+
+    *{box-sizing:border-box; font-family:"Pretendard", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;}
+    html{scroll-behavior:smooth;}
+    body{
+      margin:0;
+      padding:40px 20px;
+      color:var(--ink);
+
+      /* ✅ 밝은 제주 바다 배경 (Unsplash) + 아주 옅은 화이트 오버레이 */
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,.28)),
+        url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2000&auto=format&fit=crop")
+          center/cover no-repeat fixed;
+
+      display:flex;
+      justify-content:center;
+    }
+
+    .container{
+      width:100%;
+      max-width:var(--max);
+      background:var(--card);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border:1px solid rgba(255,255,255,.75);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:46px 44px;
+    }
+
+    /* top nav */
+    .nav{
+      position:sticky;
+      top:12px;
+      z-index:20;
+
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+
+      padding:12px 14px;
+      margin:-22px auto 24px;
+
+      border:1px solid rgba(255,255,255,.7);
+      border-radius:999px;
+      background:rgba(255,255,255,.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 10px 30px rgba(20,50,74,.10);
+    }
+    .nav .left{
+      display:flex; align-items:center; gap:10px;
+      font-weight:900; letter-spacing:-.2px;
+      white-space:nowrap;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.55);
+      color: var(--muted);
+      font-size:12px;
+      font-weight:700;
+    }
+    .nav .right{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;}
+    .pill{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.55);
+      color: var(--muted);
+      font-size:13px;
+      font-weight:700;
+      text-decoration:none;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    }
+    .pill:hover{transform: translateY(-1px); background: rgba(255,255,255,.85); border-color: rgba(20,50,74,.18); color: var(--ink);}
+
+    header{
+      text-align:center;
+      margin-bottom:34px;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:46px;
+      font-weight:900;
+      letter-spacing:-1px;
+      color:#0f4b6a;
+      text-shadow: 1px 1px 2px rgba(255,255,255,.75);
+    }
+    .subtitle{
+      color:var(--muted);
+      font-weight:800;
+      letter-spacing:2px;
+    }
+
+    h2{
+      margin:46px 0 18px;
+      font-size:20px;
+      font-weight:900;
+      color:#0f4b6a;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    h2::before{
+      content:"";
+      width:6px;
+      height:24px;
+      border-radius:3px;
+      background: linear-gradient(180deg, var(--brand2), var(--brand));
+    }
+	.section-title{
+	  display:flex;
+	  align-items:flex-end;
+	  justify-content:space-between;
+	  gap:12px;
+	  margin:46px 0 18px; /* 기존 h2 margin과 동일 */
+	}
+	.section-title h2{
+	  margin:0; /* section-title이 margin을 가지므로 h2는 0 */
+	}
+	.section-title .hint{
+	  color: var(--muted);
+	  font-size:12px;
+	  font-weight:700;
+	  white-space:nowrap;
+	  opacity:.9;
+	}
+	@media (max-width: 560px){
+	  .section-title{
+		flex-direction:column;
+		align-items:flex-start;
+	  }
+	  .section-title .hint{
+		white-space:normal;
+	  }
+	}
+    /* intro box */
+    .intro-box{
+      background: linear-gradient(135deg, rgba(255,255,255,.92), rgba(255,255,255,.65));
+      border:1px solid rgba(255,255,255,.80);
+      border-radius:18px;
+      padding:28px 26px;
+      box-shadow: 0 10px 30px rgba(20,50,74,.08);
+      text-align:center;
+      transition: transform .18s ease;
+    }
+    .intro-box:hover{transform: translateY(-2px);}
+    .intro-box p{margin:10px 0; font-size:16px; color:#23445b;}
+    .highlight{color:#e67e22; font-weight:900;}
+
+    /* ====== (1번 스타일) 기본 카드 ====== */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:16px;
+    }
+    @media (min-width: 740px){
+      .grid{grid-template-columns: 1fr 1fr;}
+    }
+    .card{
+      background: rgba(255,255,255,.74);
+      border:1px solid rgba(255,255,255,.82);
+      border-radius:18px;
+      padding:22px;
+      box-shadow: 0 10px 26px rgba(20,50,74,.06);
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .card:hover{
+      transform: translateY(-3px);
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 16px 38px rgba(20,50,74,.10);
+    }
+    .card h3{
+      margin:0 0 14px;
+      font-size:16px;
+      font-weight:900;
+      color:#1a5f7a;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    /* ====== ✅ (2번 “내용/구성”)을 1번 스타일 안에 넣기 ====== */
+    .info3{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:16px;
+    }
+    @media (min-width: 860px){
+      .info3{grid-template-columns: repeat(3, 1fr);}
+    }
+
+    .list{margin:10px 0 0; padding-left:18px; color:#2c3e50;}
+    .list li{margin:7px 0; color:#2c3e50; font-size:14px; line-height:1.55;}
+    .list li span{color:var(--muted);}
+
+    .jeju{
+      color:#0984e3;
+      font-weight:900;
+    }
+    .warn{
+      color:#d63031;
+      font-weight:900;
+    }
+
+    /* roadmap table */
+    .table-wrap{
+      background: rgba(255,255,255,.74);
+      border:1px solid rgba(255,255,255,.82);
+      border-radius:18px;
+      padding:18px;
+      box-shadow: 0 10px 26px rgba(20,50,74,.06);
+    }
+    table{
+      width:100%;
+      border-collapse: collapse;
+      overflow:hidden;
+      border-radius: 14px;
+      border:1px solid rgba(20,50,74,.12);
+      background: rgba(255,255,255,.78);
+    }
+    th, td{
+      padding:11px 11px;
+      border-bottom: 1px solid rgba(20,50,74,.10);
+      font-size:14px;
+      vertical-align: top;
+    }
+    th{
+      text-align:left;
+      color: var(--muted);
+      font-weight:900;
+      background: rgba(255,255,255,.95);
+    }
+    tr:last-child td{border-bottom:0;}
+    .tiny-note{margin-top:10px; color:var(--muted); font-size:12px;}
+
+    /* history details */
+    details{
+      border:1px solid rgba(255,255,255,.82);
+      border-radius:18px;
+      background: rgba(255,255,255,.70);
+      box-shadow: 0 10px 26px rgba(20,50,74,.06);
+      overflow:hidden;
+    }
+    details + details{margin-top:12px;}
+    summary{
+      cursor:pointer;
+      list-style:none;
+      padding:16px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      font-weight:900;
+      color:#1a5f7a;
+    }
+    summary::-webkit-details-marker{display:none;}
+    .summary-left{display:flex; flex-direction:column; gap:4px;}
+    .summary-left small{color:var(--muted); font-weight:700;}
+    .chev{color:var(--muted); font-weight:900; transition: transform .12s ease;}
+    details[open] .chev{transform: rotate(90deg);}
+    .divider{height:1px; background: rgba(20,50,74,.10); margin:0 18px;}
+    .detail-body{padding:14px 18px 18px;}
+
+    .btn-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:9px 12px;
+      border-radius:10px;
+      border:1px solid rgba(20,50,74,.14);
+      background: rgba(255,255,255,.82);
+      color:#2c3e50;
+      font-size:13px;
+      font-weight:800;
+      text-decoration:none;
+      transition: transform .12s ease, background .12s ease;
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.98);}
+    .btn.primary{
+	  border: 1px solid rgba(20,50,74,.10);
+	  background: linear-gradient(90deg, rgba(0,206,203,.22), rgba(26,123,214,.18));
+	  color: #0f4b6a;
+	}
+	.btn.primary:hover{
+	  background: linear-gradient(90deg, rgba(0,206,203,.28), rgba(26,123,214,.22));
+	}
+
+    .two-col{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    @media (min-width: 860px){
+      .two-col{grid-template-columns: 1fr 1fr;}
+    }
+
+    .footer{
+      margin-top:28px;
+      text-align:center;
+      color: var(--muted);
+      font-size:12px;
+      opacity:.9;
+    }
+	/* ===== 모바일 최적화 ===== */
+	@media (max-width: 560px){
+	  body{
+		padding: 22px 12px;
+		/* iOS에서 background fixed가 레이아웃/스크롤을 이상하게 만들기도 해서 모바일에서는 scroll 권장 */
+		background-attachment: scroll;
+	  }
+
+	  .container{
+		padding: 24px 18px;
+		border-radius: 22px;
+	  }
+
+	  h1{
+		/* 46px 고정 대신 화면폭에 맞춰 유동 */
+		font-size: clamp(28px, 9vw, 46px);
+		letter-spacing: -0.6px;
+	  }
+
+	  .subtitle{
+		font-size: 12px;
+		letter-spacing: 1px;
+	  }
+
+	  /* ✅ nav가 모바일에서 가장 많이 터집니다 */
+	  .nav{
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		gap: 10px;
+		padding: 10px 12px;
+	  }
+	  .nav .left{
+		white-space: normal;      /* nowrap 해제 */
+		flex: 1 1 100%;
+	  }
+	  .nav .right{
+		flex: 1 1 100%;
+		justify-content: flex-start;
+	  }
+
+	  /* 배지가 길어서 터지면 모바일에서 숨기는 게 깔끔합니다 */
+	  .badge{
+		display: none;
+	  }
+
+	  /* pill 버튼도 살짝 작게 */
+	  .pill{
+		padding: 7px 9px;
+		font-size: 12px;
+	  }
+	}
+
+	/* ✅ 표는 모바일에서 가로 스크롤 허용(가장 간단하고 안정적) */
+	.table-wrap{
+	  overflow-x: auto;
+	  -webkit-overflow-scrolling: touch;
+	}
+	table{
+	  min-width: 560px; /* 표가 찌그러지지 않게 최소 폭 확보 */
+	}
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="nav">
+      <div class="left">
+        2026 Summer Camp
+      </div>
+      <div class="right">
+        <a class="pill" href="#vision">Vision</a>
+        <a class="pill" href="#details">Details</a>
+        <a class="pill" href="#timeline">Timeline</a>
+        <a class="pill" href="#history">History</a>
+        <a class="pill" href="#faq">FAQ</a>
+      </div>
+    </div>
+
+    <header>
+      <h1 id="vision">2026 청년 캠프</h1>
+      <div class="subtitle">- Gathered by the Beginning, Bound for the Beyond. -</div>
+    </header>
+
+    <section>
+      <h2>Vision</h2>
+      <div class="intro-box">
+        <p>이번 2026 청년 캠프는 <span class="highlight">청년들을 위한 교제 중심의 캠프</span>입니다.</p>
+        <p>
+          누군가 짜놓은 일정에 수동적으로 참여하는 것이 아니라,<br/>
+          <span class="highlight">우리 청년들이 스스로, 다 함께 기획하고 만들어나가는 캠프</span>입니다!
+        </p>
+      </div>
+    </section>
+
+    <!-- ✅ 여기: “1번 스타일” 유지 + “2번 구성(3블럭: 일정/인원/예산)” 적용 -->
+    <section id="details">
+	  <div class="section-title">
+		<h2>Details</h2>
+		<div class="hint">※ 변동 가능 항목은 추후 업데이트</div>
+	  </div>
+
+      <div class="info3">
+        <div class="card">
+		  <h3>장소 및 일정</h3>
+		  <ul class="list">
+			<li><b>장소:</b> <span class="jeju">제주도 🌴</span></li>
+			<li>3박 4일</li>
+			<li>8/19 ~ 8/22 <br><span style="color:#7f8c8d; font-size:0.9em;">(직장인을 배려한 수·목·금·토 일정)</span></li>
+		  </ul>
+		</div>
+
+		<div class="card">
+		  <h3>인원</h3>
+		  <ul class="list">
+			<li>청년만 최대 20명 <br><span style="color:#7f8c8d; font-size:0.9em;">(총무/간사 포함 최대 25명)</span></li>
+			<li>기획팀 + YLTC 리더 + 묵상나눔모임</li>
+			<li><b>공개 추가 모집 없음</b> <span>(선착순 마감)</span></li>
+		  </ul>
+		</div>
+
+        <div class="card">
+          <h3>예산</h3>
+          <ul class="list">
+            <li>항공은 별도 예매 <br><span style="color:#7f8c8d; font-size:0.9em;">(출발지/시간대/항공사 편차 고려)</span></li>
+            <li>참가비 예상 1인 15만원 <span>(미정)</span></li>
+            <li>숙소/렌트/식비 등 지원 </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="timeline">
+	  <div class="section-title">
+		<h2>Timeline</h2>
+		<div class="hint">※ 회의 시간/장소는 확정되는 대로 업데이트</div>
+	  </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:72px;">회차</th>
+              <th style="width:150px;">시기</th>
+              <th style="width:190px;">주제</th>
+              <th>내용</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1회</td>
+              <td><b>2/20 22:00</b></td>
+              <td>캠프 ‘색깔’정하기</td>
+              <td>
+                - 캠프 주제 및 슬로건 확정<br/>
+                - 역할 분담(총무, 회계, 프로그램 등)
+              </td>
+            </tr>
+            <tr>
+			  <td>2회</td>
+			  <td><b>3/11 21:30</b></td>
+			  <td>동선 및 예산안</td>
+			  <td>
+				- 제주도 항공, 숙박 예약<br/>
+				- 이동 수단 결정 및 예약<br/>
+				- 대략적인 일정표 구성<br/>
+				- 1인 회비 및 전체 예산안 초안 작성
+			  </td>
+			</tr>
+            <tr>
+              <td>3회</td>
+              <td>5월 중</td>
+              <td>프로그램 기획</td>
+              <td>
+                - 리더십 세미나, 기도회, 투어 일정 구체화<br/>
+                - 식당 리스트업 및 방문지 확정<br/>
+                - 홍보 포스터 및 안내문 제작
+              </td>
+            </tr>
+            <tr>
+              <td>4회</td>
+              <td>6월 중</td>
+              <td>운영 물품 및 체크</td>
+              <td>
+                - 준비물 리스트 작성(교재, 간식, 상비약 등)<br/>
+                - 프로그램별 필요한 소품 및 장비 확정<br/>
+                - 최종 인원 확정 및 보험 가입
+              </td>
+            </tr>
+            <tr>
+              <td>5회</td>
+              <td>7월 중</td>
+              <td>최종 점검 및 기도회</td>
+              <td>
+                - 전체 시간표 시뮬레이션<br/>
+                - 역할별 최종 점검(큐시트 확인)<br/>
+                - 안전 수칙 및 비상 연락망 공유<br/>
+                - 캠프를 위한 합심 기도
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="history">
+	  <div class="section-title">
+		<h2>History</h2>
+		<div class="hint">※ 버튼을 누르면 기록을 바로 볼 수 있어요</div>
+	  </div>
+
+      <details>
+        <summary>
+          <div class="summary-left">
+            <div>Camp #1 · 제주도</div>
+            <small>일차별 기록 + 동영상 + 후속모임</small>
+          </div>
+          <div class="chev">›</div>
+        </summary>
+        <div class="divider"></div>
+        <div class="detail-body">
+          <div class="btn-row">
+            <a class="btn primary" href="https://pf.kakao.com/_xkxjxnxnb/101007906" target="_blank" rel="noopener">1일차</a>
+            <a class="btn primary" href="https://pf.kakao.com/_xkxjxnxnb/101009774" target="_blank" rel="noopener">2일차</a>
+            <a class="btn primary" href="https://pf.kakao.com/_xkxjxnxnb/101011388" target="_blank" rel="noopener">3일차</a>
+            <a class="btn primary" href="https://pf.kakao.com/_xkxjxnxnb/101011515" target="_blank" rel="noopener">4일차</a>
+            <a class="btn primary" href="https://tv.kakao.com/v/439572952" target="_blank" rel="noopener">동영상</a>
+            <a class="btn primary" href="https://pf.kakao.com/_xkxjxnxnb/103424878" target="_blank" rel="noopener">후속모임</a>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <div class="summary-left">
+            <div>Camp #2 · 순천</div>
+            <small>종합 기록 + 후속모임</small>
+          </div>
+          <div class="chev">›</div>
+        </summary>
+        <div class="divider"></div>
+        <div class="detail-body">
+          <div class="btn-row">
+            <a class="btn primary" href="https://pf.kakao.com/_xkxjxnxnb/105919661" target="_blank" rel="noopener">종합</a>
+            <a class="btn primary" href="https://pf.kakao.com/_xkxjxnxnb/106871462" target="_blank" rel="noopener">후속모임</a>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <div class="summary-left">
+            <div>Camp #3 · 공주 &amp; 군산</div>
+            <small>한 눈에 보는 3일 요약 + 숙소</small>
+          </div>
+          <div class="chev">›</div>
+        </summary>
+        <div class="divider"></div>
+        <div class="detail-body">
+          <div class="two-col">
+            <div class="card">
+              <h3>DAY 1 · 대전</h3>
+              <ul class="list">
+                <li>대전 집결 &amp; 함께 저녁 식사 및 공동체 나눔</li>
+                <li>성심당 빵 타임</li>
+                <li>대전지부 1박</li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <h3>DAY 2 · 공주</h3>
+              <ul class="list">
+                <li>공주제일교회 방문</li>
+                <li>기독교 박물관 관람 (유관순 열사 관련 설명)</li>
+                <li>독채 2층 펜션에서 바베큐 파티</li>
+                <li>요한계시록 파트별 직접 강의하기</li>
+              </ul>
+              <div class="btn-row">
+              <a class="btn primary" href="https://blog.naver.com/handmade-dovetail/223831672764" target="_blank" rel="noopener">공주 숙소 보기 (블로그)</a>
+            </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:12px;">
+            <h3>DAY 3 · 군산</h3>
+            <ul class="list">
+              <li>초원사진관 구경 <span class="muted">(드라마 촬영지)</span></li>
+              <li>이성당 빵 타임 (전국 3대 빵집)</li>
+              <li>선유도 해수욕장 물놀이</li>
+              <li>요한계시록 파트별 실습 (카드)</li>
+            </ul>
+          </div>
+        </div>
+      </details>
+    </section>
+	<section id="faq">
+      <div class="section-title">
+        <h2>FAQ</h2>
+        <div class="hint">※ 자주 묻는 질문</div>
+      </div>
+
+      <details>
+        <summary>
+          <div class="summary-left">
+            <div>Q. 직장 때문에 3박 4일 모두 참여가 어려우면 어떻게 하나요?</div>
+          </div>
+          <div class="chev">›</div>
+        </summary>
+        <div class="divider"></div>
+        <div class="detail-body">
+          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #2c3e50;">
+            <b>A.</b> 수요일 퇴근 후 저녁 비행기로 오셔도 괜찮습니다!<br>
+            이전에도 오전 비행기가 결항되어서 저녁 비행기를 급하게 잡아서 간 경험이 있습니다. 늦게 합류하시더라도 오시는 일정에 맞춰 픽업 등 동선을 안내해 드릴 테니 부담 없이 말씀해 주세요.
+          </p>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <div class="summary-left">
+            <div>Q. 항공권은 각자 알아서 예매해야 하나요?</div>
+          </div>
+          <div class="chev">›</div>
+        </summary>
+        <div class="divider"></div>
+        <div class="detail-body">
+          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #2c3e50;">
+            <b>A.</b> 네, 맞습니다.<br>
+            참가자마다 출발하는 공항이나 직장 스케줄에 따른 선호 시간대가 다르기 때문에 항공권은 개별 발권으로 진행합니다. 캠프 일자가 최종 확정되면 원하시는 일정으로 예매해 주시면 됩니다.
+          </p>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <div class="summary-left">
+            <div>Q. 회비 외에 개인적으로 챙겨야 할 경비가 있나요?</div>
+          </div>
+          <div class="chev">›</div>
+        </summary>
+        <div class="divider"></div>
+        <div class="detail-body">
+          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #2c3e50;">
+            <b>A.</b> 제주도에서의 숙소, 렌트카, 공식적인 식비 등은 모두 지원됩니다.<br>
+            다만, 자유 시간에 개인적으로 드실 간식이나 커피, 기념품 구매 등을 위한 약간의 개인 용돈만 따로 준비해 오시면 충분합니다.
+          </p>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <div class="summary-left">
+            <div>Q. 준비 일정에 있는 월 1회 회의에 꼭 참석해야 하나요?</div>
+          </div>
+          <div class="chev">›</div>
+        </summary>
+        <div class="divider"></div>
+        <div class="detail-body">
+          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #2c3e50;">
+            <b>A.</b> 이번 캠프의 핵심은 '우리가 다 함께 기획하고 만들어가는 것'입니다.<br>
+            피치 못할 사정이 있다면 어쩔 수 없지만, 가능하면 정기 회의에 참석하셔서 어떤 캠프를 만들지 함께 의견을 나누고 색깔을 정해간다면 훨씬 더 의미 있고 즐거운 캠프가 될 것입니다!
+          </p>
+        </div>
+      </details>
+	 
+      <details>
+        <summary>
+          <div class="summary-left">
+            <div>Q. 캠프에 참여하고 싶다면 어떻게 하면 되나요?</div>
+          </div>
+          <div class="chev">›</div>
+        </summary>
+        <div class="divider"></div>
+        <div class="detail-body">
+          <p style="margin: 0; font-size: 14px; line-height: 1.6; color: #2c3e50;">
+            <b>A.</b> 아래 연락처로 문자나 전화 주시면 친절히 안내해 드리겠습니다!<br>
+            선착순 마감이므로 참여 의사가 있으시다면 편하게 연락해 주세요.
+          </p>
+          <div class="btn-row" style="margin-top: 15px;">
+            <div class="card" style="width: 100%; padding: 15px; background: rgba(26,123,214,0.05); border: 1px solid rgba(26,123,214,0.15);">
+              <p style="margin: 5px 0;">👤 <b>유태인 목사님:</b> 010-4466-0012</p>
+			  <p style="margin: 5px 0;">👤 <b>배종곤 목사님:</b> 010-9361-6115</p>
+              <p style="margin: 5px 0;">👤 <b>김근한 청년:</b> 010-4619-3128</p>
+            </div>
+          </div>
+        </div>
+      </details>
+	  
+    </section>
+    <div class="footer">2026 청년 캠프 · Gathered by the Beginning, Bound for the Beyond.</div>
+  </div>
+</body>
+</html>

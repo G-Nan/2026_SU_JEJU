@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>2026 청년 캠프 - 의견 남기기</title>
+
+  <style>
+    @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+
+    :root{
+      --ink:#14324a;
+      --muted:#5c7183;
+      --line:rgba(20,50,74,.12);
+      --card:rgba(255,255,255,.88);
+      --brand:#1a7bd6;
+      --brand2:#00cecb;
+      --shadow:0 18px 50px rgba(20,50,74,.10);
+      --radius:22px;
+      --max:860px;
+    }
+
+    *{box-sizing:border-box; font-family:"Pretendard", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;}
+    html{scroll-behavior:smooth;}
+    body{
+      margin:0;
+      padding:40px 20px;
+      color:var(--ink);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.30), rgba(255,255,255,.30)),
+        url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2000&auto=format&fit=crop")
+        center/cover no-repeat fixed;
+      display:flex;
+      justify-content:center;
+    }
+
+    .container{
+      width:100%;
+      max-width:var(--max);
+      background:var(--card);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border:1px solid rgba(255,255,255,.78);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:34px 28px;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:20px;
+      flex-wrap:wrap;
+    }
+
+    .back-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.72);
+      color:var(--ink);
+      text-decoration:none;
+      font-size:14px;
+      font-weight:800;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.72);
+      border:1px solid var(--line);
+      color:var(--muted);
+      font-size:12px;
+      font-weight:800;
+    }
+
+    h1{
+      margin:0 0 10px;
+      font-size:38px;
+      font-weight:900;
+      letter-spacing:-.8px;
+      color:#0f4b6a;
+    }
+
+    .subtitle{
+      margin:0 0 24px;
+      color:var(--muted);
+      line-height:1.65;
+      font-size:15px;
+      font-weight:600;
+    }
+
+    .card{
+      background:rgba(255,255,255,.82);
+      border:1px solid rgba(255,255,255,.86);
+      border-radius:20px;
+      padding:22px;
+      box-shadow:0 10px 26px rgba(20,50,74,.06);
+    }
+
+    .card + .card{
+      margin-top:16px;
+    }
+
+    .section-title{
+      margin:0 0 14px;
+      font-size:18px;
+      font-weight:900;
+      color:#1a5f7a;
+    }
+
+    .field{
+      margin-bottom:14px;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      font-size:14px;
+      font-weight:800;
+      color:#1f4f6b;
+    }
+
+    input, textarea{
+      width:100%;
+      border:1px solid rgba(20,50,74,.14);
+      border-radius:14px;
+      padding:13px 14px;
+      font-size:14px;
+      color:var(--ink);
+      background:rgba(255,255,255,.96);
+      outline:none;
+      transition:border-color .15s ease, box-shadow .15s ease;
+    }
+
+    input:focus, textarea:focus{
+      border-color:rgba(26,123,214,.45);
+      box-shadow:0 0 0 4px rgba(26,123,214,.08);
+    }
+
+    textarea{
+      min-height:130px;
+      resize:vertical;
+      line-height:1.6;
+    }
+
+    .meta-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:8px;
+      color:var(--muted);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .btn-row{
+      display:flex;
+      gap:10px;
+      margin-top:16px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:0;
+      border-radius:12px;
+      padding:12px 16px;
+      font-size:14px;
+      font-weight:800;
+      cursor:pointer;
+      color:#fff;
+      background:linear-gradient(90deg, #00b9c5, #1a7bd6);
+      box-shadow:0 10px 24px rgba(26,123,214,.18);
+    }
+
+    .status{
+      margin-top:14px;
+      padding:13px 14px;
+      border-radius:14px;
+      background:rgba(26,123,214,.08);
+      color:#1a4f70;
+      font-size:14px;
+      line-height:1.6;
+      white-space:pre-wrap;
+    }
+
+    .list{
+      display:grid;
+      gap:12px;
+    }
+
+    .item{
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(20,50,74,.10);
+      border-radius:16px;
+      padding:16px 16px 14px;
+    }
+
+    .item-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+      flex-wrap:wrap;
+    }
+
+    .nickname{
+      font-size:14px;
+      font-weight:900;
+      color:#0f4b6a;
+    }
+
+    .date{
+      font-size:12px;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .content{
+      font-size:14px;
+      line-height:1.7;
+      color:#24465d;
+      word-break:break-word;
+      white-space:pre-wrap;
+    }
+
+    .empty{
+      color:var(--muted);
+      font-size:14px;
+      padding:8px 2px;
+    }
+
+    @media (max-width:560px){
+      body{
+        padding:22px 12px;
+        background-attachment:scroll;
+      }
+
+      .container{
+        padding:22px 16px;
+        border-radius:22px;
+      }
+
+      h1{
+        font-size:30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <a class="back-link" href="/">← 메인 페이지로</a>
+      <div class="badge">익명 로그인 기반 · 닉네임 표시</div>
+    </div>
+
+    <h1>의견 남기기</h1>
+    <p class="subtitle">
+      원하는 프로그램, 기대하는 점, 건의사항을 자유롭게 남겨주세요.<br>
+      로그인은 필요 없고, 닉네임만 입력하면 됩니다.
+    </p>
+
+    <div class="card">
+      <h2 class="section-title">의견 작성</h2>
+
+      <form id="commentForm">
+        <div class="field">
+          <label for="nickname">닉네임</label>
+          <input
+            id="nickname"
+            maxlength="30"
+            placeholder="예: 바다좋아 / 여름청년 / 제주가자"
+          />
+        </div>
+
+        <div class="field">
+          <label for="content">의견</label>
+          <textarea
+            id="content"
+            maxlength="300"
+            placeholder="예: 저녁 자유 나눔 시간이 있으면 좋겠어요.&#10;제주에서 산책 프로그램도 있으면 좋겠습니다."
+          ></textarea>
+        </div>
+
+        <div class="meta-row">
+          <span>닉네임 최대 30자 · 의견 최대 300자</span>
+          <span id="countText">0 / 300</span>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn" type="submit">등록하기</button>
+        </div>
+
+        <div id="status" class="status">대기 중...</div>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">실시간 의견</h2>
+      <div id="listInfo" class="status" style="margin-top:0;">불러오는 중...</div>
+      <div id="commentList" class="list" style="margin-top:14px;"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    const SUPABASE_URL = 'https://pqynmlvfwgelbqetnrwu.supabase.co'
+    const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_cHDLEHu7V1a4CVsTfXReDA_bAkcrjAE'
+
+    const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2')
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+
+    const form = document.getElementById('commentForm')
+    const nicknameEl = document.getElementById('nickname')
+    const contentEl = document.getElementById('content')
+    const statusEl = document.getElementById('status')
+    const listInfoEl = document.getElementById('listInfo')
+    const commentListEl = document.getElementById('commentList')
+    const countTextEl = document.getElementById('countText')
+
+    function escapeHtml(text) {
+      const div = document.createElement('div')
+      div.textContent = text
+      return div.innerHTML
+    }
+
+    function formatDate(isoString) {
+      const d = new Date(isoString)
+      return d.toLocaleString('ko-KR')
+    }
+
+    function updateCount() {
+      countTextEl.textContent = `${contentEl.value.length} / 300`
+    }
+
+    async function ensureAnonymousLogin() {
+      const { data } = await supabase.auth.getSession()
+
+      if (!data.session) {
+        const { error } = await supabase.auth.signInAnonymously()
+        if (error) throw error
+      }
+    }
+
+    async function loadComments() {
+      const { data, error } = await supabase
+        .from('camp_comments')
+        .select('id, nickname, content, created_at')
+        .order('created_at', { ascending: false })
+        .limit(100)
+
+      if (error) {
+        listInfoEl.textContent = '목록 불러오기 실패\n' + error.message
+        return
+      }
+
+      listInfoEl.textContent = `총 ${data.length}개의 의견`
+      commentListEl.innerHTML = ''
+
+      if (data.length === 0) {
+        commentListEl.innerHTML = '<div class="empty">아직 등록된 의견이 없습니다.</div>'
+        return
+      }
+
+      for (const item of data) {
+        const el = document.createElement('div')
+        el.className = 'item'
+        el.innerHTML = `
+          <div class="item-top">
+            <div class="nickname">${escapeHtml(item.nickname)}</div>
+            <div class="date">${formatDate(item.created_at)}</div>
+          </div>
+          <div class="content">${escapeHtml(item.content)}</div>
+        `
+        commentListEl.appendChild(el)
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault()
+
+      const nickname = nicknameEl.value.trim()
+      const content = contentEl.value.trim()
+
+      if (!nickname) {
+        statusEl.textContent = '닉네임을 입력하세요.'
+        return
+      }
+
+      if (!content) {
+        statusEl.textContent = '의견을 입력하세요.'
+        return
+      }
+
+      statusEl.textContent = '등록 중...'
+
+      try {
+        await ensureAnonymousLogin()
+
+        const { error } = await supabase
+          .from('camp_comments')
+          .insert({
+            nickname,
+            content
+          })
+
+        if (error) {
+          statusEl.textContent = '등록 실패\n' + error.message
+          return
+        }
+
+        statusEl.textContent = '등록 성공\n의견이 저장되었습니다.'
+        contentEl.value = ''
+        updateCount()
+        await loadComments()
+      } catch (err) {
+        statusEl.textContent = '예외 발생\n' + err.message
+      }
+    })
+
+    contentEl.addEventListener('input', updateCount)
+
+    await ensureAnonymousLogin()
+    await loadComments()
+    updateCount()
+
+    supabase
+      .channel('camp-comments-live')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'camp_comments' },
+        async () => {
+          await loadComments()
+        }
+      )
+      .subscribe()
+  </script>
+</body>
+</html>
