@@ -2,8 +2,9 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>2026 청년 캠프 - 의견 나누기</title>
+  <meta name="theme-color" content="#eaf6fb" />
 
   <style>
     @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
@@ -19,11 +20,17 @@
       --max:860px;
     }
 
-    *{box-sizing:border-box; font-family:"Pretendard", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;}
+    *{
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
+      font-family:"Pretendard", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
     html{scroll-behavior:smooth;}
+
     body{
       margin:0;
-      padding:18px 12px 28px;
+      padding:16px 10px max(18px, env(safe-area-inset-bottom));
       color:var(--ink);
       background:
         linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,.28)),
@@ -33,12 +40,16 @@
       justify-content:center;
     }
 
+    a, button, summary, input, textarea{
+      touch-action:manipulation;
+    }
+
     .container{
       width:100%;
       max-width:var(--max);
       background:var(--card);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
       border:1px solid rgba(255,255,255,.78);
       border-radius:24px;
       box-shadow:var(--shadow);
@@ -58,6 +69,7 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
+      min-height:42px;
       padding:10px 14px;
       border-radius:999px;
       border:1px solid var(--line);
@@ -78,15 +90,18 @@
       color:var(--muted);
       font-size:12px;
       font-weight:800;
+      line-height:1.4;
+      text-align:center;
     }
 
     h1{
       margin:0 0 8px;
-      font-size:30px;
+      font-size:clamp(28px, 7vw, 38px);
+      line-height:1.14;
       font-weight:900;
       letter-spacing:-.7px;
       color:#0f4b6a;
-      line-height:1.2;
+      word-break:keep-all;
     }
 
     .subtitle{
@@ -95,10 +110,11 @@
       line-height:1.7;
       font-size:14px;
       font-weight:600;
+      word-break:keep-all;
     }
 
     .intro{
-      background:rgba(255,255,255,.82);
+      background:rgba(255,255,255,.84);
       border:1px solid rgba(255,255,255,.86);
       border-radius:18px;
       padding:16px 14px;
@@ -111,6 +127,7 @@
       font-size:16px;
       font-weight:900;
       color:#1a5f7a;
+      line-height:1.4;
     }
 
     .intro p{
@@ -118,6 +135,7 @@
       color:#24465d;
       font-size:14px;
       line-height:1.7;
+      word-break:keep-all;
     }
 
     .topics{
@@ -136,12 +154,13 @@
     summary{
       list-style:none;
       cursor:pointer;
-      padding:16px 14px;
+      padding:15px 14px;
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:space-between;
       gap:10px;
     }
+
     summary::-webkit-details-marker{display:none;}
 
     .summary-left{
@@ -155,7 +174,7 @@
       font-size:15px;
       font-weight:900;
       color:#0f4b6a;
-      line-height:1.5;
+      line-height:1.55;
       word-break:keep-all;
     }
 
@@ -164,6 +183,7 @@
       color:var(--muted);
       line-height:1.6;
       font-weight:700;
+      word-break:keep-all;
     }
 
     .summary-right{
@@ -171,11 +191,12 @@
       align-items:center;
       gap:8px;
       flex-shrink:0;
+      padding-top:1px;
     }
 
     .count{
-      min-width:30px;
-      height:30px;
+      min-width:32px;
+      height:32px;
       padding:0 9px;
       border-radius:999px;
       background:rgba(26,123,214,.10);
@@ -191,6 +212,7 @@
       color:var(--muted);
       font-weight:900;
       transition:transform .15s ease;
+      line-height:1;
     }
 
     details[open] .chev{transform:rotate(90deg);}
@@ -206,6 +228,7 @@
       font-size:13px;
       line-height:1.7;
       font-weight:600;
+      word-break:keep-all;
     }
 
     .chips{
@@ -220,12 +243,13 @@
       align-items:center;
       padding:7px 10px;
       border-radius:999px;
-      background:rgba(255,255,255,.92);
+      background:rgba(255,255,255,.94);
       border:1px solid rgba(20,50,74,.10);
       color:#486173;
       font-size:12px;
       font-weight:700;
       line-height:1.4;
+      word-break:keep-all;
     }
 
     .comment-list{
@@ -243,7 +267,7 @@
     }
 
     .comment{
-      background:rgba(255,255,255,.96);
+      background:rgba(255,255,255,.97);
       border:1px solid rgba(20,50,74,.10);
       border-radius:14px;
       padding:12px;
@@ -268,12 +292,13 @@
       font-size:11px;
       font-weight:700;
       color:var(--muted);
+      line-height:1.5;
     }
 
     .comment-content{
       color:#24465d;
       font-size:14px;
-      line-height:1.7;
+      line-height:1.72;
       white-space:pre-wrap;
       word-break:break-word;
     }
@@ -296,6 +321,7 @@
       font-size:13px;
       font-weight:800;
       color:#1f4f6b;
+      line-height:1.5;
     }
 
     input, textarea{
@@ -315,18 +341,18 @@
     }
 
     textarea{
-      min-height:96px;
+      min-height:104px;
       resize:vertical;
       line-height:1.6;
     }
 
     .write-meta{
       display:flex;
-      align-items:center;
+      align-items:flex-start;
       justify-content:space-between;
       gap:10px;
       margin-top:8px;
-      flex-wrap:wrap;
+      flex-direction:column;
     }
 
     .write-hint{
@@ -334,12 +360,13 @@
       font-size:12px;
       line-height:1.6;
       font-weight:700;
+      word-break:keep-all;
     }
 
     .submit-btn{
       border:0;
       border-radius:12px;
-      padding:11px 14px;
+      padding:12px 14px;
       font-size:13px;
       font-weight:800;
       cursor:pointer;
@@ -347,6 +374,7 @@
       background:linear-gradient(90deg, #00b9c5, #1a7bd6);
       box-shadow:0 10px 24px rgba(26,123,214,.16);
       width:100%;
+      min-height:44px;
     }
 
     .status{
@@ -367,13 +395,41 @@
         padding:28px 24px 24px;
       }
 
-      h1{
-        font-size:38px;
-      }
-
       .submit-btn{
         width:auto;
-        min-width:110px;
+        min-width:118px;
+      }
+
+      .write-meta{
+        align-items:center;
+        flex-direction:row;
+      }
+    }
+
+    @media (max-width: 420px){
+      body{
+        padding:12px 8px max(16px, env(safe-area-inset-bottom));
+        background-attachment:scroll;
+      }
+
+      .container{
+        padding:16px 12px 18px;
+        border-radius:20px;
+      }
+
+      .badge{
+        font-size:11.5px;
+        padding:7px 10px;
+      }
+
+      .topic-title{
+        font-size:14px;
+      }
+
+      .comment-content,
+      input,
+      textarea{
+        font-size:13.5px;
       }
     }
   </style>
@@ -387,7 +443,7 @@
 
     <h1>의견 나누기</h1>
     <p class="subtitle">
-      설문처럼 한 번에 다 쓰는 방식이 아니라,<br>
+      설문처럼 한 번에 다 쓰는 방식이 아니라,<br />
       생각나는 질문만 눌러서 그때그때 남길 수 있게 만들었습니다.
     </p>
 
@@ -395,8 +451,7 @@
       <h2 class="intro-title">이렇게 사용하면 됩니다</h2>
       <p>
         궁금한 질문을 눌러서 다른 사람들의 의견을 보고,
-        아래 입력창에 짧게라도 남겨주세요.
-        나중에 다시 들어와서 다른 질문에 또 적어도 됩니다.
+        아래 입력창에 짧게라도 남겨주세요. 나중에 다시 들어와서 다른 질문에 또 적어도 됩니다.
       </p>
     </div>
 
@@ -458,11 +513,11 @@
       }
     ]
 
-    const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2')
-    const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
-
     const topicsEl = document.getElementById('topics')
     const nicknameStorageKey = 'camp_nickname'
+
+    let supabase = null
+    let supabaseReady = false
 
     function escapeHtml(text) {
       const div = document.createElement('div')
@@ -508,7 +563,7 @@
             </div>
 
             <div class="comment-list" id="list-${topic.id}">
-              <div class="empty">아직 등록된 의견이 없습니다.</div>
+              <div class="empty">불러오는 중...</div>
             </div>
 
             <div class="write-box">
@@ -555,6 +610,16 @@
     }
 
     async function loadComments() {
+      if (!supabaseReady) {
+        TOPICS.forEach(topic => {
+          const listEl = document.getElementById(`list-${topic.id}`)
+          const countEl = document.getElementById(`count-${topic.id}`)
+          if (listEl) listEl.innerHTML = '<div class="empty">연결 전입니다.</div>'
+          if (countEl) countEl.textContent = '0'
+        })
+        return
+      }
+
       const { data, error } = await supabase
         .from('camp_topic_comments')
         .select('id, topic, nickname, content, created_at')
@@ -629,6 +694,11 @@
             return
           }
 
+          if (!supabaseReady) {
+            statusEl.textContent = 'Supabase 연결이 아직 되지 않았습니다.'
+            return
+          }
+
           statusEl.textContent = '등록 중...'
 
           try {
@@ -658,21 +728,47 @@
       })
     }
 
+    async function initSupabase() {
+      try {
+        if (
+          !SUPABASE_URL ||
+          !SUPABASE_PUBLISHABLE_KEY ||
+          SUPABASE_URL.includes('여기에') ||
+          SUPABASE_PUBLISHABLE_KEY.includes('여기에')
+        ) {
+          throw new Error('Project URL 또는 Publishable Key가 실제 값으로 바뀌지 않았습니다.')
+        }
+
+        const mod = await import('https://esm.sh/@supabase/supabase-js@2')
+        supabase = mod.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+        supabaseReady = true
+
+        await ensureAnonymousLogin()
+        await loadComments()
+
+        supabase
+          .channel('camp-topic-comments-live')
+          .on(
+            'postgres_changes',
+            { event: '*', schema: 'public', table: 'camp_topic_comments' },
+            async () => {
+              await loadComments()
+            }
+          )
+          .subscribe()
+      } catch (err) {
+        TOPICS.forEach(topic => {
+          const listEl = document.getElementById(`list-${topic.id}`)
+          if (listEl) {
+            listEl.innerHTML = `<div class="empty">연결 실패: ${escapeHtml(err.message)}</div>`
+          }
+        })
+      }
+    }
+
     renderTopics()
     bindForms()
-    await ensureAnonymousLogin()
-    await loadComments()
-
-    supabase
-      .channel('camp-topic-comments-live')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'camp_topic_comments' },
-        async () => {
-          await loadComments()
-        }
-      )
-      .subscribe()
+    await initSupabase()
   </script>
 </body>
 </html>
