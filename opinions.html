@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>2026 청년 캠프 - 의견 남기기</title>
+  <title>2026 청년 캠프 - 의견 나누기</title>
 
   <style>
     @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
@@ -16,7 +16,6 @@
       --brand:#1a7bd6;
       --brand2:#00cecb;
       --shadow:0 18px 50px rgba(20,50,74,.10);
-      --radius:22px;
       --max:860px;
     }
 
@@ -24,10 +23,10 @@
     html{scroll-behavior:smooth;}
     body{
       margin:0;
-      padding:40px 20px;
+      padding:18px 12px 28px;
       color:var(--ink);
       background:
-        linear-gradient(180deg, rgba(255,255,255,.30), rgba(255,255,255,.30)),
+        linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,.28)),
         url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2000&auto=format&fit=crop")
         center/cover no-repeat fixed;
       display:flex;
@@ -41,17 +40,17 @@
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border:1px solid rgba(255,255,255,.78);
-      border-radius:28px;
+      border-radius:24px;
       box-shadow:var(--shadow);
-      padding:34px 28px;
+      padding:18px 14px 20px;
     }
 
     .topbar{
       display:flex;
-      justify-content:space-between;
       align-items:center;
-      gap:12px;
-      margin-bottom:20px;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:14px;
       flex-wrap:wrap;
     }
 
@@ -82,48 +81,219 @@
     }
 
     h1{
-      margin:0 0 10px;
-      font-size:38px;
+      margin:0 0 8px;
+      font-size:30px;
       font-weight:900;
-      letter-spacing:-.8px;
+      letter-spacing:-.7px;
       color:#0f4b6a;
+      line-height:1.2;
     }
 
     .subtitle{
-      margin:0 0 24px;
+      margin:0 0 16px;
       color:var(--muted);
-      line-height:1.65;
-      font-size:15px;
+      line-height:1.7;
+      font-size:14px;
       font-weight:600;
     }
 
-    .card{
+    .intro{
       background:rgba(255,255,255,.82);
       border:1px solid rgba(255,255,255,.86);
-      border-radius:20px;
-      padding:22px;
+      border-radius:18px;
+      padding:16px 14px;
       box-shadow:0 10px 26px rgba(20,50,74,.06);
+      margin-bottom:14px;
     }
 
-    .card + .card{
-      margin-top:16px;
-    }
-
-    .section-title{
-      margin:0 0 14px;
-      font-size:18px;
+    .intro-title{
+      margin:0 0 8px;
+      font-size:16px;
       font-weight:900;
       color:#1a5f7a;
     }
 
+    .intro p{
+      margin:0;
+      color:#24465d;
+      font-size:14px;
+      line-height:1.7;
+    }
+
+    .topics{
+      display:grid;
+      gap:12px;
+    }
+
+    details.topic{
+      border:1px solid rgba(255,255,255,.84);
+      border-radius:18px;
+      background:rgba(255,255,255,.82);
+      box-shadow:0 10px 26px rgba(20,50,74,.06);
+      overflow:hidden;
+    }
+
+    summary{
+      list-style:none;
+      cursor:pointer;
+      padding:16px 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    summary::-webkit-details-marker{display:none;}
+
+    .summary-left{
+      display:flex;
+      flex-direction:column;
+      gap:5px;
+      min-width:0;
+    }
+
+    .topic-title{
+      font-size:15px;
+      font-weight:900;
+      color:#0f4b6a;
+      line-height:1.5;
+      word-break:keep-all;
+    }
+
+    .topic-sub{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.6;
+      font-weight:700;
+    }
+
+    .summary-right{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-shrink:0;
+    }
+
+    .count{
+      min-width:30px;
+      height:30px;
+      padding:0 9px;
+      border-radius:999px;
+      background:rgba(26,123,214,.10);
+      color:#1a5f7a;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .chev{
+      color:var(--muted);
+      font-weight:900;
+      transition:transform .15s ease;
+    }
+
+    details[open] .chev{transform:rotate(90deg);}
+
+    .topic-body{
+      padding:0 14px 14px;
+      border-top:1px solid rgba(20,50,74,.08);
+    }
+
+    .guide{
+      margin:14px 0 10px;
+      color:#31536b;
+      font-size:13px;
+      line-height:1.7;
+      font-weight:600;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:12px;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(20,50,74,.10);
+      color:#486173;
+      font-size:12px;
+      font-weight:700;
+      line-height:1.4;
+    }
+
+    .comment-list{
+      display:grid;
+      gap:10px;
+      margin-top:10px;
+      margin-bottom:12px;
+    }
+
+    .empty{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+      padding:2px 0 4px;
+    }
+
+    .comment{
+      background:rgba(255,255,255,.96);
+      border:1px solid rgba(20,50,74,.10);
+      border-radius:14px;
+      padding:12px;
+    }
+
+    .comment-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:6px;
+      flex-wrap:wrap;
+    }
+
+    .nickname{
+      font-size:13px;
+      font-weight:900;
+      color:#0f4b6a;
+    }
+
+    .date{
+      font-size:11px;
+      font-weight:700;
+      color:var(--muted);
+    }
+
+    .comment-content{
+      color:#24465d;
+      font-size:14px;
+      line-height:1.7;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    .write-box{
+      margin-top:6px;
+      padding:12px;
+      border-radius:14px;
+      background:rgba(26,123,214,.05);
+      border:1px solid rgba(20,50,74,.08);
+    }
+
     .field{
-      margin-bottom:14px;
+      margin-bottom:10px;
     }
 
     label{
       display:block;
-      margin-bottom:8px;
-      font-size:14px;
+      margin-bottom:6px;
+      font-size:13px;
       font-weight:800;
       color:#1f4f6b;
     }
@@ -131,128 +301,79 @@
     input, textarea{
       width:100%;
       border:1px solid rgba(20,50,74,.14);
-      border-radius:14px;
-      padding:13px 14px;
+      border-radius:12px;
+      padding:12px 13px;
       font-size:14px;
       color:var(--ink);
-      background:rgba(255,255,255,.96);
+      background:rgba(255,255,255,.98);
       outline:none;
-      transition:border-color .15s ease, box-shadow .15s ease;
     }
 
     input:focus, textarea:focus{
-      border-color:rgba(26,123,214,.45);
+      border-color:rgba(26,123,214,.42);
       box-shadow:0 0 0 4px rgba(26,123,214,.08);
     }
 
     textarea{
-      min-height:130px;
+      min-height:96px;
       resize:vertical;
       line-height:1.6;
     }
 
-    .meta-row{
+    .write-meta{
       display:flex;
-      justify-content:space-between;
       align-items:center;
+      justify-content:space-between;
       gap:10px;
-      flex-wrap:wrap;
       margin-top:8px;
+      flex-wrap:wrap;
+    }
+
+    .write-hint{
       color:var(--muted);
       font-size:12px;
+      line-height:1.6;
       font-weight:700;
     }
 
-    .btn-row{
-      display:flex;
-      gap:10px;
-      margin-top:16px;
-      flex-wrap:wrap;
-    }
-
-    .btn{
+    .submit-btn{
       border:0;
       border-radius:12px;
-      padding:12px 16px;
-      font-size:14px;
+      padding:11px 14px;
+      font-size:13px;
       font-weight:800;
       cursor:pointer;
       color:#fff;
       background:linear-gradient(90deg, #00b9c5, #1a7bd6);
-      box-shadow:0 10px 24px rgba(26,123,214,.18);
+      box-shadow:0 10px 24px rgba(26,123,214,.16);
+      width:100%;
     }
 
     .status{
-      margin-top:14px;
-      padding:13px 14px;
-      border-radius:14px;
-      background:rgba(26,123,214,.08);
+      margin-top:8px;
       color:#1a4f70;
-      font-size:14px;
+      font-size:12px;
       line-height:1.6;
       white-space:pre-wrap;
-    }
-
-    .list{
-      display:grid;
-      gap:12px;
-    }
-
-    .item{
-      background:rgba(255,255,255,.92);
-      border:1px solid rgba(20,50,74,.10);
-      border-radius:16px;
-      padding:16px 16px 14px;
-    }
-
-    .item-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      margin-bottom:10px;
-      flex-wrap:wrap;
-    }
-
-    .nickname{
-      font-size:14px;
-      font-weight:900;
-      color:#0f4b6a;
-    }
-
-    .date{
-      font-size:12px;
-      color:var(--muted);
       font-weight:700;
     }
 
-    .content{
-      font-size:14px;
-      line-height:1.7;
-      color:#24465d;
-      word-break:break-word;
-      white-space:pre-wrap;
-    }
-
-    .empty{
-      color:var(--muted);
-      font-size:14px;
-      padding:8px 2px;
-    }
-
-    @media (max-width:560px){
+    @media (min-width: 760px){
       body{
-        padding:22px 12px;
-        background-attachment:scroll;
+        padding:34px 20px 42px;
       }
 
       .container{
-        padding:22px 16px;
-        border-radius:22px;
+        padding:28px 24px 24px;
       }
 
       h1{
-        font-size:30px;
+        font-size:38px;
+      }
+
+      .submit-btn{
+        width:auto;
+        min-width:110px;
       }
     }
   </style>
@@ -260,73 +381,88 @@
 <body>
   <div class="container">
     <div class="topbar">
-      <a class="back-link" href="/">← 메인 페이지로</a>
-      <div class="badge">익명 로그인 기반 · 닉네임 표시</div>
+      <a class="back-link" href="./index.html">← 메인 페이지로</a>
+      <div class="badge">질문별로 편하게 남기기</div>
     </div>
 
-    <h1>의견 남기기</h1>
+    <h1>의견 나누기</h1>
     <p class="subtitle">
-      원하는 프로그램, 기대하는 점, 건의사항을 자유롭게 남겨주세요.<br>
-      로그인은 필요 없고, 닉네임만 입력하면 됩니다.
+      설문처럼 한 번에 다 쓰는 방식이 아니라,<br>
+      생각나는 질문만 눌러서 그때그때 남길 수 있게 만들었습니다.
     </p>
 
-    <div class="card">
-      <h2 class="section-title">의견 작성</h2>
-
-      <form id="commentForm">
-        <div class="field">
-          <label for="nickname">닉네임</label>
-          <input
-            id="nickname"
-            maxlength="30"
-            placeholder="예: 바다좋아 / 여름청년 / 제주가자"
-          />
-        </div>
-
-        <div class="field">
-          <label for="content">의견</label>
-          <textarea
-            id="content"
-            maxlength="300"
-            placeholder="예: 저녁 자유 나눔 시간이 있으면 좋겠어요.&#10;제주에서 산책 프로그램도 있으면 좋겠습니다."
-          ></textarea>
-        </div>
-
-        <div class="meta-row">
-          <span>닉네임 최대 30자 · 의견 최대 300자</span>
-          <span id="countText">0 / 300</span>
-        </div>
-
-        <div class="btn-row">
-          <button class="btn" type="submit">등록하기</button>
-        </div>
-
-        <div id="status" class="status">대기 중...</div>
-      </form>
+    <div class="intro">
+      <h2 class="intro-title">이렇게 사용하면 됩니다</h2>
+      <p>
+        궁금한 질문을 눌러서 다른 사람들의 의견을 보고,
+        아래 입력창에 짧게라도 남겨주세요.
+        나중에 다시 들어와서 다른 질문에 또 적어도 됩니다.
+      </p>
     </div>
 
-    <div class="card">
-      <h2 class="section-title">실시간 의견</h2>
-      <div id="listInfo" class="status" style="margin-top:0;">불러오는 중...</div>
-      <div id="commentList" class="list" style="margin-top:14px;"></div>
-    </div>
+    <div id="topics" class="topics"></div>
   </div>
 
   <script type="module">
     const SUPABASE_URL = 'https://pqynmlvfwgelbqetnrwu.supabase.co'
     const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_cHDLEHu7V1a4CVsTfXReDA_bAkcrjAE'
 
-    const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2')
+    const TOPICS = [
+      {
+        id: 'expect',
+        title: '이번 캠프에서 가장 기대하는 것은?',
+        guide: '이번 캠프에서 기대하는 한 가지를 편하게 적어주세요.',
+        examples: ['더 가까워지는 시간', '깊은 나눔과 기도', '좋은 추억', '재충전']
+      },
+      {
+        id: 'program',
+        title: '꼭 있었으면 하는 프로그램은?',
+        guide: '프로그램, 시간, 분위기 모두 괜찮습니다.',
+        examples: ['조별 나눔', '저녁 자유교제', '찬양과 기도회', '레크레이션']
+      },
+      {
+        id: 'less',
+        title: '반대로 너무 많지 않았으면 하는 것은?',
+        guide: '부담스럽거나 너무 빡빡하지 않았으면 하는 요소를 적어주세요.',
+        examples: ['이동이 많은 일정', '긴 강의식 프로그램', '체력 소모가 큰 활동']
+      },
+      {
+        id: 'mood',
+        title: '어떤 분위기의 일정이 좋나요?',
+        guide: '자유롭고 여유로운지, 균형형인지, 꽉 찬 일정이 좋은지 적어주세요.',
+        examples: ['여유롭고 쉼이 있는 일정', '균형 있는 일정', '프로그램이 풍성한 일정']
+      },
+      {
+        id: 'places',
+        title: '제주에서 가보고 싶은 곳 / 해보고 싶은 것은?',
+        guide: '관광지, 자연, 산책, 체험, 사진 스팟 모두 괜찮습니다.',
+        examples: ['바닷가 산책', '오름', '예쁜 카페', '야경 보기']
+      },
+      {
+        id: 'food',
+        title: '제주에서 먹고 싶은 음식이 있나요?',
+        guide: '음식, 간식, 카페 메뉴 모두 괜찮습니다.',
+        examples: ['흑돼지', '갈치조림', '고기국수', '카페 디저트']
+      },
+      {
+        id: 'care',
+        title: '걱정되거나 배려가 필요한 점이 있나요?',
+        guide: '편한 범위 안에서만 적어주세요.',
+        examples: ['낯을 가리는 편', '체력이 약한 편', '늦게 합류할 수도 있음']
+      },
+      {
+        id: 'free',
+        title: '자유 의견',
+        guide: '위 질문 외에도 전하고 싶은 생각을 자유롭게 남겨주세요.',
+        examples: ['행사형보다 자연스러운 흐름', '자유 시간이 있었으면 좋겠음']
+      }
+    ]
 
+    const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2')
     const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
 
-    const form = document.getElementById('commentForm')
-    const nicknameEl = document.getElementById('nickname')
-    const contentEl = document.getElementById('content')
-    const statusEl = document.getElementById('status')
-    const listInfoEl = document.getElementById('listInfo')
-    const commentListEl = document.getElementById('commentList')
-    const countTextEl = document.getElementById('countText')
+    const topicsEl = document.getElementById('topics')
+    const nicknameStorageKey = 'camp_nickname'
 
     function escapeHtml(text) {
       const div = document.createElement('div')
@@ -339,13 +475,79 @@
       return d.toLocaleString('ko-KR')
     }
 
-    function updateCount() {
-      countTextEl.textContent = `${contentEl.value.length} / 300`
+    function getSavedNickname() {
+      return localStorage.getItem(nicknameStorageKey) || ''
+    }
+
+    function setSavedNickname(name) {
+      localStorage.setItem(nicknameStorageKey, name)
+      document.querySelectorAll('.nickname-input').forEach(input => {
+        if (document.activeElement !== input) input.value = name
+      })
+    }
+
+    function renderTopics() {
+      topicsEl.innerHTML = TOPICS.map(topic => `
+        <details class="topic" id="topic-${topic.id}">
+          <summary>
+            <div class="summary-left">
+              <div class="topic-title">${escapeHtml(topic.title)}</div>
+              <div class="topic-sub">${escapeHtml(topic.guide)}</div>
+            </div>
+            <div class="summary-right">
+              <div class="count" id="count-${topic.id}">0</div>
+              <div class="chev">›</div>
+            </div>
+          </summary>
+
+          <div class="topic-body">
+            <div class="guide">${escapeHtml(topic.guide)}</div>
+
+            <div class="chips">
+              ${topic.examples.map(example => `<div class="chip">${escapeHtml(example)}</div>`).join('')}
+            </div>
+
+            <div class="comment-list" id="list-${topic.id}">
+              <div class="empty">아직 등록된 의견이 없습니다.</div>
+            </div>
+
+            <div class="write-box">
+              <form class="topic-form" data-topic="${topic.id}">
+                <div class="field">
+                  <label>닉네임</label>
+                  <input
+                    class="nickname-input"
+                    type="text"
+                    maxlength="30"
+                    placeholder="예: 여름청년"
+                    value="${escapeHtml(getSavedNickname())}"
+                  />
+                </div>
+
+                <div class="field">
+                  <label>이 질문에 대한 내 의견</label>
+                  <textarea
+                    class="content-input"
+                    maxlength="1000"
+                    placeholder="짧게라도 괜찮아요. 생각나는 만큼만 적어주세요."
+                  ></textarea>
+                </div>
+
+                <div class="write-meta">
+                  <div class="write-hint">한 질문에만 짧게 남겨도 됩니다.</div>
+                  <button class="submit-btn" type="submit">댓글 남기기</button>
+                </div>
+
+                <div class="status" id="status-${topic.id}"></div>
+              </form>
+            </div>
+          </div>
+        </details>
+      `).join('')
     }
 
     async function ensureAnonymousLogin() {
       const { data } = await supabase.auth.getSession()
-
       if (!data.session) {
         const { error } = await supabase.auth.signInAnonymously()
         if (error) throw error
@@ -354,91 +556,118 @@
 
     async function loadComments() {
       const { data, error } = await supabase
-        .from('camp_comments')
-        .select('id, nickname, content, created_at')
+        .from('camp_topic_comments')
+        .select('id, topic, nickname, content, created_at')
         .order('created_at', { ascending: false })
-        .limit(100)
 
       if (error) {
-        listInfoEl.textContent = '목록 불러오기 실패\n' + error.message
+        TOPICS.forEach(topic => {
+          const listEl = document.getElementById(`list-${topic.id}`)
+          if (listEl) {
+            listEl.innerHTML = `<div class="empty">불러오기 실패: ${escapeHtml(error.message)}</div>`
+          }
+        })
         return
       }
 
-      listInfoEl.textContent = `총 ${data.length}개의 의견`
-      commentListEl.innerHTML = ''
+      const grouped = {}
+      TOPICS.forEach(topic => grouped[topic.id] = [])
+      data.forEach(item => {
+        if (grouped[item.topic]) grouped[item.topic].push(item)
+      })
 
-      if (data.length === 0) {
-        commentListEl.innerHTML = '<div class="empty">아직 등록된 의견이 없습니다.</div>'
-        return
-      }
+      TOPICS.forEach(topic => {
+        const items = grouped[topic.id] || []
+        const listEl = document.getElementById(`list-${topic.id}`)
+        const countEl = document.getElementById(`count-${topic.id}`)
 
-      for (const item of data) {
-        const el = document.createElement('div')
-        el.className = 'item'
-        el.innerHTML = `
-          <div class="item-top">
-            <div class="nickname">${escapeHtml(item.nickname)}</div>
-            <div class="date">${formatDate(item.created_at)}</div>
-          </div>
-          <div class="content">${escapeHtml(item.content)}</div>
-        `
-        commentListEl.appendChild(el)
-      }
-    }
+        countEl.textContent = items.length
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault()
-
-      const nickname = nicknameEl.value.trim()
-      const content = contentEl.value.trim()
-
-      if (!nickname) {
-        statusEl.textContent = '닉네임을 입력하세요.'
-        return
-      }
-
-      if (!content) {
-        statusEl.textContent = '의견을 입력하세요.'
-        return
-      }
-
-      statusEl.textContent = '등록 중...'
-
-      try {
-        await ensureAnonymousLogin()
-
-        const { error } = await supabase
-          .from('camp_comments')
-          .insert({
-            nickname,
-            content
-          })
-
-        if (error) {
-          statusEl.textContent = '등록 실패\n' + error.message
+        if (!items.length) {
+          listEl.innerHTML = `<div class="empty">아직 등록된 의견이 없습니다.</div>`
           return
         }
 
-        statusEl.textContent = '등록 성공\n의견이 저장되었습니다.'
-        contentEl.value = ''
-        updateCount()
-        await loadComments()
-      } catch (err) {
-        statusEl.textContent = '예외 발생\n' + err.message
-      }
-    })
+        listEl.innerHTML = items.map(item => `
+          <div class="comment">
+            <div class="comment-top">
+              <div class="nickname">${escapeHtml(item.nickname)}</div>
+              <div class="date">${formatDate(item.created_at)}</div>
+            </div>
+            <div class="comment-content">${escapeHtml(item.content)}</div>
+          </div>
+        `).join('')
+      })
+    }
 
-    contentEl.addEventListener('input', updateCount)
+    function bindForms() {
+      document.querySelectorAll('.nickname-input').forEach(input => {
+        input.addEventListener('input', () => {
+          setSavedNickname(input.value.trim())
+        })
+      })
 
+      document.querySelectorAll('.topic-form').forEach(form => {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault()
+
+          const topic = form.dataset.topic
+          const nicknameInput = form.querySelector('.nickname-input')
+          const contentInput = form.querySelector('.content-input')
+          const statusEl = form.querySelector('.status')
+
+          const nickname = nicknameInput.value.trim()
+          const content = contentInput.value.trim()
+
+          if (!nickname) {
+            statusEl.textContent = '닉네임을 입력하세요.'
+            return
+          }
+
+          if (!content) {
+            statusEl.textContent = '댓글 내용을 입력하세요.'
+            return
+          }
+
+          statusEl.textContent = '등록 중...'
+
+          try {
+            await ensureAnonymousLogin()
+            setSavedNickname(nickname)
+
+            const { error } = await supabase
+              .from('camp_topic_comments')
+              .insert({
+                topic,
+                nickname,
+                content
+              })
+
+            if (error) {
+              statusEl.textContent = '등록 실패\n' + error.message
+              return
+            }
+
+            contentInput.value = ''
+            statusEl.textContent = '등록되었습니다.'
+            await loadComments()
+          } catch (err) {
+            statusEl.textContent = '예외 발생\n' + err.message
+          }
+        })
+      })
+    }
+
+    renderTopics()
+    bindForms()
     await ensureAnonymousLogin()
     await loadComments()
-    updateCount()
 
     supabase
-      .channel('camp-comments-live')
+      .channel('camp-topic-comments-live')
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'camp_comments' },
+        { event: '*', schema: 'public', table: 'camp_topic_comments' },
         async () => {
           await loadComments()
         }
