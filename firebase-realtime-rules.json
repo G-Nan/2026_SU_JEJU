@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "camp_logs": {
+      ".read": true,
+      ".write": true
+    },
+    "camp_topic_comments": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}

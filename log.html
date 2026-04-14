@@ -7,12 +7,9 @@
   <meta name="theme-color" content="#f5f8fa" />
 
   <style>
-    /* ===================================================
-       모바일 원본 코드 (수정하지 않음)
-       =================================================== */
     @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
-    :root { --ink: #14324a; --muted: #647b8f; --bg: #f5f8fa; --brand: #1a7bd6; --brand-light: #e8f3fc; --exec-color: #00cecb; --exec-light: #e0f9f8; --surface: #ffffff; --border: rgba(20,50,74,0.08); }
+    :root { --ink: #14324a; --muted: #647b8f; --bg: #f5f8fa; --brand: #1a7bd6; --brand-light: #e8f3fc; --exec-light: #e0f9f8; --surface: #ffffff; --border: rgba(20,50,74,0.08); }
     * { box-sizing: border-box; font-family: "Pretendard", system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
     html { scroll-behavior: smooth; }
     body { margin: 0; padding: 0; color: var(--ink); background-color: var(--bg); max-width: 500px; margin: 0 auto; box-shadow: 0 0 40px rgba(0,0,0,0.05); min-height: 100vh; padding-bottom: env(safe-area-inset-bottom); }
@@ -30,113 +27,57 @@
     .page-header { margin-bottom: 24px; }
     .page-header h1 { margin: 0 0 8px; font-size: 26px; font-weight: 900; color: #0f4b6a; letter-spacing: -0.5px; }
     .page-header p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.6; }
-
+    .status-banner { margin-bottom: 18px; padding: 14px 16px; border-radius: 16px; background: #eef6fd; border: 1px solid rgba(26,123,214,0.14); color: #1b5f98; font-size: 13px; font-weight: 700; line-height: 1.55; }
+    .status-banner.is-error { background: #fff4f4; border-color: rgba(214,69,69,0.18); color: #b23b3b; }
+    .status-banner.is-muted { background: #f4f7fa; border-color: rgba(20,50,74,0.08); color: var(--muted); }
     .team-tabs { display: flex; gap: 8px; margin-bottom: 32px; background: #eef2f6; padding: 6px; border-radius: 16px; }
     .tab-btn { flex: 1; padding: 10px 0; border: none; background: transparent; border-radius: 12px; font-size: 13.5px; font-weight: 700; color: var(--muted); cursor: pointer; transition: all 0.2s ease; }
     .tab-btn.active { background: var(--surface); color: var(--ink); font-weight: 800; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-
     .log-timeline { position: relative; padding-left: 28px; }
     .log-timeline::before { content: ''; position: absolute; left: 7px; top: 10px; bottom: 20px; width: 2px; background: rgba(20,50,74,0.08); border-radius: 2px; }
-
     .log-item { position: relative; margin-bottom: 32px; animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .log-item:last-child { margin-bottom: 0; }
-
     .log-node { position: absolute; left: -28px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--bg); border: 3px solid #cbd5e1; z-index: 2; }
     .log-item.completed .log-node { background: var(--brand); border-color: var(--brand-light); box-shadow: 0 0 0 4px var(--brand-light); }
-    .log-item.upcoming .log-node { background: var(--surface); border-color: var(--brand); }
-
+    .log-item.upcoming .log-node, .log-item.planned .log-node { background: var(--surface); border-color: var(--brand); }
     .badge-row { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
     .status-badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; }
-    .completed .status-badge { background: #f0f4f8; color: var(--muted); }
-    .upcoming .status-badge { background: #ffe9d4; color: #e67e22; }
+    .completed .status-badge:not(.team-badge) { background: #f0f4f8; color: var(--muted); }
+    .upcoming .status-badge:not(.team-badge) { background: #ffe9d4; color: #e67e22; }
+    .planned .status-badge:not(.team-badge) { background: #fff3cd; color: #9a6700; }
     .team-badge.plan { background: var(--brand-light); color: var(--brand); }
     .team-badge.exec { background: var(--exec-light); color: #009997; }
     .team-badge.all { background: #eef2f6; color: #475a6b; }
-
     .log-card { background: var(--surface); border-radius: 20px; padding: 20px; box-shadow: 0 4px 20px rgba(20,50,74,0.03); border: 1px solid var(--border); }
-    .log-item.upcoming .log-card { border-color: rgba(26,123,214,0.3); box-shadow: 0 8px 25px rgba(26,123,214,0.08); }
-
+    .log-item.upcoming .log-card, .log-item.planned .log-card { border-color: rgba(26,123,214,0.3); box-shadow: 0 8px 25px rgba(26,123,214,0.08); }
     .log-date { font-size: 12px; color: var(--muted); font-weight: 700; margin-bottom: 6px; }
     .log-title { font-size: 17px; font-weight: 900; color: #0f4b6a; margin: 0 0 12px; line-height: 1.4; }
     .log-desc { margin: 0; padding-left: 18px; color: #3b4d5e; font-size: 13.5px; }
     .log-desc li { margin-bottom: 8px; line-height: 1.55; }
     .log-desc li:last-child { margin-bottom: 0; }
+    .empty-card { background: var(--surface); border-radius: 20px; padding: 28px 22px; border: 1px solid var(--border); color: var(--muted); font-size: 14px; font-weight: 700; text-align: center; }
 
-
-    /* ===================================================
-       PC 반응형 스타일 (화면 너비 768px 이상일 때만 적용됨)
-       =================================================== */
     @media (min-width: 768px) {
-      /* 모바일의 500px 제한 해제 */
-      body {
-        max-width: 100%;
-        box-shadow: none;
-      }
-
-      /* PC 해상도에 맞춰 메인 콘텐츠 가운데 정렬 (너무 넓어지면 읽기 힘드므로 800px 제한) */
-      .content {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 120px 20px 80px; /* 헤더가 가리지 않도록 상단 여백 확보 */
-      }
-
-      /* 네비게이션 바 PC 확장형 */
-      .sub-top {
-        max-width: 100%;
-        padding: 18px 0;
-        background: transparent;
-        border: none;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-      }
-      .sub-top-inner {
-        max-width: 1040px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px 32px;
-        background: rgba(255, 255, 255, 0.75);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-        border: 1px solid rgba(255, 255, 255, 0.6);
-      }
+      body { max-width: 100%; box-shadow: none; }
+      .content { max-width: 800px; margin: 0 auto; padding: 120px 20px 80px; }
+      .sub-top { max-width: 100%; padding: 18px 0; background: transparent; border: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+      .sub-top-inner { max-width: 1040px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.6); }
       .sub-top-title { margin: 0; font-size: 20px; }
       .sub-nav { gap: 12px; }
       .sub-nav-pill { font-size: 14px; padding: 0 18px; height: 38px; }
       .sub-nav-pill:hover { background: #e4eaf0; }
       .sub-nav-pill.active:hover { background: #ffffff; }
-
-      /* 헤더 중앙 정렬 및 여백 조정 */
       .page-header { text-align: center; margin-bottom: 40px; }
       .page-header h1 { font-size: 34px; margin-bottom: 12px; }
       .page-header p { font-size: 16px; }
-
-      /* 탭 버튼 중앙 정렬 (화면 전체를 쓰지 않고 적절한 너비만 사용) */
-      .team-tabs {
-        max-width: 480px;
-        margin: 0 auto 40px auto;
-        padding: 8px;
-        border-radius: 20px;
-      }
+      .status-banner { margin-bottom: 22px; }
+      .team-tabs { max-width: 480px; margin: 0 auto 40px auto; padding: 8px; border-radius: 20px; }
       .tab-btn { font-size: 15px; padding: 12px 0; }
       .tab-btn:hover:not(.active) { background: rgba(255,255,255,0.5); }
-
-      /* 타임라인 카드 세련된 여백과 호버 액션 추가 */
-      .log-card {
-        padding: 28px 32px;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-      }
-      .log-item:hover .log-card {
-        transform: translateY(-4px);
-        box-shadow: 0 12px 30px rgba(20,50,74,0.06);
-      }
-      .log-item.upcoming:hover .log-card {
-        box-shadow: 0 12px 35px rgba(26,123,214,0.12);
-      }
-      
-      /* PC용 폰트 사이즈 살짝 증량 */
+      .log-card { padding: 28px 32px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+      .log-item:hover .log-card { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(20,50,74,0.06); }
+      .log-item.upcoming:hover .log-card, .log-item.planned:hover .log-card { box-shadow: 0 12px 35px rgba(26,123,214,0.12); }
       .log-title { font-size: 20px; margin-bottom: 16px; }
       .log-desc { font-size: 15px; }
       .log-date { font-size: 13px; }
@@ -144,25 +85,26 @@
   </style>
 </head>
 <body>
+  <div class="sub-top-slot">
+    <header class="sub-top">
+      <div class="sub-top-inner">
+        <a href="./index.html" class="sub-top-title">2026 SU JEJU</a>
+        <nav class="sub-nav">
+          <a class="sub-nav-pill active" href="./log.html">일지</a>
+          <a class="sub-nav-pill" href="./history.html">기록</a>
+          <a class="sub-nav-pill" href="./opinions.html">의견</a>
+        </nav>
+      </div>
+    </header>
+  </div>
 
-	<div class="sub-top-slot">
-		<header class="sub-top">
-			<div class="sub-top-inner">
-				<a href="./index.html" class="sub-top-title">2026 SU JEJU</a>
-				<nav class="sub-nav">
-					<a class="sub-nav-pill active" href="./log.html">일지</a>
-					<a class="sub-nav-pill" href="./history.html">기록</a>
-					<a class="sub-nav-pill" href="./opinions.html">의견</a>
-				</nav>
-			</div>
-		</header>
-	</div>
-	
   <main class="content">
     <div class="page-header">
       <h1>Camp Log 📝</h1>
       <p>수동적인 참여가 아닌 능동적인 동역!<br>우리가 다 함께 만들어가는 캠프의 발자취입니다.</p>
     </div>
+
+    <div id="statusBanner" class="status-banner is-muted">Firebase 연결값을 기다리는 중입니다...</div>
 
     <div class="team-tabs">
       <button class="tab-btn active" data-filter="all">전체보기</button>
@@ -170,143 +112,152 @@
       <button class="tab-btn" data-filter="exec">🏃‍♂️ 진행팀</button>
     </div>
 
-    <div class="log-timeline" id="log-list">
-      
-      <div class="log-item completed" data-team="all">
-        <div class="log-node"></div>
-        <div class="log-card">
-          <div class="badge-row">
-            <span class="status-badge">완료</span>
-            <span class="status-badge team-badge all">🤝 공통</span>
-          </div>
-          <div class="log-date">1회차 · 2월 20일 (목) 22:00</div>
-          <h2 class="log-title">캠프 '색깔' 정하기</h2>
-          <ul class="log-desc">
-            <li>캠프 주제 및 슬로건 확정</li>
-            <li>역할 분담 (기획팀, 진행팀 세팅)</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="log-item upcoming" data-team="exec">
-        <div class="log-node"></div>
-        <div class="log-card">
-          <div class="badge-row">
-            <span class="status-badge">다음 목표</span>
-            <span class="status-badge team-badge exec">🏃‍♂️ 진행팀</span>
-          </div>
-          <div class="log-date">2회차 · 3월 11일 (수) 21:30</div>
-          <h2 class="log-title">동선 및 예산안 초안</h2>
-          <ul class="log-desc">
-            <li>제주도 숙박 및 렌트카 예약</li>
-            <li>1인 회비 및 전체 예산안 초안 작성</li>
-            <li>항공권 예매 가이드라인 공지 준비</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="log-item planned" data-team="plan">
-        <div class="log-node"></div>
-        <div class="log-card">
-          <div class="badge-row">
-            <span class="status-badge">예정</span>
-            <span class="status-badge team-badge plan">💡 기획팀</span>
-          </div>
-          <div class="log-date">3회차 · 5월 중</div>
-          <h2 class="log-title">세부 프로그램 기획</h2>
-          <ul class="log-desc">
-            <li>리더십 세미나 및 기도회 순서 구체화</li>
-            <li>조별 아이스브레이킹 및 나눔 주제 선정</li>
-            <li>홍보 포스터 및 안내문 제작</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="log-item planned" data-team="exec">
-        <div class="log-node"></div>
-        <div class="log-card">
-          <div class="badge-row">
-            <span class="status-badge">예정</span>
-            <span class="status-badge team-badge exec">🏃‍♂️ 진행팀</span>
-          </div>
-          <div class="log-date">4회차 · 6월 중</div>
-          <h2 class="log-title">운영 물품 및 현지 체크</h2>
-          <ul class="log-desc">
-            <li>식당 리스트업 및 식비 예산 분배</li>
-            <li>준비물 리스트 작성 (간식, 상비약, 명찰 등)</li>
-            <li>최종 인원 점검 및 여행자 보험 가입</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="log-item planned" data-team="all">
-        <div class="log-node"></div>
-        <div class="log-card">
-          <div class="badge-row">
-            <span class="status-badge">예정</span>
-            <span class="status-badge team-badge all">🤝 공통</span>
-          </div>
-          <div class="log-date">5회차 · 7월 중</div>
-          <h2 class="log-title">최종 시뮬레이션 및 기도회</h2>
-          <ul class="log-desc">
-            <li>전체 시간표 동선 시뮬레이션</li>
-            <li>각 팀별 큐시트 최종 확인</li>
-            <li>캠프를 위한 합심 기도</li>
-          </ul>
-        </div>
-      </div>
-
-    </div>
+    <div class="log-timeline" id="log-list"></div>
   </main>
 
-  <script>
-    const tabs = document.querySelectorAll('.tab-btn');
-    const logItems = document.querySelectorAll('.log-item');
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js'
+    import { getDatabase, onValue, ref } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js'
+
+    const firebaseConfig = {
+      apiKey: 'AIzaSyAEtRXvGspCZBhA0l95fp6xnF7ZVSbODdQ',
+      authDomain: 'camp-su.firebaseapp.com',
+      databaseURL: 'https://camp-su-default-rtdb.firebaseio.com',
+      projectId: 'camp-su',
+      storageBucket: 'camp-su.firebasestorage.app',
+      messagingSenderId: '445858058251',
+      appId: '1:445858058251:web:a5efb44ca35b0686c2370e'
+    }
+
+    const FALLBACK_LOGS = [
+      { id: 'seed-1', team: 'all', status: 'completed', date_label: '전체 1차 · 2월 20일 22:00', title: "캠프 '색깔' 정하기", summary_lines: ['캠프 주제 및 슬로건 확정', '역할 분담 (기획팀, 진행팀 세팅)'], sort_order: 10 },
+      { id: 'seed-2', team: 'plan', status: 'completed', date_label: '기획팀 1차 · 3월 6일 22:00', title: '기획팀 첫 모임 및 역할 분담', summary_lines: ['기획팀 첫 인사 및 자기소개', '팀장 선출 및 역할 분담 (팀장: 지희)', '현재 진행 상황 공유 및 전반적인 업무 인수인계', '캠프 기획 방향성에 대한 가벼운 의견 나눔'], sort_order: 20 },
+      { id: 'seed-3', team: 'exec', status: 'completed', date_label: '진행팀 1차 · 3월 9일 20:00', title: '숙소 및 예산 1차 논의', summary_lines: ['진행팀 첫 인사 및 자기소개', '팀장 선출 및 역할 분담 (팀장: 덕호)', '후보 숙소 장단점 및 대관료 견적 비교', '이동 동선을 고려하여 공항 근처 베이스캠프 1곳 지정 추천', '예산 목표(숙소+세미나실 130만 원 이하) 설정 및 차량 렌트(4월) 계획 논의'], sort_order: 30 },
+      { id: 'seed-4', team: 'all', status: 'upcoming', date_label: '전체 2차 · 3월 11일 21:30', title: '기획 시스템 안내 및 진행 상황 공유', summary_lines: ['웹사이트 기반 상시 기획 시스템 도입 안내 (월간 전체 회의 대체)', '캠프 준비를 위한 역할 분담 설명 (참가자, 기획팀, 진행팀)', '웹페이지 및 카카오톡을 이용한 효율적인 상호 소통 방식 안내', '주요 진행 상황 브리핑 (숙소 베이스캠프 지정, 차량 렌트, 항공권 등)'], sort_order: 40 },
+      { id: 'seed-5', team: 'plan', status: 'planned', date_label: '기획팀 2차 · 5월 중', title: '세부 프로그램 기획', summary_lines: ['리더십 세미나 및 기도회 순서 구체화', '조별 아이스브레이킹 및 나눔 주제 선정', '홍보 포스터 및 안내문 제작'], sort_order: 50 },
+      { id: 'seed-6', team: 'exec', status: 'planned', date_label: '진행팀 2차 · 6월 중', title: '운영 물품 및 현지 체크', summary_lines: ['식당 리스트업 및 식비 예산 분배', '준비물 리스트 작성 (간식, 상비약, 명찰 등)', '최종 인원 점검 및 여행자 보험 가입'], sort_order: 60 },
+      { id: 'seed-7', team: 'all', status: 'planned', date_label: '전체 3차 · 7월 중', title: '최종 시뮬레이션 및 기도회', summary_lines: ['전체 시간표 동선 시뮬레이션', '각 팀별 큐시트 최종 확인', '캠프를 위한 합심 기도'], sort_order: 70 }
+    ]
+
+    const statusBannerEl = document.getElementById('statusBanner')
+    const logListEl = document.getElementById('log-list')
+    const tabs = Array.from(document.querySelectorAll('.tab-btn'))
+
+    let activeFilter = 'all'
+    let currentLogs = [...FALLBACK_LOGS]
+
+    function escapeHtml(text) {
+      const div = document.createElement('div')
+      div.textContent = text ?? ''
+      return div.innerHTML
+    }
+
+    function normalizeSummaryLines(value) {
+      if (Array.isArray(value)) return value.map(item => String(item).trim()).filter(Boolean)
+      if (typeof value === 'string') return value.split('\n').map(item => item.trim()).filter(Boolean)
+      return []
+    }
+
+    function statusLabel(status) {
+      if (status === 'completed') return '완료'
+      if (status === 'upcoming') return '다음 목표'
+      return '예정'
+    }
+
+    function teamLabel(team) {
+      if (team === 'plan') return '💡 기획팀'
+      if (team === 'exec') return '🏃‍♂️ 진행팀'
+      return '🤝 공통'
+    }
+
+    function setBanner(message, type = 'muted') {
+      statusBannerEl.textContent = message
+      statusBannerEl.className = `status-banner is-${type}`
+    }
+
+    function renderLogs() {
+      const visibleLogs = currentLogs.filter(item => activeFilter === 'all' || item.team === activeFilter || item.team === 'all')
+      if (visibleLogs.length === 0) {
+        logListEl.innerHTML = '<div class="empty-card">선택한 팀의 일지가 아직 없습니다.</div>'
+        return
+      }
+
+      logListEl.innerHTML = visibleLogs.map(item => `
+        <div class="log-item ${escapeHtml(item.status)}">
+          <div class="log-node"></div>
+          <div class="log-card">
+            <div class="badge-row">
+              <span class="status-badge">${statusLabel(item.status)}</span>
+              <span class="status-badge team-badge ${escapeHtml(item.team)}">${teamLabel(item.team)}</span>
+            </div>
+            <div class="log-date">${escapeHtml(item.date_label)}</div>
+            <h2 class="log-title">${escapeHtml(item.title)}</h2>
+            <ul class="log-desc">
+              ${normalizeSummaryLines(item.summary_lines).map(line => `<li>${escapeHtml(line)}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+      `).join('')
+    }
+
+    function sortLogs(items) {
+      return [...items].sort((a, b) => {
+        const orderDiff = Number(a.sort_order || 0) - Number(b.sort_order || 0)
+        if (orderDiff !== 0) return orderDiff
+        return String(a.created_at || '').localeCompare(String(b.created_at || ''))
+      })
+    }
 
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
-        // 1. 탭 버튼 활성화 변경
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
+        tabs.forEach(item => item.classList.remove('active'))
+        tab.classList.add('active')
+        activeFilter = tab.dataset.filter
+        renderLogs()
+      })
+    })
 
-        // 2. 필터링 로직
-        const filter = tab.getAttribute('data-filter');
-        
-        logItems.forEach(item => {
-          const team = item.getAttribute('data-team');
-          // '전체보기'를 누르거나, 해당 카드가 내가 누른 팀이거나, '공통(all)' 카드일 경우 보여줌
-          if (filter === 'all' || team === filter || team === 'all') {
-            item.style.display = 'block';
-          } else {
-            item.style.display = 'none';
-          }
-        });
-      });
-    });
-		
-  const subTop = document.querySelector('.sub-top');
-  let lastScrollY = window.scrollY;
+    renderLogs()
 
-  window.addEventListener(
-    'scroll',
-    () => {
-      if (!subTop) return;
+    try {
+      const app = initializeApp(firebaseConfig)
+      const db = getDatabase(app)
+      const logsRef = ref(db, 'camp_logs')
 
-      const currentScrollY = window.scrollY;
+      setBanner('실시간 일지를 불러오는 중입니다...', 'muted')
+      onValue(logsRef, snapshot => {
+        const data = snapshot.val()
+        if (!data) {
+          currentLogs = [...FALLBACK_LOGS]
+          renderLogs()
+          setBanner('Firebase는 연결되었지만 아직 등록된 실시간 일지가 없습니다. admin.html에서 첫 일지를 등록하세요.', 'muted')
+          return
+        }
 
-      if (currentScrollY <= 20) {
-        subTop.classList.remove('hide');
-      } else if (currentScrollY > lastScrollY && currentScrollY > 80) {
-        subTop.classList.add('hide');
-      } else {
-        subTop.classList.remove('hide');
-      }
+        currentLogs = sortLogs(Object.entries(data).map(([id, value]) => ({ id, ...value })))
+        renderLogs()
+        setBanner('Firebase 실시간 연결 중입니다. 관리자 수정은 admin.html에서 할 수 있습니다.', 'muted')
+      }, error => {
+        console.error(error)
+        currentLogs = [...FALLBACK_LOGS]
+        renderLogs()
+        setBanner('Firebase에서 일지를 불러오지 못했습니다. 규칙이나 연결값을 확인해 주세요.', 'error')
+      })
+    } catch (error) {
+      console.error(error)
+      setBanner('Firebase 초기화에 실패해서 기본 일지만 보여주고 있습니다.', 'error')
+    }
 
-      lastScrollY = currentScrollY;
-    },
-    { passive: true }
-  );
-	
+    const subTop = document.querySelector('.sub-top')
+    let lastScrollY = window.scrollY
+    window.addEventListener('scroll', () => {
+      if (!subTop) return
+      const currentScrollY = window.scrollY
+      if (currentScrollY <= 20) subTop.classList.remove('hide')
+      else if (currentScrollY > lastScrollY && currentScrollY > 80) subTop.classList.add('hide')
+      else subTop.classList.remove('hide')
+      lastScrollY = currentScrollY
+    }, { passive: true })
   </script>
 </body>
 </html>
