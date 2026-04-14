@@ -9,20 +9,20 @@
   <style>
     @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
-    :root { --ink: #14324a; --muted: #647b8f; --bg: #f5f8fa; --brand: #1a7bd6; --surface: #ffffff; --border: rgba(20,50,74,0.08); --danger: #d64545; }
+    :root { --ink: #14324a; --muted: #647b8f; --bg: #f5f8fa; --brand: #1a7bd6; --surface: #ffffff; --border: rgba(20,50,74,0.08); --danger: #d64545; --warn: #c98100; }
     * { box-sizing: border-box; font-family: "Pretendard", system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
     body { margin: 0; background: var(--bg); color: var(--ink); }
-    .wrap { width: 100%; max-width: 920px; margin: 0 auto; padding: 28px 16px 80px; }
+    .wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 28px 16px 80px; }
     .hero { margin-bottom: 18px; padding: 22px 20px; border-radius: 24px; background: linear-gradient(135deg, rgba(26,123,214,0.12), rgba(0,206,203,0.08)); border: 1px solid rgba(26,123,214,0.10); }
     .hero h1 { margin: 0 0 8px; font-size: 28px; font-weight: 900; color: #0f4b6a; }
     .hero p { margin: 0; color: #365569; font-size: 14px; line-height: 1.6; }
     .hero a { color: #0f4b6a; font-weight: 900; }
     .notice, .status { margin-bottom: 18px; padding: 14px 16px; border-radius: 16px; font-size: 13px; font-weight: 700; line-height: 1.6; }
-    .notice { background: #fff4f4; border: 1px solid rgba(214,69,69,0.18); color: #a83838; }
+    .notice { background: #fff9ef; border: 1px solid rgba(201,129,0,0.18); color: #875600; }
     .status { background: #eef6fd; border: 1px solid rgba(26,123,214,0.14); color: #1b5f98; }
-    .layout { display: grid; gap: 18px; }
-    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: 0 8px 30px rgba(20,50,74,0.03); padding: 20px; }
-    .panel h2 { margin: 0 0 14px; font-size: 19px; color: #0f4b6a; }
+    .auth-card, .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 24px; box-shadow: 0 8px 30px rgba(20,50,74,0.03); padding: 20px; }
+    .auth-card { margin-bottom: 18px; }
+    .section-title { margin: 0 0 14px; font-size: 19px; color: #0f4b6a; }
     .field-grid, .inline { display: grid; gap: 12px; }
     label { display: block; font-size: 12px; font-weight: 900; color: var(--muted); margin-bottom: 6px; }
     input, select, textarea { width: 100%; border: 1px solid #dce4eb; border-radius: 14px; padding: 12px 14px; font-size: 14px; background: #fff; color: var(--ink); outline: none; }
@@ -34,6 +34,14 @@
     .btn-subtle { background: #eef2f6; color: #355063; }
     .btn-danger { background: var(--danger); color: #fff; }
     .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .hidden { display: none !important; }
+    .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    .toolbar-text { font-size: 13px; color: var(--muted); font-weight: 700; }
+    .tab-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+    .tab-btn { border: none; border-radius: 999px; background: #eef2f6; color: #567083; padding: 10px 16px; font-size: 13px; font-weight: 900; cursor: pointer; }
+    .tab-btn.active { background: #0f4b6a; color: #fff; }
+    .panel-grid { display: grid; gap: 18px; }
+    .panel-stack { display: grid; gap: 18px; }
     .list { display: grid; gap: 12px; }
     .card { border: 1px solid var(--border); border-radius: 18px; padding: 16px; background: #fbfdff; }
     .card-top { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
@@ -41,12 +49,19 @@
     .card-meta { margin: 0; font-size: 12.5px; color: var(--muted); font-weight: 700; line-height: 1.5; }
     .card ul { margin: 12px 0 0; padding-left: 18px; color: #3b4d5e; }
     .card li { margin-bottom: 6px; line-height: 1.5; font-size: 14px; }
+    .badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+    .pill { display: inline-flex; align-items: center; border-radius: 999px; background: #eef2f6; color: #536c7f; padding: 6px 10px; font-size: 11px; font-weight: 900; }
     .empty { color: var(--muted); font-size: 14px; font-weight: 700; }
+    .comment-edit { margin-top: 12px; padding-top: 12px; border-top: 1px dashed rgba(20,50,74,0.1); display: grid; gap: 10px; }
+    .bullet-list { display: grid; gap: 10px; }
+    .bullet-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: start; }
+    .bullet-row input { height: 46px; }
 
-    @media (min-width: 768px) {
+    @media (min-width: 900px) {
       .wrap { padding: 40px 20px 100px; }
-      .layout { grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); align-items: start; }
       .inline.two { grid-template-columns: 1fr 1fr; }
+      .inline.three { grid-template-columns: 1fr 1fr 1fr; }
+      .panel-grid { grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr); align-items: start; }
     }
   </style>
 </head>
@@ -54,72 +69,187 @@
   <main class="wrap">
     <section class="hero">
       <h1>Camp Admin</h1>
-      <p>회의일지를 홈페이지에서 직접 수정하는 화면입니다. 저장되면 <a href="./log.html">log.html</a>에 바로 반영됩니다.</p>
+      <p>회의일지, 질문, 답변을 관리자 1명이 직접 관리하는 화면입니다. 저장되면 <a href="./log.html">log.html</a>과 <a href="./opinions.html">opinions.html</a>에 바로 반영됩니다.</p>
     </section>
 
-    <div class="notice">현재 Firebase 연결값만 넣으면 작동하게 맞춰두었습니다. 다만 지금 단계의 규칙은 기능 확인용으로 열어둘 가능성이 높아서, 관리자 전용 잠금은 다음 단계에서 따로 걸어야 합니다.</div>
-    <div id="statusBox" class="status">Firebase 연결값을 기다리는 중입니다...</div>
+    <div class="notice">지금 방식은 관리자 페이지에 비밀번호만 거는 구조입니다. 편하지만 강한 보안은 아니고, 화면 잠금에 가깝습니다.</div>
+    <div id="statusBox" class="status">관리자 비밀번호 상태를 확인하는 중입니다...</div>
 
-    <section class="layout">
-      <div class="panel">
-        <h2 id="formTitle">새 일지 등록</h2>
-        <form id="logForm">
-          <div class="field-grid">
-            <div class="inline two">
-              <div>
-                <label for="team">팀</label>
-                <select id="team" required>
-                  <option value="all">공통</option>
-                  <option value="plan">기획팀</option>
-                  <option value="exec">진행팀</option>
-                </select>
-              </div>
-              <div>
-                <label for="status">상태</label>
-                <select id="status" required>
-                  <option value="completed">완료</option>
-                  <option value="upcoming">다음 목표</option>
-                  <option value="planned">예정</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="inline two">
-              <div>
-                <label for="sortOrder">정렬 순서</label>
-                <input id="sortOrder" type="number" min="1" step="1" value="10" required />
-              </div>
-              <div>
-                <label for="dateLabel">날짜 표시 문구</label>
-                <input id="dateLabel" type="text" placeholder="예: 기획팀 2차 · 5월 중" required />
-              </div>
-            </div>
-
-            <div>
-              <label for="title">제목</label>
-              <input id="title" type="text" placeholder="예: 세부 프로그램 기획" required />
-            </div>
-
-            <div>
-              <label for="summaryLines">내용</label>
-              <textarea id="summaryLines" placeholder="한 줄에 하나씩 입력하세요." required></textarea>
-            </div>
+    <section id="authCard" class="auth-card">
+      <h2 class="section-title">관리자 비밀번호</h2>
+      <form id="loginForm">
+        <div class="field-grid">
+          <div>
+            <label for="loginPassword">비밀번호</label>
+            <input id="loginPassword" type="password" placeholder="관리자 비밀번호" required />
           </div>
-
-          <div class="actions">
-            <button class="btn btn-primary" type="submit" id="saveBtn">저장하기</button>
-            <button class="btn btn-subtle" type="button" id="resetBtn">새로 작성</button>
-            <button class="btn btn-danger" type="button" id="deleteBtn" hidden>삭제</button>
-          </div>
-        </form>
-      </div>
-
-      <div class="panel">
-        <h2>등록된 일지</h2>
-        <div id="logList" class="list">
-          <div class="empty">연결 대기 중...</div>
         </div>
+        <div class="actions">
+          <button class="btn btn-primary" type="submit" id="loginBtn">로그인</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="adminArea" class="hidden">
+      <div class="toolbar">
+        <div class="toolbar-text" id="authInfo">로그인됨</div>
       </div>
+
+      <div class="tab-row">
+        <button class="tab-btn active" type="button" data-tab="logs">회의일지</button>
+        <button class="tab-btn" type="button" data-tab="topics">질문 관리</button>
+        <button class="tab-btn" type="button" data-tab="comments">답변 관리</button>
+      </div>
+
+      <section id="tab-logs" class="panel-stack">
+        <div class="panel-grid">
+          <div class="panel">
+            <h2 class="section-title" id="logFormTitle">새 일지 등록</h2>
+            <form id="logForm">
+              <div class="field-grid">
+                <div class="inline two">
+                  <div>
+                    <label for="logTeam">팀</label>
+                    <select id="logTeam" required>
+                      <option value="all">공통</option>
+                      <option value="plan">기획팀</option>
+                      <option value="exec">진행팀</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="logStatus">상태</label>
+                    <select id="logStatus" required>
+                      <option value="completed">완료</option>
+                      <option value="upcoming">다음 목표</option>
+                      <option value="planned">예정</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="inline two">
+                  <div>
+                    <label for="logMonth">월</label>
+                    <select id="logMonth" required>
+                      <option value="">월 선택</option>
+                      <option value="1">1월</option>
+                      <option value="2">2월</option>
+                      <option value="3">3월</option>
+                      <option value="4">4월</option>
+                      <option value="5">5월</option>
+                      <option value="6">6월</option>
+                      <option value="7">7월</option>
+                      <option value="8">8월</option>
+                      <option value="9">9월</option>
+                      <option value="10">10월</option>
+                      <option value="11">11월</option>
+                      <option value="12">12월</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="logDay">일</label>
+                    <input id="logDay" type="number" min="1" max="31" placeholder="예: 19" required />
+                  </div>
+                </div>
+                <div class="inline two">
+                  <div>
+                    <label for="logStartTime">시작 시간</label>
+                    <div class="inline three">
+                      <select id="logStartMeridiem" required>
+                        <option value="오전">오전</option>
+                        <option value="오후">오후</option>
+                      </select>
+                      <select id="logStartHour" required></select>
+                      <select id="logStartMinute" required></select>
+                    </div>
+                  </div>
+                  <div>
+                    <label for="logEndTime">종료 시간</label>
+                    <div class="inline three">
+                      <select id="logEndMeridiem" required>
+                        <option value="오전">오전</option>
+                        <option value="오후">오후</option>
+                      </select>
+                      <select id="logEndHour" required></select>
+                      <select id="logEndMinute" required></select>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label for="logTitle">제목</label>
+                  <input id="logTitle" type="text" required />
+                </div>
+                <div>
+                  <label for="logSummaryLines">내용</label>
+                  <div id="logSummaryList" class="bullet-list"></div>
+                  <div class="actions">
+                    <button class="btn btn-subtle" type="button" id="addBulletBtn">내용 한 줄 추가</button>
+                  </div>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn btn-primary" type="submit" id="saveLogBtn">저장하기</button>
+                <button class="btn btn-subtle" type="button" id="resetLogBtn">새로 작성</button>
+                <button class="btn btn-danger" type="button" id="deleteLogBtn" hidden>삭제</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="panel">
+            <h2 class="section-title">등록된 일지</h2>
+            <div id="logList" class="list">
+              <div class="empty">불러오는 중...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-topics" class="panel-stack hidden">
+        <div class="panel-grid">
+          <div class="panel">
+            <h2 class="section-title" id="topicFormTitle">새 질문 등록</h2>
+            <form id="topicForm">
+              <div class="field-grid">
+                <div>
+                  <label for="topicId">질문 ID</label>
+                  <input id="topicId" type="text" placeholder="예: food" required />
+                </div>
+                <div>
+                  <label for="topicTitle">질문 제목</label>
+                  <input id="topicTitle" type="text" required />
+                </div>
+                <div>
+                  <label for="topicGuide">안내 문구</label>
+                  <textarea id="topicGuide" required></textarea>
+                </div>
+                <div>
+                  <label for="topicExamples">예시 문구</label>
+                  <textarea id="topicExamples" placeholder="한 줄에 하나씩 입력"></textarea>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn btn-primary" type="submit" id="saveTopicBtn">저장하기</button>
+                <button class="btn btn-subtle" type="button" id="resetTopicBtn">새로 작성</button>
+                <button class="btn btn-danger" type="button" id="deleteTopicBtn" hidden>삭제</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="panel">
+            <h2 class="section-title">등록된 질문</h2>
+            <div id="topicList" class="list">
+              <div class="empty">불러오는 중...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-comments" class="panel-stack hidden">
+        <div class="panel">
+          <h2 class="section-title">등록된 답변</h2>
+          <div id="commentList" class="list">
+            <div class="empty">불러오는 중...</div>
+          </div>
+        </div>
+      </section>
     </section>
   </main>
 
@@ -140,26 +270,101 @@
     const app = initializeApp(firebaseConfig)
     const db = getDatabase(app)
     const logsRef = ref(db, 'camp_logs')
+    const topicsRef = ref(db, 'camp_topics')
+    const commentsRef = ref(db, 'camp_topic_comments')
+    const ADMIN_PASSWORD = '0819'
+    const ADMIN_SESSION_KEY = 'camp_admin_unlocked'
 
     const statusBox = document.getElementById('statusBox')
-    const logListEl = document.getElementById('logList')
-    const logForm = document.getElementById('logForm')
-    const formTitleEl = document.getElementById('formTitle')
-    const saveBtn = document.getElementById('saveBtn')
-    const resetBtn = document.getElementById('resetBtn')
-    const deleteBtn = document.getElementById('deleteBtn')
+    const authCard = document.getElementById('authCard')
+    const adminArea = document.getElementById('adminArea')
+    const loginForm = document.getElementById('loginForm')
+    const loginBtn = document.getElementById('loginBtn')
 
-    const fields = {
-      team: document.getElementById('team'),
-      status: document.getElementById('status'),
-      sortOrder: document.getElementById('sortOrder'),
-      dateLabel: document.getElementById('dateLabel'),
-      title: document.getElementById('title'),
-      summaryLines: document.getElementById('summaryLines')
+    const logListEl = document.getElementById('logList')
+    const topicListEl = document.getElementById('topicList')
+    const commentListEl = document.getElementById('commentList')
+
+    const logForm = document.getElementById('logForm')
+    const logFormTitleEl = document.getElementById('logFormTitle')
+    const saveLogBtn = document.getElementById('saveLogBtn')
+    const resetLogBtn = document.getElementById('resetLogBtn')
+    const deleteLogBtn = document.getElementById('deleteLogBtn')
+    const logSummaryListEl = document.getElementById('logSummaryList')
+    const addBulletBtn = document.getElementById('addBulletBtn')
+
+    const topicForm = document.getElementById('topicForm')
+    const topicFormTitleEl = document.getElementById('topicFormTitle')
+    const saveTopicBtn = document.getElementById('saveTopicBtn')
+    const resetTopicBtn = document.getElementById('resetTopicBtn')
+    const deleteTopicBtn = document.getElementById('deleteTopicBtn')
+
+    const logFields = {
+      team: document.getElementById('logTeam'),
+      status: document.getElementById('logStatus'),
+      month: document.getElementById('logMonth'),
+      day: document.getElementById('logDay'),
+      startMeridiem: document.getElementById('logStartMeridiem'),
+      startHour: document.getElementById('logStartHour'),
+      startMinute: document.getElementById('logStartMinute'),
+      endMeridiem: document.getElementById('logEndMeridiem'),
+      endHour: document.getElementById('logEndHour'),
+      endMinute: document.getElementById('logEndMinute'),
+      title: document.getElementById('logTitle'),
     }
 
+    const topicFields = {
+      id: document.getElementById('topicId'),
+      title: document.getElementById('topicTitle'),
+      guide: document.getElementById('topicGuide'),
+      examples: document.getElementById('topicExamples')
+    }
+
+    const DEFAULT_LOGS = [
+      { team: 'all', status: 'completed', date_label: '전체 1차 · 2월 20일 22:00', title: "캠프 '색깔' 정하기", summary_lines: ['캠프 주제 및 슬로건 확정', '역할 분담 (기획팀, 진행팀 세팅)'], sort_order: 10, created_at: '2026-02-20T22:00:00+09:00' },
+      { team: 'plan', status: 'completed', date_label: '기획팀 1차 · 3월 6일 22:00', title: '기획팀 첫 모임 및 역할 분담', summary_lines: ['기획팀 첫 인사 및 자기소개', '팀장 선출 및 역할 분담 (팀장: 지희)', '현재 진행 상황 공유 및 전반적인 업무 인수인계', '캠프 기획 방향성에 대한 가벼운 의견 나눔'], sort_order: 20, created_at: '2026-03-06T22:00:00+09:00' },
+      { team: 'exec', status: 'completed', date_label: '진행팀 1차 · 3월 9일 20:00', title: '숙소 및 예산 1차 논의', summary_lines: ['진행팀 첫 인사 및 자기소개', '팀장 선출 및 역할 분담 (팀장: 덕호)', '후보 숙소 장단점 및 대관료 견적 비교', '이동 동선을 고려하여 공항 근처 베이스캠프 1곳 지정 추천', '예산 목표(숙소+세미나실 130만 원 이하) 설정 및 차량 렌트(4월) 계획 논의'], sort_order: 30, created_at: '2026-03-09T20:00:00+09:00' },
+      { team: 'all', status: 'upcoming', date_label: '전체 2차 · 3월 11일 21:30', title: '기획 시스템 안내 및 진행 상황 공유', summary_lines: ['웹사이트 기반 상시 기획 시스템 도입 안내 (월간 전체 회의 대체)', '캠프 준비를 위한 역할 분담 설명 (참가자, 기획팀, 진행팀)', '웹페이지 및 카카오톡을 이용한 효율적인 상호 소통 방식 안내', '주요 진행 상황 브리핑 (숙소 베이스캠프 지정, 차량 렌트, 항공권 등)'], sort_order: 40, created_at: '2026-03-11T21:30:00+09:00' },
+      { team: 'plan', status: 'planned', date_label: '기획팀 2차 · 5월 중', title: '세부 프로그램 기획', summary_lines: ['리더십 세미나 및 기도회 순서 구체화', '조별 아이스브레이킹 및 나눔 주제 선정', '홍보 포스터 및 안내문 제작'], sort_order: 50, created_at: '2026-05-01T00:00:00+09:00' },
+      { team: 'exec', status: 'planned', date_label: '진행팀 2차 · 6월 중', title: '운영 물품 및 현지 체크', summary_lines: ['식당 리스트업 및 식비 예산 분배', '준비물 리스트 작성 (간식, 상비약, 명찰 등)', '최종 인원 점검 및 여행자 보험 가입'], sort_order: 60, created_at: '2026-06-01T00:00:00+09:00' },
+      { team: 'all', status: 'planned', date_label: '전체 3차 · 7월 중', title: '최종 시뮬레이션 및 기도회', summary_lines: ['전체 시간표 동선 시뮬레이션', '각 팀별 큐시트 최종 확인', '캠프를 위한 합심 기도'], sort_order: 70, created_at: '2026-07-01T00:00:00+09:00' }
+    ]
+
+    const DEFAULT_TOPICS = [
+      { id: 'expect', title: '이번 캠프에서 가장 기대하는 것은?', guide: '이번 캠프에서 기대하는 한 가지를 편하게 적어주세요.', examples: ['더 가까워지는 시간', '깊은 나눔과 기도', '좋은 추억', '재충전'], sort_order: 10 },
+      { id: 'program', title: '꼭 있었으면 하는 프로그램은?', guide: '프로그램, 시간, 분위기 모두 괜찮습니다.', examples: ['조별 나눔', '저녁 자유교제', '찬양과 기도회', '레크레이션'], sort_order: 20 },
+      { id: 'less', title: '반대로 너무 많지 않았으면 하는 것은?', guide: '부담스럽거나 너무 빡빡하지 않았으면 하는 요소를 적어주세요.', examples: ['이동이 많은 일정', '긴 강의식 프로그램', '체력 소모가 큰 활동'], sort_order: 30 },
+      { id: 'mood', title: '어떤 분위기의 일정이 좋나요?', guide: '자유롭고 여유로운지, 균형형인지, 꽉 찬 일정이 좋은지 적어주세요.', examples: ['여유롭고 쉼이 있는 일정', '균형 있는 일정', '프로그램이 풍성한 일정'], sort_order: 40 },
+      { id: 'places', title: '제주에서 가보고 싶은 곳 / 해보고 싶은 것은?', guide: '관광지, 자연, 산책, 체험, 사진 스팟 모두 괜찮습니다.', examples: ['바닷가 산책', '오름', '예쁜 카페', '야경 보기'], sort_order: 50 },
+      { id: 'food', title: '제주에서 먹고 싶은 음식이 있나요?', guide: '음식, 간식, 카페 메뉴 모두 괜찮습니다.', examples: ['흑돼지', '갈치조림', '고기국수', '카페 디저트'], sort_order: 60 },
+      { id: 'care', title: '걱정되거나 배려가 필요한 점이 있나요?', guide: '편한 범위 안에서만 적어주세요.', examples: ['낯을 가리는 편', '체력이 약한 편', '늦게 합류할 수도 있음'], sort_order: 70 },
+      { id: 'free', title: '자유 의견', guide: '위 질문 외에도 전하고 싶은 생각을 자유롭게 남겨주세요.', examples: ['행사형보다 자연스러운 흐름', '자유 시간이 있었으면 좋겠음'], sort_order: 80 }
+    ]
+
     let currentLogs = []
-    let editingId = null
+    let currentTopics = []
+    let currentComments = []
+    let editingLogId = null
+    let editingTopicId = null
+    let logsLoaded = false
+    let topicsLoaded = false
+    let defaultsSeeded = false
+
+    function isUnlocked() {
+      return sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true'
+    }
+
+    function setUnlocked(value) {
+      if (value) sessionStorage.setItem(ADMIN_SESSION_KEY, 'true')
+      else sessionStorage.removeItem(ADMIN_SESSION_KEY)
+      authCard.classList.toggle('hidden', value)
+      adminArea.classList.toggle('hidden', !value)
+      if (value) {
+        setStatus('관리자 잠금이 해제되었습니다.')
+      } else {
+        setStatus('관리자 비밀번호를 입력해야 수정할 수 있습니다.')
+      }
+    }
 
     function escapeHtml(text) {
       const div = document.createElement('div')
@@ -174,11 +379,7 @@
       statusBox.style.color = isError ? '#a83838' : '#1b5f98'
     }
 
-    function normalizeSummaryLines(text) {
-      return text.split('\n').map(item => item.trim()).filter(Boolean)
-    }
-
-    function sortLogs(items) {
+    function sortByOrder(items) {
       return [...items].sort((a, b) => {
         const orderDiff = Number(a.sort_order || 0) - Number(b.sort_order || 0)
         if (orderDiff !== 0) return orderDiff
@@ -186,142 +387,541 @@
       })
     }
 
-    function resetForm() {
-      editingId = null
-      formTitleEl.textContent = '새 일지 등록'
-      logForm.reset()
-      fields.team.value = 'all'
-      fields.status.value = 'completed'
-      fields.sortOrder.value = currentLogs.length > 0 ? Math.max(...currentLogs.map(item => Number(item.sort_order || 0))) + 10 : 10
-      deleteBtn.hidden = true
+    function normalizeSummaryLines(text) {
+      return text.split('\n').map(item => item.trim()).filter(Boolean)
     }
 
-    function fillForm(item) {
-      editingId = item.id
-      formTitleEl.textContent = '일지 수정'
-      fields.team.value = item.team
-      fields.status.value = item.status
-      fields.sortOrder.value = item.sort_order
-      fields.dateLabel.value = item.date_label
-      fields.title.value = item.title
-      fields.summaryLines.value = Array.isArray(item.summary_lines) ? item.summary_lines.join('\n') : ''
-      deleteBtn.hidden = false
+    function normalizeExamples(text) {
+      return text.split('\n').map(item => item.trim()).filter(Boolean)
+    }
+
+    function nextSortOrder(items) {
+      return items.length > 0 ? Math.max(...items.map(item => Number(item.sort_order || 0))) + 10 : 10
+    }
+
+    function populateTimeSelects() {
+      const hourOptions = Array.from({ length: 12 }, (_, index) => {
+        const hour = index + 1
+        return `<option value="${hour}">${hour}시</option>`
+      }).join('')
+
+      const minuteOptions = Array.from({ length: 12 }, (_, index) => {
+        const minute = String(index * 5).padStart(2, '0')
+        return `<option value="${minute}">${minute}분</option>`
+      }).join('')
+
+      ;[
+        logFields.startHour,
+        logFields.endHour
+      ].forEach(select => { select.innerHTML = hourOptions })
+
+      ;[
+        logFields.startMinute,
+        logFields.endMinute
+      ].forEach(select => { select.innerHTML = minuteOptions })
+    }
+
+    function formatDisplayTime(meridiem, hour, minute) {
+      if (!meridiem || !hour || minute === '') return ''
+      return `${meridiem} ${Number(hour)}:${minute}`
+    }
+
+    function formatDateLabel(team, monthValue, dayValue, startTime, endTime) {
+      if (!monthValue || !dayValue || !startTime || !endTime) return ''
+      return `${teamLabel(team)} · ${Number(monthValue)}월 ${Number(dayValue)}일 ${startTime}-${endTime}`
+    }
+
+    function teamLabel(team) {
+      if (team === 'plan') return '기획팀'
+      if (team === 'exec') return '진행팀'
+      return '공통'
+    }
+
+    function parseDateLabel(dateLabel = '') {
+      const match = dateLabel.match(/(\d{1,2})월 (\d{1,2})일 (오전|오후) (\d{1,2}):(\d{2})-(오전|오후) (\d{1,2}):(\d{2})/)
+      if (!match) return { month: '', day: '', startMeridiem: '오전', startHour: '1', startMinute: '00', endMeridiem: '오전', endHour: '1', endMinute: '00' }
+      const [, month, day, startMeridiem, startHour, startMinute, endMeridiem, endHour, endMinute] = match
+      return {
+        month: String(Number(month)),
+        day: String(Number(day)),
+        startMeridiem,
+        startHour: String(Number(startHour)),
+        startMinute,
+        endMeridiem,
+        endHour: String(Number(endHour)),
+        endMinute
+      }
+    }
+
+    function getBulletValues() {
+      return Array.from(logSummaryListEl.querySelectorAll('[data-bullet-input]'))
+        .map(input => input.value.trim())
+        .filter(Boolean)
+    }
+
+    function addBulletRow(value = '') {
+      const row = document.createElement('div')
+      row.className = 'bullet-row'
+      row.innerHTML = `
+        <input data-bullet-input type="text" value="${escapeHtml(value)}" />
+        <button class="btn btn-danger" type="button" data-remove-bullet>삭제</button>
+      `
+      logSummaryListEl.appendChild(row)
+    }
+
+    function setBulletRows(items = []) {
+      logSummaryListEl.innerHTML = ''
+      const values = items.length > 0 ? items : ['']
+      values.forEach(item => addBulletRow(item))
+    }
+
+    function resetLogForm() {
+      editingLogId = null
+      logFormTitleEl.textContent = '새 일지 등록'
+      logForm.reset()
+      logFields.team.value = 'all'
+      logFields.status.value = 'completed'
+      logFields.startMeridiem.value = '오전'
+      logFields.startHour.value = '9'
+      logFields.startMinute.value = '00'
+      logFields.endMeridiem.value = '오전'
+      logFields.endHour.value = '10'
+      logFields.endMinute.value = '00'
+      setBulletRows([''])
+      deleteLogBtn.hidden = true
+    }
+
+    function fillLogForm(item) {
+      editingLogId = item.id
+      logFormTitleEl.textContent = '일지 수정'
+      logFields.team.value = item.team
+      logFields.status.value = item.status
+      const parsed = parseDateLabel(item.date_label)
+      logFields.month.value = parsed.month
+      logFields.day.value = parsed.day
+      logFields.startMeridiem.value = parsed.startMeridiem
+      logFields.startHour.value = parsed.startHour
+      logFields.startMinute.value = parsed.startMinute
+      logFields.endMeridiem.value = parsed.endMeridiem
+      logFields.endHour.value = parsed.endHour
+      logFields.endMinute.value = parsed.endMinute
+      logFields.title.value = item.title
+      setBulletRows(Array.isArray(item.summary_lines) ? item.summary_lines : [''])
+      deleteLogBtn.hidden = false
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
 
-    function renderList() {
+    function resetTopicForm() {
+      editingTopicId = null
+      topicFormTitleEl.textContent = '새 질문 등록'
+      topicForm.reset()
+      deleteTopicBtn.hidden = true
+      topicFields.id.disabled = false
+    }
+
+    function fillTopicForm(item) {
+      editingTopicId = item.id
+      topicFormTitleEl.textContent = '질문 수정'
+      topicFields.id.value = item.id
+      topicFields.id.disabled = true
+      topicFields.title.value = item.title
+      topicFields.guide.value = item.guide
+      topicFields.examples.value = Array.isArray(item.examples) ? item.examples.join('\n') : ''
+      deleteTopicBtn.hidden = false
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
+    async function moveItem(path, items, id, direction) {
+      const index = items.findIndex(item => item.id === id)
+      const swapIndex = direction === 'up' ? index - 1 : index + 1
+      if (index < 0 || swapIndex < 0 || swapIndex >= items.length) return
+
+      const current = items[index]
+      const target = items[swapIndex]
+
+      try {
+        await Promise.all([
+          set(ref(db, `${path}/${current.id}/sort_order`), Number(target.sort_order || 0)),
+          set(ref(db, `${path}/${target.id}/sort_order`), Number(current.sort_order || 0))
+        ])
+        setStatus('순서를 변경했습니다.')
+      } catch (error) {
+        console.error(error)
+        setStatus('순서를 변경하지 못했습니다.', true)
+      }
+    }
+
+    async function restoreDefaults() {
+      try {
+        await Promise.all([remove(logsRef), remove(topicsRef)])
+        await Promise.all(DEFAULT_LOGS.map(item => set(push(logsRef), item)))
+        await Promise.all(DEFAULT_TOPICS.map(item => set(ref(db, `camp_topics/${item.id}`), item)))
+        setStatus('기본 일지와 질문을 Firebase에 복구했습니다.')
+      } catch (error) {
+        console.error(error)
+        setStatus('기본 내용을 복구하지 못했습니다.', true)
+      }
+    }
+
+    async function seedDefaultsIfNeeded() {
+      if (defaultsSeeded || !logsLoaded || !topicsLoaded) return
+      defaultsSeeded = true
+
+      const shouldSeedLogs = currentLogs.length === 0
+      const shouldSeedTopics = currentTopics.length === 0
+
+      if (!shouldSeedLogs && !shouldSeedTopics) return
+
+      try {
+        if (shouldSeedLogs) {
+          await Promise.all(DEFAULT_LOGS.map(item => set(push(logsRef), item)))
+        }
+        if (shouldSeedTopics) {
+          await Promise.all(DEFAULT_TOPICS.map(item => set(ref(db, `camp_topics/${item.id}`), item)))
+        }
+        setStatus('기존 기본 일지와 질문을 Firebase에 자동 복구했습니다.')
+      } catch (error) {
+        console.error(error)
+        setStatus('기본 데이터를 자동 복구하지 못했습니다.', true)
+      }
+    }
+
+    function renderLogs() {
       if (currentLogs.length === 0) {
-        logListEl.innerHTML = '<div class="empty">아직 등록된 일지가 없습니다.</div>'
+        logListEl.innerHTML = '<div class="empty">아직 등록된 일지가 없습니다. 상단의 기본 내용 복구 버튼으로 바로 채울 수 있습니다.</div>'
         return
       }
 
-      logListEl.innerHTML = currentLogs.map(item => `
+      logListEl.innerHTML = currentLogs.map((item, index) => `
         <article class="card">
           <div class="card-top">
             <div>
               <h3 class="card-title">${escapeHtml(item.title)}</h3>
-              <p class="card-meta">${escapeHtml(item.date_label)}<br>${escapeHtml(item.team)} / ${escapeHtml(item.status)} / 순서 ${escapeHtml(String(item.sort_order ?? ''))}</p>
+              <p class="card-meta">${escapeHtml(item.date_label)}<br>${escapeHtml(item.team)} / ${escapeHtml(item.status)}</p>
             </div>
-            <button class="btn btn-subtle" type="button" data-edit-id="${escapeHtml(item.id)}">수정</button>
+            <div class="actions" style="margin-top:0;">
+              <button class="btn btn-subtle" type="button" data-move-log="${escapeHtml(item.id)}" data-direction="up"${index === 0 ? ' disabled' : ''}>위로</button>
+              <button class="btn btn-subtle" type="button" data-move-log="${escapeHtml(item.id)}" data-direction="down"${index === currentLogs.length - 1 ? ' disabled' : ''}>아래로</button>
+              <button class="btn btn-subtle" type="button" data-edit-log="${escapeHtml(item.id)}">수정</button>
+            </div>
           </div>
           <ul>
             ${(Array.isArray(item.summary_lines) ? item.summary_lines : []).map(line => `<li>${escapeHtml(line)}</li>`).join('')}
           </ul>
         </article>
       `).join('')
-
-      logListEl.querySelectorAll('[data-edit-id]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const item = currentLogs.find(log => log.id === btn.dataset.editId)
-          if (item) fillForm(item)
-        })
-      })
     }
 
-    async function saveLog(payload) {
-      if (editingId) {
-        await set(ref(db, `camp_logs/${editingId}`), payload)
-      } else {
-        await set(push(logsRef), payload)
-      }
-    }
-
-    logForm.addEventListener('submit', async event => {
-      event.preventDefault()
-      const payload = {
-        team: fields.team.value,
-        status: fields.status.value,
-        sort_order: Number(fields.sortOrder.value),
-        date_label: fields.dateLabel.value.trim(),
-        title: fields.title.value.trim(),
-        summary_lines: normalizeSummaryLines(fields.summaryLines.value),
-        created_at: editingId ? (currentLogs.find(item => item.id === editingId)?.created_at || new Date().toISOString()) : new Date().toISOString()
-      }
-
-      if (!payload.date_label || !payload.title || payload.summary_lines.length === 0) {
-        setStatus('필수 항목을 모두 입력해 주세요.', true)
+    function renderTopics() {
+      if (currentTopics.length === 0) {
+        topicListEl.innerHTML = '<div class="empty">아직 등록된 질문이 없습니다. 상단의 기본 내용 복구 버튼으로 바로 채울 수 있습니다.</div>'
         return
       }
 
-      saveBtn.disabled = true
-      deleteBtn.disabled = true
-
-      try {
-        await saveLog(payload)
-        setStatus(editingId ? '일지를 수정했습니다.' : '새 일지를 등록했습니다.')
-        resetForm()
-      } catch (error) {
-        console.error(error)
-        setStatus('저장하지 못했습니다. Firebase 규칙과 연결값을 확인해 주세요.', true)
-      } finally {
-        saveBtn.disabled = false
-        deleteBtn.disabled = false
-      }
-    })
-
-    resetBtn.addEventListener('click', () => {
-      resetForm()
-      setStatus('새 등록 모드로 전환했습니다.')
-    })
-
-    deleteBtn.addEventListener('click', async () => {
-      if (!editingId) return
-
-      deleteBtn.disabled = true
-      saveBtn.disabled = true
-
-      try {
-        await remove(ref(db, `camp_logs/${editingId}`))
-        setStatus('일지를 삭제했습니다.')
-        resetForm()
-      } catch (error) {
-        console.error(error)
-        setStatus('삭제하지 못했습니다. Firebase 규칙을 확인해 주세요.', true)
-      } finally {
-        deleteBtn.disabled = false
-        saveBtn.disabled = false
-      }
-    })
-
-    resetForm()
-
-    try {
-      onValue(logsRef, snapshot => {
-        const data = snapshot.val()
-        currentLogs = data ? sortLogs(Object.entries(data).map(([id, value]) => ({ id, ...value }))) : []
-        renderList()
-        if (!editingId) resetForm()
-        setStatus('연결 완료. 저장하면 log.html에 바로 반영됩니다.')
-      }, error => {
-        console.error(error)
-        logListEl.innerHTML = '<div class="empty">Firebase에서 일지를 불러오지 못했습니다.</div>'
-        setStatus('연결 실패. Firebase 규칙과 databaseURL을 확인해 주세요.', true)
-      })
-    } catch (error) {
-      console.error(error)
-      setStatus('Firebase 초기화에 실패했습니다.', true)
-      logListEl.innerHTML = '<div class="empty">Firebase 초기화에 실패했습니다.</div>'
+      topicListEl.innerHTML = currentTopics.map((item, index) => `
+        <article class="card">
+          <div class="card-top">
+            <div>
+              <h3 class="card-title">${escapeHtml(item.title)}</h3>
+              <p class="card-meta">ID ${escapeHtml(item.id)}</p>
+            </div>
+            <div class="actions" style="margin-top:0;">
+              <button class="btn btn-subtle" type="button" data-move-topic="${escapeHtml(item.id)}" data-direction="up"${index === 0 ? ' disabled' : ''}>위로</button>
+              <button class="btn btn-subtle" type="button" data-move-topic="${escapeHtml(item.id)}" data-direction="down"${index === currentTopics.length - 1 ? ' disabled' : ''}>아래로</button>
+              <button class="btn btn-subtle" type="button" data-edit-topic="${escapeHtml(item.id)}">수정</button>
+            </div>
+          </div>
+          <div class="badge-row">
+            ${(Array.isArray(item.examples) ? item.examples : []).map(example => `<span class="pill">${escapeHtml(example)}</span>`).join('')}
+          </div>
+          <p class="card-meta">${escapeHtml(item.guide)}</p>
+        </article>
+      `).join('')
     }
+
+    function renderComments() {
+      if (currentComments.length === 0) {
+        commentListEl.innerHTML = '<div class="empty">아직 등록된 답변이 없습니다.</div>'
+        return
+      }
+
+      const topicMap = Object.fromEntries(currentTopics.map(topic => [topic.id, topic.title]))
+      commentListEl.innerHTML = currentComments.map(item => `
+        <article class="card">
+          <div class="card-top">
+            <div>
+              <h3 class="card-title">${escapeHtml(item.nickname || '익명')}</h3>
+              <p class="card-meta">${escapeHtml(topicMap[item.topic] || item.topic || '미지정 질문')}<br>${escapeHtml(item.created_at || '')}</p>
+            </div>
+            <button class="btn btn-danger" type="button" data-delete-comment="${escapeHtml(item.id)}">삭제</button>
+          </div>
+          <p style="margin:12px 0 0; line-height:1.6;">${escapeHtml(item.content || '')}</p>
+          <form class="comment-edit" data-comment-id="${escapeHtml(item.id)}">
+            <div class="inline two">
+              <div>
+                <label>닉네임</label>
+                <input type="text" name="nickname" value="${escapeHtml(item.nickname || '')}" maxlength="20" required />
+              </div>
+              <div>
+                <label>질문</label>
+                <select name="topic">
+                  ${currentTopics.map(topic => `<option value="${escapeHtml(topic.id)}"${topic.id === item.topic ? ' selected' : ''}>${escapeHtml(topic.title)}</option>`).join('')}
+                </select>
+              </div>
+            </div>
+            <div>
+              <label>내용</label>
+              <textarea name="content" required>${escapeHtml(item.content || '')}</textarea>
+            </div>
+            <div class="actions">
+              <button class="btn btn-subtle" type="submit">답변 수정</button>
+            </div>
+          </form>
+        </article>
+      `).join('')
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(item => item.classList.remove('active'))
+        button.classList.add('active')
+        document.querySelectorAll('[id^="tab-"]').forEach(panel => panel.classList.add('hidden'))
+        document.getElementById(`tab-${button.dataset.tab}`).classList.remove('hidden')
+      })
+    })
+
+    loginForm.addEventListener('submit', async event => {
+      event.preventDefault()
+      loginBtn.disabled = true
+      const password = document.getElementById('loginPassword').value
+      if (password === ADMIN_PASSWORD) {
+        setUnlocked(true)
+        loginForm.reset()
+      } else {
+        setStatus('비밀번호가 올바르지 않습니다.', true)
+      }
+      loginBtn.disabled = false
+    })
+
+    logListEl.addEventListener('click', event => {
+      const moveButton = event.target.closest('[data-move-log]')
+      const button = event.target.closest('[data-edit-log]')
+      if (moveButton) {
+        moveItem('camp_logs', currentLogs, moveButton.dataset.moveLog, moveButton.dataset.direction)
+        return
+      }
+      if (!button) return
+      const item = currentLogs.find(log => log.id === button.dataset.editLog)
+      if (item) fillLogForm(item)
+    })
+
+    topicListEl.addEventListener('click', event => {
+      const moveButton = event.target.closest('[data-move-topic]')
+      const button = event.target.closest('[data-edit-topic]')
+      if (moveButton) {
+        moveItem('camp_topics', currentTopics, moveButton.dataset.moveTopic, moveButton.dataset.direction)
+        return
+      }
+      if (!button) return
+      const item = currentTopics.find(topic => topic.id === button.dataset.editTopic)
+      if (item) fillTopicForm(item)
+    })
+
+    commentListEl.addEventListener('click', async event => {
+      const button = event.target.closest('[data-delete-comment]')
+      if (!button) return
+      try {
+        await remove(ref(db, `camp_topic_comments/${button.dataset.deleteComment}`))
+        setStatus('답변을 삭제했습니다.')
+      } catch (error) {
+        console.error(error)
+        setStatus('답변을 삭제하지 못했습니다.', true)
+      }
+    })
+
+    commentListEl.addEventListener('submit', async event => {
+      const form = event.target.closest('.comment-edit')
+      if (!form) return
+      event.preventDefault()
+
+      const id = form.dataset.commentId
+      const nickname = form.elements.nickname.value.trim()
+      const topic = form.elements.topic.value
+      const content = form.elements.content.value.trim()
+      const existing = currentComments.find(comment => comment.id === id)
+
+      if (!nickname || !content) {
+        setStatus('답변 수정 시 닉네임과 내용을 모두 입력해 주세요.', true)
+        return
+      }
+
+      try {
+        await set(ref(db, `camp_topic_comments/${id}`), {
+          ...existing,
+          nickname,
+          topic,
+          content
+        })
+        setStatus('답변을 수정했습니다.')
+      } catch (error) {
+        console.error(error)
+        setStatus('답변을 수정하지 못했습니다.', true)
+      }
+    })
+
+    logForm.addEventListener('submit', async event => {
+      event.preventDefault()
+      const summaryLines = getBulletValues()
+      const startTime = formatDisplayTime(logFields.startMeridiem.value, logFields.startHour.value, logFields.startMinute.value)
+      const endTime = formatDisplayTime(logFields.endMeridiem.value, logFields.endHour.value, logFields.endMinute.value)
+      const payload = {
+        team: logFields.team.value,
+        status: logFields.status.value,
+        sort_order: editingLogId ? (currentLogs.find(item => item.id === editingLogId)?.sort_order || nextSortOrder(currentLogs)) : nextSortOrder(currentLogs),
+        date_label: formatDateLabel(logFields.team.value, logFields.month.value, logFields.day.value, startTime, endTime),
+        title: logFields.title.value.trim(),
+        summary_lines: summaryLines,
+        created_at: editingLogId ? (currentLogs.find(item => item.id === editingLogId)?.created_at || new Date().toISOString()) : new Date().toISOString()
+      }
+
+      if (!logFields.month.value || !logFields.day.value || !startTime || !endTime || !payload.title || payload.summary_lines.length === 0) {
+        setStatus('회의일지 필수 항목을 모두 입력해 주세요.', true)
+        return
+      }
+
+      saveLogBtn.disabled = true
+      deleteLogBtn.disabled = true
+      try {
+        if (editingLogId) await set(ref(db, `camp_logs/${editingLogId}`), payload)
+        else await set(push(logsRef), payload)
+        setStatus(editingLogId ? '일지를 수정했습니다.' : '새 일지를 등록했습니다.')
+        resetLogForm()
+      } catch (error) {
+        console.error(error)
+        setStatus('일지를 저장하지 못했습니다.', true)
+      } finally {
+        saveLogBtn.disabled = false
+        deleteLogBtn.disabled = false
+      }
+    })
+
+    resetLogBtn.addEventListener('click', () => {
+      resetLogForm()
+      setStatus('회의일지 새 등록 모드로 전환했습니다.')
+    })
+
+    addBulletBtn.addEventListener('click', () => {
+      addBulletRow('')
+    })
+
+    logSummaryListEl.addEventListener('click', event => {
+      const removeButton = event.target.closest('[data-remove-bullet]')
+      if (!removeButton) return
+      if (logSummaryListEl.children.length === 1) {
+        const textarea = logSummaryListEl.querySelector('[data-bullet-input]')
+        if (textarea) textarea.value = ''
+        return
+      }
+      removeButton.closest('.bullet-row')?.remove()
+    })
+
+    deleteLogBtn.addEventListener('click', async () => {
+      if (!editingLogId) return
+      try {
+        await remove(ref(db, `camp_logs/${editingLogId}`))
+        setStatus('일지를 삭제했습니다.')
+        resetLogForm()
+      } catch (error) {
+        console.error(error)
+        setStatus('일지를 삭제하지 못했습니다.', true)
+      }
+    })
+
+    topicForm.addEventListener('submit', async event => {
+      event.preventDefault()
+      const id = (editingTopicId || topicFields.id.value).trim()
+      const payload = {
+        id,
+        sort_order: editingTopicId ? (currentTopics.find(item => item.id === editingTopicId)?.sort_order || nextSortOrder(currentTopics)) : nextSortOrder(currentTopics),
+        title: topicFields.title.value.trim(),
+        guide: topicFields.guide.value.trim(),
+        examples: normalizeExamples(topicFields.examples.value)
+      }
+
+      if (!id || !/^[a-z0-9_-]+$/i.test(id)) {
+        setStatus('질문 ID는 영문, 숫자, -, _ 만 사용해 주세요.', true)
+        return
+      }
+
+      if (!payload.title || !payload.guide) {
+        setStatus('질문 제목과 안내 문구를 입력해 주세요.', true)
+        return
+      }
+
+      saveTopicBtn.disabled = true
+      deleteTopicBtn.disabled = true
+      try {
+        await set(ref(db, `camp_topics/${id}`), payload)
+        setStatus(editingTopicId ? '질문을 수정했습니다.' : '새 질문을 등록했습니다.')
+        resetTopicForm()
+      } catch (error) {
+        console.error(error)
+        setStatus('질문을 저장하지 못했습니다.', true)
+      } finally {
+        saveTopicBtn.disabled = false
+        deleteTopicBtn.disabled = false
+      }
+    })
+
+    resetTopicBtn.addEventListener('click', () => {
+      resetTopicForm()
+      setStatus('질문 새 등록 모드로 전환했습니다.')
+    })
+
+    deleteTopicBtn.addEventListener('click', async () => {
+      if (!editingTopicId) return
+      try {
+        await remove(ref(db, `camp_topics/${editingTopicId}`))
+        setStatus('질문을 삭제했습니다. 연결된 답변은 답변 관리에서 정리해 주세요.')
+        resetTopicForm()
+      } catch (error) {
+        console.error(error)
+        setStatus('질문을 삭제하지 못했습니다.', true)
+      }
+    })
+
+    setUnlocked(isUnlocked())
+
+    onValue(logsRef, snapshot => {
+      const data = snapshot.val()
+      currentLogs = data ? sortByOrder(Object.entries(data).map(([id, value]) => ({ id, ...value }))) : []
+      logsLoaded = true
+      renderLogs()
+      if (!editingLogId) resetLogForm()
+      seedDefaultsIfNeeded()
+    })
+
+    onValue(topicsRef, snapshot => {
+      const data = snapshot.val()
+      currentTopics = data ? sortByOrder(Object.entries(data).map(([id, value]) => ({ id, ...value }))) : []
+      topicsLoaded = true
+      renderTopics()
+      renderComments()
+      if (!editingTopicId) resetTopicForm()
+      seedDefaultsIfNeeded()
+    })
+
+    onValue(commentsRef, snapshot => {
+      const data = snapshot.val()
+      currentComments = data
+        ? Object.entries(data).map(([id, value]) => ({ id, ...value })).sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')))
+        : []
+      renderComments()
+    })
+
+    populateTimeSelects()
+    resetLogForm()
+    resetTopicForm()
   </script>
 </body>
 </html>

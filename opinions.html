@@ -39,7 +39,7 @@
     .comment-item:last-child { border-bottom: none; }
     .comment-avatar { width: 36px; height: 36px; border-radius: 50%; background: #eef2f6; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
     .comment-body { flex: 1; min-width: 0; }
-    .comment-meta { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; }
+    .comment-meta { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; gap: 8px; }
     .comment-author { font-size: 14px; font-weight: 800; color: var(--ink); }
     .comment-time { font-size: 11px; color: #a0b0c0; font-weight: 500; }
     .comment-text { font-size: 14.5px; color: #2c3e50; line-height: 1.5; white-space: pre-wrap; word-break: break-word; margin: 0; }
@@ -127,27 +127,36 @@
       appId: '1:445858058251:web:a5efb44ca35b0686c2370e'
     }
 
+    const DEFAULT_TOPICS = [
+      { id: 'expect', title: '이번 캠프에서 가장 기대하는 것은?', guide: '이번 캠프에서 기대하는 한 가지를 편하게 적어주세요.', examples: ['더 가까워지는 시간', '깊은 나눔과 기도', '좋은 추억', '재충전'], sort_order: 10 },
+      { id: 'program', title: '꼭 있었으면 하는 프로그램은?', guide: '프로그램, 시간, 분위기 모두 괜찮습니다.', examples: ['조별 나눔', '저녁 자유교제', '찬양과 기도회', '레크레이션'], sort_order: 20 },
+      { id: 'less', title: '반대로 너무 많지 않았으면 하는 것은?', guide: '부담스럽거나 너무 빡빡하지 않았으면 하는 요소를 적어주세요.', examples: ['이동이 많은 일정', '긴 강의식 프로그램', '체력 소모가 큰 활동'], sort_order: 30 },
+      { id: 'mood', title: '어떤 분위기의 일정이 좋나요?', guide: '자유롭고 여유로운지, 균형형인지, 꽉 찬 일정이 좋은지 적어주세요.', examples: ['여유롭고 쉼이 있는 일정', '균형 있는 일정', '프로그램이 풍성한 일정'], sort_order: 40 },
+      { id: 'places', title: '제주에서 가보고 싶은 곳 / 해보고 싶은 것은?', guide: '관광지, 자연, 산책, 체험, 사진 스팟 모두 괜찮습니다.', examples: ['바닷가 산책', '오름', '예쁜 카페', '야경 보기'], sort_order: 50 },
+      { id: 'food', title: '제주에서 먹고 싶은 음식이 있나요?', guide: '음식, 간식, 카페 메뉴 모두 괜찮습니다.', examples: ['흑돼지', '갈치조림', '고기국수', '카페 디저트'], sort_order: 60 },
+      { id: 'care', title: '걱정되거나 배려가 필요한 점이 있나요?', guide: '편한 범위 안에서만 적어주세요.', examples: ['낯을 가리는 편', '체력이 약한 편', '늦게 합류할 수도 있음'], sort_order: 70 },
+      { id: 'free', title: '자유 의견', guide: '위 질문 외에도 전하고 싶은 생각을 자유롭게 남겨주세요.', examples: ['행사형보다 자연스러운 흐름', '자유 시간이 있었으면 좋겠음'], sort_order: 80 }
+    ]
+
     const app = initializeApp(firebaseConfig)
     const db = getDatabase(app)
     const commentsRef = ref(db, 'camp_topic_comments')
-
-    const TOPICS = [
-      { id: 'expect', title: '이번 캠프에서 가장 기대하는 것은?', guide: '이번 캠프에서 기대하는 한 가지를 편하게 적어주세요.', examples: ['더 가까워지는 시간', '깊은 나눔과 기도', '좋은 추억', '재충전'] },
-      { id: 'program', title: '꼭 있었으면 하는 프로그램은?', guide: '프로그램, 시간, 분위기 모두 괜찮습니다.', examples: ['조별 나눔', '저녁 자유교제', '찬양과 기도회', '레크레이션'] },
-      { id: 'less', title: '반대로 너무 많지 않았으면 하는 것은?', guide: '부담스럽거나 너무 빡빡하지 않았으면 하는 요소를 적어주세요.', examples: ['이동이 많은 일정', '긴 강의식 프로그램', '체력 소모가 큰 활동'] },
-      { id: 'mood', title: '어떤 분위기의 일정이 좋나요?', guide: '자유롭고 여유로운지, 균형형인지, 꽉 찬 일정이 좋은지 적어주세요.', examples: ['여유롭고 쉼이 있는 일정', '균형 있는 일정', '프로그램이 풍성한 일정'] },
-      { id: 'places', title: '제주에서 가보고 싶은 곳 / 해보고 싶은 것은?', guide: '관광지, 자연, 산책, 체험, 사진 스팟 모두 괜찮습니다.', examples: ['바닷가 산책', '오름', '예쁜 카페', '야경 보기'] },
-      { id: 'food', title: '제주에서 먹고 싶은 음식이 있나요?', guide: '음식, 간식, 카페 메뉴 모두 괜찮습니다.', examples: ['흑돼지', '갈치조림', '고기국수', '카페 디저트'] },
-      { id: 'care', title: '걱정되거나 배려가 필요한 점이 있나요?', guide: '편한 범위 안에서만 적어주세요.', examples: ['낯을 가리는 편', '체력이 약한 편', '늦게 합류할 수도 있음'] },
-      { id: 'free', title: '자유 의견', guide: '위 질문 외에도 전하고 싶은 생각을 자유롭게 남겨주세요.', examples: ['행사형보다 자연스러운 흐름', '자유 시간이 있었으면 좋겠음'] }
-    ]
+    const topicsRef = ref(db, 'camp_topics')
 
     const feedEl = document.getElementById('feed')
     const globalNoticeEl = document.getElementById('globalNotice')
     const nicknameStorageKey = 'camp_nickname'
 
+    let topics = [...DEFAULT_TOPICS]
+    let topicMap = Object.fromEntries(DEFAULT_TOPICS.map(topic => [topic.id, topic]))
     let allCommentsGrouped = {}
     let expandedTopics = new Set()
+
+    function escapeHtml(text) {
+      const div = document.createElement('div')
+      div.textContent = text ?? ''
+      return div.innerHTML
+    }
 
     function showGlobalNotice(message, showRetry = false) {
       globalNoticeEl.className = 'global-notice'
@@ -155,7 +164,6 @@
         <span>${escapeHtml(message)}</span>
         ${showRetry ? '<button type="button" class="retry-btn" id="retryInitBtn">새로고침</button>' : ''}
       `
-
       if (showRetry) {
         const retryBtn = document.getElementById('retryInitBtn')
         if (retryBtn) retryBtn.addEventListener('click', () => window.location.reload())
@@ -175,7 +183,7 @@
     }
 
     function setStatusAll(message = '', type = '') {
-      TOPICS.forEach(topic => setStatus(topic.id, message, type))
+      topics.forEach(topic => setStatus(topic.id, message, type))
     }
 
     function setSubmitButtonsDisabled(disabled) {
@@ -183,17 +191,11 @@
     }
 
     function setCommentsMessage(message, isError = false) {
-      TOPICS.forEach(topic => {
+      topics.forEach(topic => {
         const container = document.getElementById(`comments-${topic.id}`)
         if (!container) return
         container.innerHTML = `<div class="empty-state${isError ? ' is-error' : ''}">${escapeHtml(message)}</div>`
       })
-    }
-
-    function escapeHtml(text) {
-      const div = document.createElement('div')
-      div.textContent = text ?? ''
-      return div.innerHTML
     }
 
     function formatTime(isoString) {
@@ -216,6 +218,22 @@
       })
     }
 
+    function normalizeTopic(rawId, value = {}) {
+      const id = String(value.id || rawId || '').trim()
+      return {
+        id,
+        title: String(value.title || '').trim(),
+        guide: String(value.guide || '').trim(),
+        examples: Array.isArray(value.examples) ? value.examples.map(item => String(item).trim()).filter(Boolean) : [],
+        sort_order: Number(value.sort_order || 0)
+      }
+    }
+
+    function ensureTopicState() {
+      topicMap = Object.fromEntries(topics.map(topic => [topic.id, topic]))
+      allCommentsGrouped = Object.fromEntries(topics.map(topic => [topic.id, allCommentsGrouped[topic.id] || []]))
+    }
+
     window.toggleComments = function(topicId) {
       if (expandedTopics.has(topicId)) expandedTopics.delete(topicId)
       else expandedTopics.add(topicId)
@@ -223,14 +241,14 @@
     }
 
     function renderFeed() {
-      feedEl.innerHTML = TOPICS.map((topic, index) => `
+      feedEl.innerHTML = topics.map((topic, index) => `
         <article class="post" id="post-${topic.id}">
           <div class="post-header">
             <div class="post-badge">Q${index + 1}</div>
             <h2 class="post-title">${escapeHtml(topic.title)}</h2>
             <p class="post-guide">${escapeHtml(topic.guide)}</p>
             <div class="examples">
-              ${topic.examples.map(ex => `<span class="example-chip">${escapeHtml(ex)}</span>`).join('')}
+              ${(topic.examples || []).map(ex => `<span class="example-chip">${escapeHtml(ex)}</span>`).join('')}
             </div>
           </div>
           <div class="post-comments" id="comments-${topic.id}">
@@ -293,95 +311,114 @@
       container.innerHTML = html
     }
 
-    function bindForms() {
-      document.querySelectorAll('.nickname-input').forEach(input => {
-        input.addEventListener('input', () => setSavedNickname(input.value.trim()))
-      })
-
-      document.querySelectorAll('.topic-form').forEach(form => {
-        form.addEventListener('submit', async event => {
-          event.preventDefault()
-
-          const topic = form.dataset.topic
-          const nicknameInput = form.querySelector('.nickname-input')
-          const contentInput = form.querySelector('.content-input')
-          const btn = form.querySelector('.submit-btn')
-          const nickname = nicknameInput.value.trim()
-          const content = contentInput.value.trim()
-
-          if (!nickname) {
-            setStatus(topic, '닉네임을 입력해 주세요.', 'error')
-            nicknameInput.focus()
-            return
-          }
-
-          if (!content) {
-            setStatus(topic, '내용을 입력해 주세요.', 'error')
-            contentInput.focus()
-            return
-          }
-
-          btn.disabled = true
-          setStatus(topic, '등록 중...', 'muted')
-
-          try {
-            setSavedNickname(nickname)
-            await set(push(commentsRef), {
-              topic,
-              nickname,
-              content,
-              created_at: new Date().toISOString()
-            })
-            contentInput.value = ''
-            contentInput.style.height = '42px'
-            expandedTopics.add(topic)
-            setStatus(topic, '등록 완료!', 'success')
-            setTimeout(() => setStatus(topic, ''), 2000)
-          } catch (error) {
-            console.error(error)
-            setStatus(topic, '등록하지 못했습니다. Firebase 규칙을 확인해 주세요.', 'error')
-          } finally {
-            btn.disabled = false
-          }
-        })
-      })
-    }
-
     function hydrateComments(data) {
-      TOPICS.forEach(topic => { allCommentsGrouped[topic.id] = [] })
+      ensureTopicState()
+      topics.forEach(topic => { allCommentsGrouped[topic.id] = [] })
       Object.values(data || {}).forEach(item => {
-        if (item && allCommentsGrouped[item.topic]) allCommentsGrouped[item.topic].push(item)
+        if (item && topicMap[item.topic]) {
+          allCommentsGrouped[item.topic].push(item)
+        }
       })
-      TOPICS.forEach(topic => {
+      topics.forEach(topic => {
         allCommentsGrouped[topic.id].sort((a, b) => String(b.created_at || '').localeCompare(String(a.created_at || '')))
         renderCommentsForTopic(topic.id)
       })
     }
 
-    renderFeed()
-    bindForms()
+    feedEl.addEventListener('input', event => {
+      if (event.target.classList.contains('nickname-input')) {
+        setSavedNickname(event.target.value.trim())
+      }
+    })
 
-    try {
-      setCommentsMessage('의견을 불러오는 중입니다...')
-      onValue(commentsRef, snapshot => {
-        hydrateComments(snapshot.val() || {})
-        clearGlobalNotice()
-        setSubmitButtonsDisabled(false)
-        setStatusAll('', '')
-      }, error => {
+    feedEl.addEventListener('submit', async event => {
+      const form = event.target.closest('.topic-form')
+      if (!form) return
+      event.preventDefault()
+
+      const topic = form.dataset.topic
+      const nicknameInput = form.querySelector('.nickname-input')
+      const contentInput = form.querySelector('.content-input')
+      const btn = form.querySelector('.submit-btn')
+      const nickname = nicknameInput.value.trim()
+      const content = contentInput.value.trim()
+
+      if (!nickname) {
+        setStatus(topic, '닉네임을 입력해 주세요.', 'error')
+        nicknameInput.focus()
+        return
+      }
+
+      if (!content) {
+        setStatus(topic, '내용을 입력해 주세요.', 'error')
+        contentInput.focus()
+        return
+      }
+
+      btn.disabled = true
+      setStatus(topic, '등록 중...', 'muted')
+
+      try {
+        setSavedNickname(nickname)
+        await set(push(commentsRef), {
+          topic,
+          nickname,
+          content,
+          created_at: new Date().toISOString()
+        })
+        contentInput.value = ''
+        contentInput.style.height = '42px'
+        expandedTopics.add(topic)
+        setStatus(topic, '등록 완료!', 'success')
+        setTimeout(() => setStatus(topic, ''), 2000)
+      } catch (error) {
         console.error(error)
-        setSubmitButtonsDisabled(true)
-        setStatusAll('연결에 실패했습니다.', 'error')
-        setCommentsMessage('Firebase에서 의견을 불러오지 못했습니다. 규칙과 databaseURL을 확인해 주세요.', true)
-        showGlobalNotice('Firebase 연결에 실패했습니다. 설정을 확인한 뒤 다시 새로고침해 주세요.', true)
-      })
-    } catch (error) {
+        setStatus(topic, '등록하지 못했습니다. 잠시 후 다시 시도해 주세요.', 'error')
+      } finally {
+        btn.disabled = false
+      }
+    })
+
+    renderFeed()
+    setSubmitButtonsDisabled(true)
+    setCommentsMessage('의견을 불러오는 중입니다...')
+    showGlobalNotice('질문과 의견을 연결하는 중입니다...')
+
+    onValue(topicsRef, snapshot => {
+      const data = snapshot.val()
+      if (!data) {
+        topics = [...DEFAULT_TOPICS]
+      } else {
+        const loadedTopics = Object.entries(data)
+          .map(([key, value]) => normalizeTopic(key, value))
+          .filter(topic => topic.id && topic.title)
+          .sort((a, b) => a.sort_order - b.sort_order)
+        topics = loadedTopics.length > 0 ? loadedTopics : [...DEFAULT_TOPICS]
+      }
+
+      ensureTopicState()
+      renderFeed()
+      hydrateComments({})
+    }, error => {
+      console.error(error)
+      topics = [...DEFAULT_TOPICS]
+      ensureTopicState()
+      renderFeed()
+      setCommentsMessage('질문을 불러오지 못했습니다. 기본 질문만 표시합니다.', true)
+    })
+
+    onValue(commentsRef, snapshot => {
+      hydrateComments(snapshot.val() || {})
+      clearGlobalNotice()
+      setSubmitButtonsDisabled(false)
+      setStatusAll('', '')
+    }, error => {
       console.error(error)
       setSubmitButtonsDisabled(true)
-      setStatusAll('Firebase 초기화 실패', 'error')
-      setCommentsMessage('Firebase 초기화에 실패했습니다.', true)
-      showGlobalNotice('Firebase 초기화에 실패했습니다.', true)
-    }
+      setStatusAll('연결에 실패했습니다.', 'error')
+      setCommentsMessage('Firebase에서 의견을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.', true)
+      showGlobalNotice('의견 연결에 실패했습니다. 새로고침 후 다시 시도해 주세요.', true)
+    })
 
     const subTop = document.querySelector('.sub-top')
     let lastScrollY = window.scrollY
