@@ -248,7 +248,39 @@
   
   <script>
     const subTop = document.querySelector('.sub-top');
+    const adminTitleTrigger = document.querySelector('.sub-top-title');
     let lastScrollY = window.scrollY;
+    let adminPressTimer = null;
+    let adminPressed = false;
+
+    function clearAdminPressTimer() {
+      if (!adminPressTimer) return;
+      clearTimeout(adminPressTimer);
+      adminPressTimer = null;
+    }
+
+    function startAdminPressTimer() {
+      clearAdminPressTimer();
+      adminPressed = false;
+      adminPressTimer = window.setTimeout(() => {
+        adminPressed = true;
+        window.location.href = './admin.html';
+      }, 700);
+    }
+
+    if (adminTitleTrigger) {
+      adminTitleTrigger.addEventListener('mousedown', startAdminPressTimer);
+      adminTitleTrigger.addEventListener('touchstart', startAdminPressTimer, { passive: true });
+      adminTitleTrigger.addEventListener('mouseup', clearAdminPressTimer);
+      adminTitleTrigger.addEventListener('mouseleave', clearAdminPressTimer);
+      adminTitleTrigger.addEventListener('touchend', clearAdminPressTimer);
+      adminTitleTrigger.addEventListener('touchcancel', clearAdminPressTimer);
+      adminTitleTrigger.addEventListener('click', (event) => {
+        if (!adminPressed) return;
+        event.preventDefault();
+        adminPressed = false;
+      });
+    }
 
     window.addEventListener(
       'scroll',

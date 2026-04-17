@@ -54,6 +54,39 @@
     .log-desc li { margin-bottom: 8px; line-height: 1.55; }
     .log-desc li:last-child { margin-bottom: 0; }
     .empty-card { background: var(--surface); border-radius: 20px; padding: 28px 22px; border: 1px solid var(--border); color: var(--muted); font-size: 14px; font-weight: 700; text-align: center; }
+    .admin-tools { display: none; margin: 0 0 24px; padding: 18px; border-radius: 22px; background: #ffffff; border: 1px solid rgba(20,50,74,0.08); box-shadow: 0 8px 24px rgba(20,50,74,0.04); }
+    .admin-tools.active { display: block; }
+    .admin-tools-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 14px; }
+    .admin-tools-title { margin: 0; font-size: 18px; font-weight: 900; color: #0f4b6a; }
+    .admin-badge { display: inline-flex; align-items: center; min-height: 34px; padding: 0 12px; border-radius: 999px; background: #eef6fd; color: #1b5f98; font-size: 12px; font-weight: 900; }
+    .admin-status { margin-bottom: 12px; padding: 12px 14px; border-radius: 14px; background: #eef6fd; color: #1b5f98; font-size: 13px; font-weight: 700; display: none; }
+    .admin-status.show { display: block; }
+    .admin-grid { display: grid; gap: 16px; }
+    .admin-card { border: 1px solid rgba(20,50,74,0.08); border-radius: 18px; padding: 16px; background: #fbfdff; }
+    .admin-card h3 { margin: 0 0 12px; font-size: 16px; font-weight: 900; color: #0f4b6a; }
+    .admin-card.collapsible { display: none; }
+    .admin-card.collapsible.open { display: block; }
+    .field-grid, .inline { display: grid; gap: 10px; }
+    .inline.two { grid-template-columns: 1fr 1fr; }
+    .inline.three { grid-template-columns: 1fr 1fr 1fr; }
+    .admin-tools label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 900; color: var(--muted); }
+    .admin-tools input, .admin-tools select, .admin-tools textarea { width: 100%; border: 1px solid #dce4eb; border-radius: 12px; padding: 10px 12px; font-size: 14px; background: #fff; color: var(--ink); outline: none; }
+    .admin-tools textarea { min-height: 90px; resize: vertical; }
+    .admin-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .admin-btn { border: none; border-radius: 12px; padding: 10px 14px; font-size: 13px; font-weight: 900; cursor: pointer; }
+    .admin-btn.primary { background: var(--brand); color: #fff; }
+    .admin-btn.subtle { background: #eef2f6; color: #355063; }
+    .admin-btn.danger { background: #d64545; color: #fff; }
+    .bullet-list { display: grid; gap: 8px; }
+    .bullet-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: start; }
+    .admin-log-actions { display: none; gap: 8px; margin-top: 14px; }
+    .admin-log-actions.active { display: flex; }
+    .admin-login-modal { position: fixed; inset: 0; background: rgba(20,50,74,0.42); display: none; align-items: center; justify-content: center; z-index: 300; padding: 20px; }
+    .admin-login-modal.show { display: flex; }
+    .admin-login-card { width: min(100%, 360px); border-radius: 22px; background: #fff; padding: 22px; box-shadow: 0 24px 60px rgba(20,50,74,0.18); }
+    .admin-login-card h2 { margin: 0 0 8px; font-size: 22px; font-weight: 900; color: #0f4b6a; }
+    .admin-login-card p { margin: 0 0 16px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .admin-login-error { min-height: 18px; margin-top: 8px; font-size: 12px; font-weight: 800; color: #d64545; }
 
     @media (min-width: 768px) {
       body { max-width: 100%; box-shadow: none; }
@@ -77,6 +110,7 @@
       .log-title { font-size: 20px; margin-bottom: 16px; }
       .log-desc { font-size: 15px; }
       .log-date { font-size: 13px; }
+      .admin-grid { grid-template-columns: minmax(0, 1fr) 360px; align-items: start; }
     }
   </style>
 </head>
@@ -100,6 +134,110 @@
       <p>수동적인 참여가 아닌 능동적인 동역!<br>우리가 다 함께 만들어가는 캠프의 발자취입니다.</p>
     </div>
 
+    <section id="adminTools" class="admin-tools">
+      <div class="admin-tools-head">
+        <h2 class="admin-tools-title">일지 관리자 모드</h2>
+        <div class="admin-actions" style="margin-top:0;">
+          <button class="admin-btn primary" type="button" id="openLogFormBtn">새 일지 작성</button>
+          <button class="admin-btn subtle" type="button" id="logoutAdminBtn">관리자 종료</button>
+        </div>
+      </div>
+      <p style="margin:0 0 14px; font-size:13px; line-height:1.6; color: var(--muted);">기존 일지는 아래 카드의 `수정` 버튼으로 바로 불러올 수 있습니다.</p>
+      <div id="adminStatus" class="admin-status"></div>
+      <div>
+        <div id="logFormCard" class="admin-card collapsible">
+          <h3 id="logFormTitle">새 일지 등록</h3>
+          <form id="adminLogForm">
+            <div class="field-grid">
+              <div class="inline two">
+                <div>
+                  <label for="logTeam">팀</label>
+                  <select id="logTeam" required>
+                    <option value="all">공통</option>
+                    <option value="plan">기획팀</option>
+                    <option value="exec">진행팀</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="logStatus">상태</label>
+                  <select id="logStatus" required>
+                    <option value="completed">완료</option>
+                    <option value="upcoming">다음 목표</option>
+                    <option value="planned">예정</option>
+                  </select>
+                </div>
+              </div>
+              <div class="inline two">
+                <div>
+                  <label for="logMonth">월</label>
+                  <select id="logMonth" required>
+                    <option value="">월 선택</option>
+                    <option value="1">1월</option>
+                    <option value="2">2월</option>
+                    <option value="3">3월</option>
+                    <option value="4">4월</option>
+                    <option value="5">5월</option>
+                    <option value="6">6월</option>
+                    <option value="7">7월</option>
+                    <option value="8">8월</option>
+                    <option value="9">9월</option>
+                    <option value="10">10월</option>
+                    <option value="11">11월</option>
+                    <option value="12">12월</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="logDay">일</label>
+                  <input id="logDay" type="number" min="1" max="31" required />
+                </div>
+              </div>
+              <div class="inline two">
+                <div>
+                  <label>시작 시간</label>
+                  <div class="inline three">
+                    <select id="logStartMeridiem" required>
+                      <option value="오전">오전</option>
+                      <option value="오후">오후</option>
+                    </select>
+                    <select id="logStartHour" required></select>
+                    <select id="logStartMinute" required></select>
+                  </div>
+                </div>
+                <div>
+                  <label>종료 시간</label>
+                  <div class="inline three">
+                    <select id="logEndMeridiem" required>
+                      <option value="오전">오전</option>
+                      <option value="오후">오후</option>
+                    </select>
+                    <select id="logEndHour" required></select>
+                    <select id="logEndMinute" required></select>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label for="logTitleInput">제목</label>
+                <input id="logTitleInput" type="text" required />
+              </div>
+              <div>
+                <label>내용</label>
+                <div id="logSummaryList" class="bullet-list"></div>
+                <div class="admin-actions">
+                  <button class="admin-btn subtle" type="button" id="addBulletBtn">내용 한 줄 추가</button>
+                </div>
+              </div>
+            </div>
+            <div class="admin-actions">
+              <button class="admin-btn primary" type="submit" id="saveLogBtn">저장</button>
+              <button class="admin-btn subtle" type="button" id="resetLogBtn">새로 작성</button>
+              <button class="admin-btn subtle" type="button" id="closeLogFormBtn">닫기</button>
+              <button class="admin-btn danger" type="button" id="deleteLogBtn" hidden>삭제</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
     <div class="team-tabs">
       <button class="tab-btn active" data-filter="all">전체보기</button>
       <button class="tab-btn" data-filter="plan">💡 기획팀</button>
@@ -109,9 +247,25 @@
     <div class="log-timeline" id="log-list"></div>
   </main>
 
+  <div id="adminLoginModal" class="admin-login-modal">
+    <div class="admin-login-card">
+      <h2>관리자 모드</h2>
+      <p>비밀번호를 입력하면 이 페이지에서 바로 일지를 수정하고 등록할 수 있습니다.</p>
+      <form id="adminLoginForm">
+        <label for="adminPasswordInput">비밀번호</label>
+        <input id="adminPasswordInput" type="password" required />
+        <div class="admin-actions">
+          <button class="admin-btn primary" type="submit">확인</button>
+          <button class="admin-btn subtle" type="button" id="closeAdminLoginBtn">닫기</button>
+        </div>
+        <div id="adminLoginError" class="admin-login-error"></div>
+      </form>
+    </div>
+  </div>
+
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js'
-    import { getDatabase, onValue, ref } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js'
+    import { getDatabase, onValue, push, ref, remove, set } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js'
 
     const firebaseConfig = {
       apiKey: 'AIzaSyAEtRXvGspCZBhA0l95fp6xnF7ZVSbODdQ',
@@ -123,11 +277,51 @@
       appId: '1:445858058251:web:a5efb44ca35b0686c2370e'
     }
 
+    const app = initializeApp(firebaseConfig)
+    const db = getDatabase(app)
+    const logsRef = ref(db, 'camp_logs')
+
     const logListEl = document.getElementById('log-list')
     const tabs = Array.from(document.querySelectorAll('.tab-btn'))
+    const adminToolsEl = document.getElementById('adminTools')
+    const adminStatusEl = document.getElementById('adminStatus')
+    const adminLoginModalEl = document.getElementById('adminLoginModal')
+    const adminLoginForm = document.getElementById('adminLoginForm')
+    const adminPasswordInput = document.getElementById('adminPasswordInput')
+    const adminLoginErrorEl = document.getElementById('adminLoginError')
+    const closeAdminLoginBtn = document.getElementById('closeAdminLoginBtn')
+    const logoutAdminBtn = document.getElementById('logoutAdminBtn')
+    const adminLogForm = document.getElementById('adminLogForm')
+    const logFormCard = document.getElementById('logFormCard')
+    const logFormTitleEl = document.getElementById('logFormTitle')
+    const saveLogBtn = document.getElementById('saveLogBtn')
+    const resetLogBtn = document.getElementById('resetLogBtn')
+    const closeLogFormBtn = document.getElementById('closeLogFormBtn')
+    const openLogFormBtn = document.getElementById('openLogFormBtn')
+    const deleteLogBtn = document.getElementById('deleteLogBtn')
+    const addBulletBtn = document.getElementById('addBulletBtn')
+    const logSummaryListEl = document.getElementById('logSummaryList')
+
+    const ADMIN_PASSWORD = '0819'
+    const ADMIN_SESSION_KEY = 'camp_admin_unlocked'
 
     let activeFilter = 'all'
     let currentLogs = []
+    let editingLogId = null
+
+    const logFields = {
+      team: document.getElementById('logTeam'),
+      status: document.getElementById('logStatus'),
+      month: document.getElementById('logMonth'),
+      day: document.getElementById('logDay'),
+      startMeridiem: document.getElementById('logStartMeridiem'),
+      startHour: document.getElementById('logStartHour'),
+      startMinute: document.getElementById('logStartMinute'),
+      endMeridiem: document.getElementById('logEndMeridiem'),
+      endHour: document.getElementById('logEndHour'),
+      endMinute: document.getElementById('logEndMinute'),
+      title: document.getElementById('logTitleInput')
+    }
 
     function escapeHtml(text) {
       const div = document.createElement('div')
@@ -153,6 +347,156 @@
       return '🤝 공통'
     }
 
+    function rawTeamLabel(team) {
+      if (team === 'plan') return '기획팀'
+      if (team === 'exec') return '진행팀'
+      return '공통'
+    }
+
+    function isAdminUnlocked() {
+      return sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true'
+    }
+
+    function setAdminUnlocked(value) {
+      if (value) sessionStorage.setItem(ADMIN_SESSION_KEY, 'true')
+      else sessionStorage.removeItem(ADMIN_SESSION_KEY)
+      adminToolsEl.classList.toggle('active', value)
+      renderLogs()
+    }
+
+    function showAdminStatus(message, isError = false) {
+      adminStatusEl.textContent = message
+      adminStatusEl.classList.add('show')
+      adminStatusEl.style.background = isError ? '#fff4f4' : '#eef6fd'
+      adminStatusEl.style.color = isError ? '#a83838' : '#1b5f98'
+    }
+
+    function hideAdminStatus() {
+      adminStatusEl.classList.remove('show')
+      adminStatusEl.textContent = ''
+    }
+
+    function sortLogs(items) {
+      return [...items].sort((a, b) => {
+        const createdDiff = String(a.created_at || '').localeCompare(String(b.created_at || ''))
+        if (createdDiff !== 0) return createdDiff
+        return Number(a.sort_order || 0) - Number(b.sort_order || 0)
+      })
+    }
+
+    function nextSortOrder(items) {
+      return items.length > 0 ? Math.max(...items.map(item => Number(item.sort_order || 0))) + 10 : 10
+    }
+
+    function populateTimeSelects() {
+      const hourOptions = Array.from({ length: 12 }, (_, index) => `<option value="${index + 1}">${index + 1}시</option>`).join('')
+      const minuteOptions = Array.from({ length: 12 }, (_, index) => {
+        const minute = String(index * 5).padStart(2, '0')
+        return `<option value="${minute}">${minute}분</option>`
+      }).join('')
+      ;[logFields.startHour, logFields.endHour].forEach(select => { select.innerHTML = hourOptions })
+      ;[logFields.startMinute, logFields.endMinute].forEach(select => { select.innerHTML = minuteOptions })
+    }
+
+    function formatDisplayTime(meridiem, hour, minute) {
+      if (!meridiem || !hour || minute === '') return ''
+      return `${meridiem} ${Number(hour)}:${minute}`
+    }
+
+    function formatDateLabel(team, monthValue, dayValue, startTime, endTime, status) {
+      if (!monthValue || !dayValue || !startTime) return ''
+      if (status === 'completed' && endTime) return `${rawTeamLabel(team)} · ${Number(monthValue)}월 ${Number(dayValue)}일 ${startTime}-${endTime}`
+      return `${rawTeamLabel(team)} · ${Number(monthValue)}월 ${Number(dayValue)}일 ${startTime}`
+    }
+
+    function parseDateLabel(dateLabel = '') {
+      const rangeMatch = dateLabel.match(/(\d{1,2})월 (\d{1,2})일 (오전|오후) (\d{1,2}):(\d{2})-(오전|오후) (\d{1,2}):(\d{2})/)
+      if (rangeMatch) {
+        const [, month, day, startMeridiem, startHour, startMinute, endMeridiem, endHour, endMinute] = rangeMatch
+        return { month: String(Number(month)), day: String(Number(day)), startMeridiem, startHour: String(Number(startHour)), startMinute, endMeridiem, endHour: String(Number(endHour)), endMinute }
+      }
+      const singleMatch = dateLabel.match(/(\d{1,2})월 (\d{1,2})일 (오전|오후) (\d{1,2}):(\d{2})/)
+      if (!singleMatch) return { month: '', day: '', startMeridiem: '오전', startHour: '1', startMinute: '00', endMeridiem: '오전', endHour: '1', endMinute: '00' }
+      const [, month, day, startMeridiem, startHour, startMinute] = singleMatch
+      return { month: String(Number(month)), day: String(Number(day)), startMeridiem, startHour: String(Number(startHour)), startMinute, endMeridiem: startMeridiem, endHour: String(Number(startHour)), endMinute: startMinute }
+    }
+
+    function addBulletRow(value = '') {
+      const row = document.createElement('div')
+      row.className = 'bullet-row'
+      row.innerHTML = `
+        <input data-bullet-input type="text" value="${escapeHtml(value)}" />
+        <button class="admin-btn danger" type="button" data-remove-bullet>삭제</button>
+      `
+      logSummaryListEl.appendChild(row)
+    }
+
+    function setBulletRows(items = []) {
+      logSummaryListEl.innerHTML = ''
+      const values = items.length > 0 ? items : ['']
+      values.forEach(item => addBulletRow(item))
+    }
+
+    function getBulletValues() {
+      return Array.from(logSummaryListEl.querySelectorAll('[data-bullet-input]')).map(input => input.value.trim()).filter(Boolean)
+    }
+
+    function resetLogForm() {
+      editingLogId = null
+      logFormTitleEl.textContent = '새 일지 등록'
+      adminLogForm.reset()
+      logFields.team.value = 'all'
+      logFields.status.value = 'completed'
+      logFields.startMeridiem.value = '오전'
+      logFields.startHour.value = '9'
+      logFields.startMinute.value = '00'
+      logFields.endMeridiem.value = '오전'
+      logFields.endHour.value = '10'
+      logFields.endMinute.value = '00'
+      setBulletRows([''])
+      deleteLogBtn.hidden = true
+    }
+
+    function openLogForm() {
+      logFormCard.classList.add('open')
+    }
+
+    function closeLogForm() {
+      logFormCard.classList.remove('open')
+    }
+
+    function fillLogForm(item) {
+      editingLogId = item.id
+      openLogForm()
+      logFormTitleEl.textContent = '일지 수정'
+      logFields.team.value = item.team
+      logFields.status.value = item.status
+      const parsed = parseDateLabel(item.date_label)
+      logFields.month.value = parsed.month
+      logFields.day.value = parsed.day
+      logFields.startMeridiem.value = parsed.startMeridiem
+      logFields.startHour.value = parsed.startHour
+      logFields.startMinute.value = parsed.startMinute
+      logFields.endMeridiem.value = parsed.endMeridiem
+      logFields.endHour.value = parsed.endHour
+      logFields.endMinute.value = parsed.endMinute
+      logFields.title.value = item.title || ''
+      setBulletRows(Array.isArray(item.summary_lines) ? item.summary_lines : [''])
+      deleteLogBtn.hidden = false
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
+    function openAdminLoginModal() {
+      adminLoginErrorEl.textContent = ''
+      adminPasswordInput.value = ''
+      adminLoginModalEl.classList.add('show')
+      setTimeout(() => adminPasswordInput.focus(), 10)
+    }
+
+    function closeAdminLoginModal() {
+      adminLoginModalEl.classList.remove('show')
+    }
+
     function renderLogs() {
       const visibleLogs = currentLogs.filter(item => activeFilter === 'all' || item.team === activeFilter || item.team === 'all')
       if (visibleLogs.length === 0) {
@@ -173,17 +517,12 @@
             <ul class="log-desc">
               ${normalizeSummaryLines(item.summary_lines).map(line => `<li>${escapeHtml(line)}</li>`).join('')}
             </ul>
+            <div class="admin-log-actions${isAdminUnlocked() ? ' active' : ''}">
+              <button class="admin-btn subtle" type="button" data-edit-log="${escapeHtml(item.id)}">수정</button>
+            </div>
           </div>
         </div>
       `).join('')
-    }
-
-    function sortLogs(items) {
-      return [...items].sort((a, b) => {
-        const createdDiff = String(a.created_at || '').localeCompare(String(b.created_at || ''))
-        if (createdDiff !== 0) return createdDiff
-        return Number(a.sort_order || 0) - Number(b.sort_order || 0)
-      })
     }
 
     tabs.forEach(tab => {
@@ -196,10 +535,6 @@
     })
 
     try {
-      const app = initializeApp(firebaseConfig)
-      const db = getDatabase(app)
-      const logsRef = ref(db, 'camp_logs')
-
       onValue(logsRef, snapshot => {
         const data = snapshot.val()
         if (!data) {
@@ -222,7 +557,151 @@
     }
 
     const subTop = document.querySelector('.sub-top')
+    const adminTitleTrigger = document.querySelector('.sub-top-title')
     let lastScrollY = window.scrollY
+    let adminPressTimer = null
+    let adminPressed = false
+
+    function clearAdminPressTimer() {
+      if (!adminPressTimer) return
+      clearTimeout(adminPressTimer)
+      adminPressTimer = null
+    }
+
+    function startAdminPressTimer() {
+      clearAdminPressTimer()
+      adminPressed = false
+      adminPressTimer = window.setTimeout(() => {
+        adminPressed = true
+        if (isAdminUnlocked()) setAdminUnlocked(true)
+        else openAdminLoginModal()
+      }, 700)
+    }
+
+    if (adminTitleTrigger) {
+      adminTitleTrigger.addEventListener('mousedown', startAdminPressTimer)
+      adminTitleTrigger.addEventListener('touchstart', startAdminPressTimer, { passive: true })
+      adminTitleTrigger.addEventListener('mouseup', clearAdminPressTimer)
+      adminTitleTrigger.addEventListener('mouseleave', clearAdminPressTimer)
+      adminTitleTrigger.addEventListener('touchend', clearAdminPressTimer)
+      adminTitleTrigger.addEventListener('touchcancel', clearAdminPressTimer)
+      adminTitleTrigger.addEventListener('click', event => {
+        if (!adminPressed) return
+        event.preventDefault()
+        adminPressed = false
+      })
+    }
+
+    adminLoginForm.addEventListener('submit', event => {
+      event.preventDefault()
+      if (adminPasswordInput.value === ADMIN_PASSWORD) {
+        setAdminUnlocked(true)
+        closeAdminLoginModal()
+        hideAdminStatus()
+      } else {
+        adminLoginErrorEl.textContent = '비밀번호가 올바르지 않습니다.'
+      }
+    })
+
+    closeAdminLoginBtn.addEventListener('click', closeAdminLoginModal)
+    adminLoginModalEl.addEventListener('click', event => {
+      if (event.target === adminLoginModalEl) closeAdminLoginModal()
+    })
+
+    logoutAdminBtn.addEventListener('click', () => {
+      setAdminUnlocked(false)
+      closeAdminLoginModal()
+      hideAdminStatus()
+      resetLogForm()
+      closeLogForm()
+    })
+
+    addBulletBtn.addEventListener('click', () => addBulletRow(''))
+    logSummaryListEl.addEventListener('click', event => {
+      const button = event.target.closest('[data-remove-bullet]')
+      if (!button) return
+      const rows = Array.from(logSummaryListEl.querySelectorAll('.bullet-row'))
+      if (rows.length <= 1) {
+        const input = rows[0]?.querySelector('[data-bullet-input]')
+        if (input) input.value = ''
+        return
+      }
+      button.closest('.bullet-row')?.remove()
+    })
+
+    logListEl.addEventListener('click', event => {
+      const button = event.target.closest('[data-edit-log]')
+      if (!button || !isAdminUnlocked()) return
+      const item = currentLogs.find(log => log.id === button.dataset.editLog)
+      if (item) fillLogForm(item)
+    })
+
+    resetLogBtn.addEventListener('click', () => {
+      resetLogForm()
+      hideAdminStatus()
+      openLogForm()
+    })
+
+    openLogFormBtn.addEventListener('click', () => {
+      resetLogForm()
+      hideAdminStatus()
+      openLogForm()
+    })
+
+    closeLogFormBtn.addEventListener('click', () => {
+      resetLogForm()
+      hideAdminStatus()
+      closeLogForm()
+    })
+
+    deleteLogBtn.addEventListener('click', async () => {
+      if (!editingLogId) return
+      try {
+        await remove(ref(db, `camp_logs/${editingLogId}`))
+        showAdminStatus('일지를 삭제했습니다.')
+        resetLogForm()
+      } catch (error) {
+        console.error(error)
+        showAdminStatus('일지를 삭제하지 못했습니다.', true)
+      }
+    })
+
+    adminLogForm.addEventListener('submit', async event => {
+      event.preventDefault()
+      const summaryLines = getBulletValues()
+      const startTime = formatDisplayTime(logFields.startMeridiem.value, logFields.startHour.value, logFields.startMinute.value)
+      const endTime = formatDisplayTime(logFields.endMeridiem.value, logFields.endHour.value, logFields.endMinute.value)
+      const requiresEndTime = logFields.status.value === 'completed'
+      const payload = {
+        team: logFields.team.value,
+        status: logFields.status.value,
+        sort_order: editingLogId ? (currentLogs.find(item => item.id === editingLogId)?.sort_order || nextSortOrder(currentLogs)) : nextSortOrder(currentLogs),
+        date_label: formatDateLabel(logFields.team.value, logFields.month.value, logFields.day.value, startTime, endTime, logFields.status.value),
+        title: logFields.title.value.trim(),
+        summary_lines: summaryLines,
+        created_at: editingLogId ? (currentLogs.find(item => item.id === editingLogId)?.created_at || new Date().toISOString()) : new Date().toISOString()
+      }
+      if (!logFields.month.value || !logFields.day.value || !startTime || (requiresEndTime && !endTime) || !payload.title || payload.summary_lines.length === 0) {
+        showAdminStatus('필수 항목을 모두 입력해 주세요.', true)
+        return
+      }
+      try {
+        if (editingLogId) await set(ref(db, `camp_logs/${editingLogId}`), payload)
+        else await set(push(ref(db, 'camp_logs')), payload)
+        showAdminStatus(editingLogId ? '일지를 수정했습니다.' : '새 일지를 등록했습니다.')
+        resetLogForm()
+        closeLogForm()
+      } catch (error) {
+        console.error(error)
+        showAdminStatus('일지를 저장하지 못했습니다.', true)
+      }
+    })
+
+    populateTimeSelects()
+    resetLogForm()
+    closeLogForm()
+    setAdminUnlocked(isAdminUnlocked())
+
     window.addEventListener('scroll', () => {
       if (!subTop) return
       const currentScrollY = window.scrollY

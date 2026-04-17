@@ -63,6 +63,40 @@
     .global-notice { margin: 12px 16px 0; padding: 12px 14px; border-radius: 16px; background: #fff4f4; border: 1px solid rgba(214, 69, 69, 0.18); color: #b23b3b; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .retry-btn { border: none; border-radius: 10px; background: #d64545; color: #fff; padding: 8px 12px; font-size: 12px; font-weight: 800; cursor: pointer; flex-shrink: 0; }
     .retry-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .admin-tools { display: none; max-width: 800px; margin: 0 auto 20px; padding: 18px; border-radius: 24px; background: #fff; border: 1px solid var(--border); box-shadow: 0 8px 24px rgba(20,50,74,0.04); }
+    .admin-tools.active { display: block; }
+    .admin-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .admin-head h2 { margin: 0; font-size: 20px; font-weight: 900; color: #0f4b6a; }
+    .admin-badge { display: inline-flex; align-items: center; min-height: 34px; padding: 0 12px; border-radius: 999px; background: #eef6fd; color: #1b5f98; font-size: 12px; font-weight: 900; }
+    .admin-status { margin-bottom: 12px; padding: 12px 14px; border-radius: 14px; background: #eef6fd; color: #1b5f98; font-size: 13px; font-weight: 700; display: none; }
+    .admin-status.show { display: block; }
+    .admin-grid { display: grid; gap: 16px; }
+    .admin-card { border: 1px solid var(--border); border-radius: 18px; padding: 16px; background: #fbfdff; }
+    .admin-card h3 { margin: 0 0 12px; font-size: 16px; font-weight: 900; color: #0f4b6a; }
+    .admin-card.collapsible { display: none; }
+    .admin-card.collapsible.open { display: block; }
+    .admin-card label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 900; color: var(--muted); }
+    .admin-card input, .admin-card textarea, .admin-card select { width: 100%; border: 1px solid #dce4eb; border-radius: 12px; padding: 10px 12px; font-size: 14px; background: #fff; color: var(--ink); outline: none; }
+    .admin-card textarea { min-height: 90px; resize: vertical; }
+    .admin-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .admin-btn { border: none; border-radius: 12px; padding: 10px 14px; font-size: 13px; font-weight: 900; cursor: pointer; }
+    .admin-btn.primary { background: var(--brand); color: #fff; }
+    .admin-btn.subtle { background: #eef2f6; color: #355063; }
+    .admin-btn.danger { background: #d64545; color: #fff; }
+    .post-admin-actions { display: none; gap: 8px; margin-top: 14px; }
+    .post-admin-actions.active { display: flex; }
+    .admin-comment-actions { display: none; gap: 8px; margin-top: 10px; }
+    .admin-comment-actions.active { display: flex; }
+    .admin-comment-inline-form { display: grid; gap: 8px; margin-top: 8px; }
+    .admin-comment-inline-form input,
+    .admin-comment-inline-form textarea { width: 100%; border: 1px solid #dce4eb; border-radius: 12px; padding: 10px 12px; font-size: 14px; background: #fff; color: var(--ink); outline: none; }
+    .admin-comment-inline-form textarea { min-height: 84px; height: auto; resize: vertical; }
+    .admin-login-modal { position: fixed; inset: 0; background: rgba(20,50,74,0.42); display: none; align-items: center; justify-content: center; z-index: 300; padding: 20px; }
+    .admin-login-modal.show { display: flex; }
+    .admin-login-card { width: min(100%, 360px); border-radius: 22px; background: #fff; padding: 22px; box-shadow: 0 24px 60px rgba(20,50,74,0.18); }
+    .admin-login-card h2 { margin: 0 0 8px; font-size: 22px; font-weight: 900; color: #0f4b6a; }
+    .admin-login-card p { margin: 0 0 16px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .admin-login-error { min-height: 18px; margin-top: 8px; font-size: 12px; font-weight: 800; color: #d64545; }
 
     @media (min-width: 768px) {
       body { max-width: 100%; box-shadow: none; }
@@ -88,6 +122,7 @@
       input { font-size: 15px; height: 48px; }
       textarea { font-size: 15px; min-height: 48px; height: 48px; padding-top: 13px; }
       .submit-btn { width: 48px; height: 48px; }
+      .admin-grid { grid-template-columns: minmax(0, 1fr) 320px; align-items: start; }
     }
   </style>
 </head>
@@ -110,12 +145,65 @@
     <p>작은 의견 하나도 캠프를 더 좋게 만듭니다.<br>편하게 생각을 남겨주세요.</p>
   </div>
 
+  <section id="adminTools" class="admin-tools">
+    <div class="admin-head">
+      <h2>의견 관리자 모드</h2>
+      <div class="admin-actions" style="margin-top:0;">
+        <button class="admin-btn primary" type="button" id="openTopicFormBtn">새 질문 등록</button>
+        <button class="admin-btn subtle" type="button" id="logoutAdminBtn">관리자 종료</button>
+      </div>
+    </div>
+    <p style="margin:0 0 14px; font-size:13px; line-height:1.6; color: var(--muted);">기존 질문은 아래 카드의 `질문 수정` 버튼으로 바로 불러올 수 있습니다.</p>
+    <div id="adminStatus" class="admin-status"></div>
+    <div class="admin-grid">
+      <div id="topicFormCard" class="admin-card collapsible">
+        <h3 id="topicFormTitle">새 질문 등록</h3>
+        <form id="topicAdminForm">
+          <div>
+            <label for="topicTitleInput">질문 제목</label>
+            <input id="topicTitleInput" type="text" required />
+          </div>
+          <div>
+            <label for="topicGuideInput">안내 문구</label>
+            <textarea id="topicGuideInput" required></textarea>
+          </div>
+          <div>
+            <label for="topicExamplesInput">예시 문구</label>
+            <textarea id="topicExamplesInput" placeholder="한 줄에 하나씩 입력"></textarea>
+          </div>
+          <div class="admin-actions">
+            <button class="admin-btn primary" type="submit">저장</button>
+            <button class="admin-btn subtle" type="button" id="resetTopicBtn">새로 작성</button>
+            <button class="admin-btn subtle" type="button" id="closeTopicFormBtn">닫기</button>
+            <button class="admin-btn danger" type="button" id="deleteTopicBtn" hidden>삭제</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <div id="globalNotice"></div>
   <main class="feed-container" id="feed"></main>
 
+  <div id="adminLoginModal" class="admin-login-modal">
+    <div class="admin-login-card">
+      <h2>관리자 모드</h2>
+      <p>비밀번호를 입력하면 이 페이지에서 바로 질문과 답변을 관리할 수 있습니다.</p>
+      <form id="adminLoginForm">
+        <label for="adminPasswordInput">비밀번호</label>
+        <input id="adminPasswordInput" type="password" required />
+        <div class="admin-actions">
+          <button class="admin-btn primary" type="submit">확인</button>
+          <button class="admin-btn subtle" type="button" id="closeAdminLoginBtn">닫기</button>
+        </div>
+        <div id="adminLoginError" class="admin-login-error"></div>
+      </form>
+    </div>
+  </div>
+
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js'
-    import { getDatabase, onValue, push, ref, set } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js'
+    import { getDatabase, onValue, push, ref, remove, set } from 'https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js'
 
     const firebaseConfig = {
       apiKey: 'AIzaSyAEtRXvGspCZBhA0l95fp6xnF7ZVSbODdQ',
@@ -134,12 +222,38 @@
 
     const feedEl = document.getElementById('feed')
     const globalNoticeEl = document.getElementById('globalNotice')
+    const adminToolsEl = document.getElementById('adminTools')
+    const adminStatusEl = document.getElementById('adminStatus')
+    const topicFormCard = document.getElementById('topicFormCard')
+    const topicAdminForm = document.getElementById('topicAdminForm')
+    const topicFormTitleEl = document.getElementById('topicFormTitle')
+    const openTopicFormBtn = document.getElementById('openTopicFormBtn')
+    const resetTopicBtn = document.getElementById('resetTopicBtn')
+    const closeTopicFormBtn = document.getElementById('closeTopicFormBtn')
+    const deleteTopicBtn = document.getElementById('deleteTopicBtn')
+    const logoutAdminBtn = document.getElementById('logoutAdminBtn')
+    const adminLoginModalEl = document.getElementById('adminLoginModal')
+    const adminLoginForm = document.getElementById('adminLoginForm')
+    const adminPasswordInput = document.getElementById('adminPasswordInput')
+    const adminLoginErrorEl = document.getElementById('adminLoginError')
+    const closeAdminLoginBtn = document.getElementById('closeAdminLoginBtn')
     const nicknameStorageKey = 'camp_nickname'
+    const ADMIN_PASSWORD = '0819'
+    const ADMIN_SESSION_KEY = 'camp_admin_unlocked'
 
     let topics = []
     let topicMap = {}
     let allCommentsGrouped = {}
     let expandedTopics = new Set()
+    let currentComments = []
+    let editingTopicId = null
+    let editingCommentId = null
+
+    const topicFields = {
+      title: document.getElementById('topicTitleInput'),
+      guide: document.getElementById('topicGuideInput'),
+      examples: document.getElementById('topicExamplesInput')
+    }
 
     function escapeHtml(text) {
       const div = document.createElement('div')
@@ -227,6 +341,78 @@
       allCommentsGrouped = Object.fromEntries(topics.map(topic => [topic.id, allCommentsGrouped[topic.id] || []]))
     }
 
+    function isAdminUnlocked() {
+      return sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true'
+    }
+
+    function setAdminUnlocked(value) {
+      if (value) sessionStorage.setItem(ADMIN_SESSION_KEY, 'true')
+      else sessionStorage.removeItem(ADMIN_SESSION_KEY)
+      adminToolsEl.classList.toggle('active', value)
+      renderFeed()
+    }
+
+    function showAdminStatus(message, isError = false) {
+      adminStatusEl.textContent = message
+      adminStatusEl.classList.add('show')
+      adminStatusEl.style.background = isError ? '#fff4f4' : '#eef6fd'
+      adminStatusEl.style.color = isError ? '#a83838' : '#1b5f98'
+    }
+
+    function hideAdminStatus() {
+      adminStatusEl.classList.remove('show')
+      adminStatusEl.textContent = ''
+    }
+
+    function normalizeExamplesText(text) {
+      return text.split('\n').map(item => item.trim()).filter(Boolean)
+    }
+
+    function nextSortOrder(items) {
+      return items.length > 0 ? Math.max(...items.map(item => Number(item.sort_order || 0))) + 10 : 10
+    }
+
+    function createTopicId() {
+      return `topic_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`
+    }
+
+    function resetTopicForm() {
+      editingTopicId = null
+      topicFormTitleEl.textContent = '새 질문 등록'
+      topicAdminForm.reset()
+      deleteTopicBtn.hidden = true
+    }
+
+    function openTopicForm() {
+      topicFormCard.classList.add('open')
+    }
+
+    function closeTopicForm() {
+      topicFormCard.classList.remove('open')
+    }
+
+    function fillTopicForm(item) {
+      editingTopicId = item.id
+      openTopicForm()
+      topicFormTitleEl.textContent = '질문 수정'
+      topicFields.title.value = item.title
+      topicFields.guide.value = item.guide
+      topicFields.examples.value = Array.isArray(item.examples) ? item.examples.join('\n') : ''
+      deleteTopicBtn.hidden = false
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
+    function openAdminLoginModal() {
+      adminLoginErrorEl.textContent = ''
+      adminPasswordInput.value = ''
+      adminLoginModalEl.classList.add('show')
+      setTimeout(() => adminPasswordInput.focus(), 10)
+    }
+
+    function closeAdminLoginModal() {
+      adminLoginModalEl.classList.remove('show')
+    }
+
     window.toggleComments = function(topicId) {
       if (expandedTopics.has(topicId)) expandedTopics.delete(topicId)
       else expandedTopics.add(topicId)
@@ -256,6 +442,9 @@
             <div class="examples">
               ${(topic.examples || []).map(ex => `<span class="example-chip">${escapeHtml(ex)}</span>`).join('')}
             </div>
+            <div class="post-admin-actions${isAdminUnlocked() ? ' active' : ''}">
+              <button class="admin-btn subtle" type="button" data-edit-topic="${escapeHtml(topic.id)}">질문 수정</button>
+            </div>
           </div>
           <div class="post-comments" id="comments-${topic.id}">
             <div class="empty-state">로딩 중...</div>
@@ -264,7 +453,7 @@
             <form class="topic-form" data-topic="${topic.id}">
               <div class="write-row">
                 <div class="input-group">
-                  <input class="nickname-input" type="text" maxlength="20" placeholder="닉네임 (예: 여름청년)" value="${escapeHtml(getSavedNickname())}" required />
+                  <input class="nickname-input" type="text" maxlength="20" placeholder="닉네임 (예: 밥친구)" value="${escapeHtml(getSavedNickname())}" required />
                   <textarea class="content-input" maxlength="500" placeholder="자유롭게 의견을 남겨주세요" required oninput="this.style.height='';this.style.height=this.scrollHeight + 'px'"></textarea>
                 </div>
                 <button class="submit-btn" type="submit" aria-label="게시">
@@ -301,11 +490,26 @@
               <img src="${avatarUrl}" style="width:100%;height:100%;" alt="avatar" />
             </div>
             <div class="comment-body">
-              <div class="comment-meta">
-                <span class="comment-author">${escapeHtml(item.nickname)}</span>
-                <span class="comment-time">${formatTime(item.created_at)}</span>
+              ${editingCommentId === item.id ? `
+                <form class="admin-comment-inline-form" data-comment-id="${escapeHtml(item.id)}">
+                  <input type="text" name="nickname" maxlength="20" value="${escapeHtml(item.nickname)}" required />
+                  <textarea name="content" maxlength="500" required>${escapeHtml(item.content)}</textarea>
+                  <div class="admin-actions" style="margin-top:0;">
+                    <button class="admin-btn primary" type="submit">저장</button>
+                    <button class="admin-btn subtle" type="button" data-cancel-comment-edit>닫기</button>
+                  </div>
+                </form>
+              ` : `
+                <div class="comment-meta">
+                  <span class="comment-author">${escapeHtml(item.nickname)}</span>
+                  <span class="comment-time">${formatTime(item.created_at)}</span>
+                </div>
+                <p class="comment-text">${escapeHtml(item.content)}</p>
+              `}
+              <div class="admin-comment-actions${isAdminUnlocked() ? ' active' : ''}">
+                <button class="admin-btn subtle" type="button" data-open-comment-edit="${escapeHtml(item.id)}">${editingCommentId === item.id ? '수정 중' : '수정'}</button>
+                <button class="admin-btn danger" type="button" data-delete-comment="${escapeHtml(item.id)}">삭제</button>
               </div>
-              <p class="comment-text">${escapeHtml(item.content)}</p>
             </div>
           </div>
         `
@@ -319,10 +523,11 @@
 
     function hydrateComments(data) {
       ensureTopicState()
+      currentComments = Object.entries(data || {}).map(([id, value]) => ({ id, ...value }))
       topics.forEach(topic => { allCommentsGrouped[topic.id] = [] })
-      Object.values(data || {}).forEach(item => {
+      Object.entries(data || {}).forEach(([id, item]) => {
         if (item && topicMap[item.topic]) {
-          allCommentsGrouped[item.topic].push(item)
+          allCommentsGrouped[item.topic].push({ id, ...item })
         }
       })
       topics.forEach(topic => {
@@ -427,7 +632,187 @@
     })
 
     const subTop = document.querySelector('.sub-top')
+    const adminTitleTrigger = document.querySelector('.sub-top-title')
     let lastScrollY = window.scrollY
+    let adminPressTimer = null
+    let adminPressed = false
+
+    function clearAdminPressTimer() {
+      if (!adminPressTimer) return
+      clearTimeout(adminPressTimer)
+      adminPressTimer = null
+    }
+
+    function startAdminPressTimer() {
+      clearAdminPressTimer()
+      adminPressed = false
+      adminPressTimer = window.setTimeout(() => {
+        adminPressed = true
+        if (isAdminUnlocked()) setAdminUnlocked(true)
+        else openAdminLoginModal()
+      }, 700)
+    }
+
+    if (adminTitleTrigger) {
+      adminTitleTrigger.addEventListener('mousedown', startAdminPressTimer)
+      adminTitleTrigger.addEventListener('touchstart', startAdminPressTimer, { passive: true })
+      adminTitleTrigger.addEventListener('mouseup', clearAdminPressTimer)
+      adminTitleTrigger.addEventListener('mouseleave', clearAdminPressTimer)
+      adminTitleTrigger.addEventListener('touchend', clearAdminPressTimer)
+      adminTitleTrigger.addEventListener('touchcancel', clearAdminPressTimer)
+      adminTitleTrigger.addEventListener('click', event => {
+        if (!adminPressed) return
+        event.preventDefault()
+        adminPressed = false
+      })
+    }
+
+    feedEl.addEventListener('click', event => {
+      const editTopicButton = event.target.closest('[data-edit-topic]')
+      if (!editTopicButton || !isAdminUnlocked()) return
+      const item = topics.find(topic => topic.id === editTopicButton.dataset.editTopic)
+      if (item) fillTopicForm(item)
+    })
+
+    topicAdminForm.addEventListener('submit', async event => {
+      event.preventDefault()
+      const id = editingTopicId || createTopicId()
+      const payload = {
+        id,
+        title: topicFields.title.value.trim(),
+        guide: topicFields.guide.value.trim(),
+        examples: normalizeExamplesText(topicFields.examples.value),
+        sort_order: editingTopicId ? (topics.find(item => item.id === editingTopicId)?.sort_order || nextSortOrder(topics)) : nextSortOrder(topics)
+      }
+      if (!payload.id || !payload.title || !payload.guide) {
+        showAdminStatus('질문 필수 항목을 모두 입력해 주세요.', true)
+        return
+      }
+      try {
+        await set(ref(db, `camp_topics/${id}`), payload)
+        showAdminStatus(editingTopicId ? '질문을 수정했습니다.' : '질문을 등록했습니다.')
+        resetTopicForm()
+        closeTopicForm()
+      } catch (error) {
+        console.error(error)
+        showAdminStatus('질문을 저장하지 못했습니다.', true)
+      }
+    })
+
+    resetTopicBtn.addEventListener('click', () => {
+      resetTopicForm()
+      hideAdminStatus()
+      openTopicForm()
+    })
+
+    openTopicFormBtn.addEventListener('click', () => {
+      resetTopicForm()
+      hideAdminStatus()
+      openTopicForm()
+    })
+
+    closeTopicFormBtn.addEventListener('click', () => {
+      resetTopicForm()
+      hideAdminStatus()
+      closeTopicForm()
+    })
+
+    deleteTopicBtn.addEventListener('click', async () => {
+      if (!editingTopicId) return
+      try {
+        const linkedComments = currentComments.filter(comment => comment.topic === editingTopicId)
+        await Promise.all([
+          remove(ref(db, `camp_topics/${editingTopicId}`)),
+          ...linkedComments.map(comment => remove(ref(db, `camp_topic_comments/${comment.id}`)))
+        ])
+        showAdminStatus('질문과 연결된 답변을 삭제했습니다.')
+        resetTopicForm()
+        closeTopicForm()
+      } catch (error) {
+        console.error(error)
+        showAdminStatus('질문을 삭제하지 못했습니다.', true)
+      }
+    })
+
+    feedEl.addEventListener('click', async event => {
+      const openEditButton = event.target.closest('[data-open-comment-edit]')
+      if (openEditButton && isAdminUnlocked()) {
+        editingCommentId = openEditButton.dataset.openCommentEdit
+        topics.forEach(topic => renderCommentsForTopic(topic.id))
+        return
+      }
+      const cancelEditButton = event.target.closest('[data-cancel-comment-edit]')
+      if (cancelEditButton) {
+        editingCommentId = null
+        topics.forEach(topic => renderCommentsForTopic(topic.id))
+        return
+      }
+      const deleteButton = event.target.closest('[data-delete-comment]')
+      if (deleteButton && isAdminUnlocked()) {
+        try {
+          await remove(ref(db, `camp_topic_comments/${deleteButton.dataset.deleteComment}`))
+          if (editingCommentId === deleteButton.dataset.deleteComment) editingCommentId = null
+          showAdminStatus('답변을 삭제했습니다.')
+        } catch (error) {
+          console.error(error)
+          showAdminStatus('답변을 삭제하지 못했습니다.', true)
+        }
+      }
+    })
+
+    feedEl.addEventListener('submit', async event => {
+      const editForm = event.target.closest('.admin-comment-inline-form')
+      if (editForm && isAdminUnlocked()) {
+        event.preventDefault()
+        const id = editForm.dataset.commentId
+        const existing = currentComments.find(comment => comment.id === id)
+        if (!existing) return
+        const nickname = editForm.elements.nickname.value.trim()
+        const content = editForm.elements.content.value.trim()
+        if (!nickname || !content) {
+          showAdminStatus('답변 수정 시 닉네임과 내용을 모두 입력해 주세요.', true)
+          return
+        }
+        try {
+          await set(ref(db, `camp_topic_comments/${id}`), { ...existing, nickname, content })
+          editingCommentId = null
+          showAdminStatus('답변을 수정했습니다.')
+        } catch (error) {
+          console.error(error)
+          showAdminStatus('답변을 수정하지 못했습니다.', true)
+        }
+        return
+      }
+    }, true)
+
+    adminLoginForm.addEventListener('submit', event => {
+      event.preventDefault()
+      if (adminPasswordInput.value === ADMIN_PASSWORD) {
+        setAdminUnlocked(true)
+        closeAdminLoginModal()
+        hideAdminStatus()
+      } else {
+        adminLoginErrorEl.textContent = '비밀번호가 올바르지 않습니다.'
+      }
+    })
+
+    closeAdminLoginBtn.addEventListener('click', closeAdminLoginModal)
+    adminLoginModalEl.addEventListener('click', event => {
+      if (event.target === adminLoginModalEl) closeAdminLoginModal()
+    })
+
+    logoutAdminBtn.addEventListener('click', () => {
+      setAdminUnlocked(false)
+      closeAdminLoginModal()
+      hideAdminStatus()
+      resetTopicForm()
+      closeTopicForm()
+      editingCommentId = null
+    })
+
+    resetTopicForm()
+    closeTopicForm()
+    setAdminUnlocked(isAdminUnlocked())
     window.addEventListener('scroll', () => {
       if (!subTop) return
       const currentScrollY = window.scrollY
