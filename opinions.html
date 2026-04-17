@@ -23,6 +23,7 @@
     .sub-nav-pill.active { background: #ffffff; color: #0f4b6a; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
     .page-header { padding: 24px 16px 0; margin-bottom: 16px; }
     .page-header h1 { margin: 0 0 8px; font-size: 26px; font-weight: 900; color: #0f4b6a; letter-spacing: -0.5px; }
+    .page-title-trigger { display: inline-flex; align-items: center; gap: 8px; padding: 0; border: none; background: transparent; color: inherit; font: inherit; cursor: pointer; }
     .page-header p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.6; }
     .feed-container { padding: 16px; display: flex; flex-direction: column; gap: 20px; }
     .post { background: var(--surface); border-radius: var(--radius); box-shadow: 0 4px 20px rgba(20,50,74,0.03); border: 1px solid var(--border); overflow: hidden; }
@@ -91,12 +92,17 @@
     .admin-comment-inline-form input,
     .admin-comment-inline-form textarea { width: 100%; border: 1px solid #dce4eb; border-radius: 12px; padding: 10px 12px; font-size: 14px; background: #fff; color: var(--ink); outline: none; }
     .admin-comment-inline-form textarea { min-height: 84px; height: auto; resize: vertical; }
-    .admin-login-modal { position: fixed; inset: 0; background: rgba(20,50,74,0.42); display: none; align-items: center; justify-content: center; z-index: 300; padding: 20px; }
+    .admin-login-modal { position: fixed; inset: 0; background: rgba(8, 28, 43, 0.46); display: none; align-items: center; justify-content: center; z-index: 300; padding: 20px; }
     .admin-login-modal.show { display: flex; }
-    .admin-login-card { width: min(100%, 360px); border-radius: 22px; background: #fff; padding: 22px; box-shadow: 0 24px 60px rgba(20,50,74,0.18); }
-    .admin-login-card h2 { margin: 0 0 8px; font-size: 22px; font-weight: 900; color: #0f4b6a; }
-    .admin-login-card p { margin: 0 0 16px; font-size: 13px; color: var(--muted); line-height: 1.6; }
-    .admin-login-error { min-height: 18px; margin-top: 8px; font-size: 12px; font-weight: 800; color: #d64545; }
+    .admin-login-card { width: 100%; max-width: 360px; background: rgba(255,255,255,0.96); border-radius: 24px; padding: 22px 20px; box-shadow: 0 20px 50px rgba(9, 34, 52, 0.24); }
+    .admin-login-card h2 { margin: 0 0 8px; font-size: 22px; color: #0f4b6a; }
+    .admin-login-card p { margin: 0 0 16px; font-size: 13px; line-height: 1.6; color: #5f7688; }
+    .admin-login-card input { width: 100%; height: 46px; border: 1px solid rgba(20,50,74,0.12); border-radius: 14px; padding: 0 14px; font-size: 15px; font-weight: 700; background: #fff; color: var(--ink); outline: none; }
+    .admin-login-actions { display: flex; gap: 10px; margin-top: 12px; }
+    .admin-login-btn { flex: 1; border: none; border-radius: 14px; height: 44px; font-size: 14px; font-weight: 900; cursor: pointer; }
+    .admin-login-btn.primary { background: #0f4f73; color: #fff; }
+    .admin-login-btn.secondary { background: #eef2f6; color: #355063; }
+    .admin-login-error { min-height: 18px; margin-top: 10px; font-size: 12px; font-weight: 800; color: #d64545; }
 
     @media (min-width: 768px) {
       body { max-width: 100%; box-shadow: none; }
@@ -141,7 +147,7 @@
   </div>
 
   <div class="page-header">
-    <h1>Camp Opinions ✍🏻</h1>
+    <h1><button type="button" class="page-title-trigger" id="adminEntryTrigger">Camp Opinions ✍🏻</button></h1>
     <p>작은 의견 하나도 캠프를 더 좋게 만듭니다.<br>편하게 생각을 남겨주세요.</p>
   </div>
 
@@ -190,11 +196,10 @@
       <h2>관리자 모드</h2>
       <p>비밀번호를 입력하면 이 페이지에서 바로 질문과 답변을 관리할 수 있습니다.</p>
       <form id="adminLoginForm">
-        <label for="adminPasswordInput">비밀번호</label>
         <input id="adminPasswordInput" type="password" required />
-        <div class="admin-actions">
-          <button class="admin-btn primary" type="submit">확인</button>
-          <button class="admin-btn subtle" type="button" id="closeAdminLoginBtn">닫기</button>
+        <div class="admin-login-actions">
+          <button class="admin-login-btn secondary" type="button" id="closeAdminLoginBtn">닫기</button>
+          <button class="admin-login-btn primary" type="submit">들어가기</button>
         </div>
         <div id="adminLoginError" class="admin-login-error"></div>
       </form>
@@ -248,6 +253,7 @@
     let currentComments = []
     let editingTopicId = null
     let editingCommentId = null
+    let adminModeActive = false
 
     const topicFields = {
       title: document.getElementById('topicTitleInput'),
@@ -348,6 +354,14 @@
     function setAdminUnlocked(value) {
       if (value) sessionStorage.setItem(ADMIN_SESSION_KEY, 'true')
       else sessionStorage.removeItem(ADMIN_SESSION_KEY)
+    }
+
+    function isAdminModeActive() {
+      return adminModeActive
+    }
+
+    function setAdminModeActive(value) {
+      adminModeActive = value
       adminToolsEl.classList.toggle('active', value)
       renderFeed()
     }
@@ -442,7 +456,7 @@
             <div class="examples">
               ${(topic.examples || []).map(ex => `<span class="example-chip">${escapeHtml(ex)}</span>`).join('')}
             </div>
-            <div class="post-admin-actions${isAdminUnlocked() ? ' active' : ''}">
+            <div class="post-admin-actions${isAdminModeActive() ? ' active' : ''}">
               <button class="admin-btn subtle" type="button" data-edit-topic="${escapeHtml(topic.id)}">질문 수정</button>
             </div>
           </div>
@@ -506,7 +520,7 @@
                 </div>
                 <p class="comment-text">${escapeHtml(item.content)}</p>
               `}
-              <div class="admin-comment-actions${isAdminUnlocked() ? ' active' : ''}">
+              <div class="admin-comment-actions${isAdminModeActive() ? ' active' : ''}">
                 <button class="admin-btn subtle" type="button" data-open-comment-edit="${escapeHtml(item.id)}">${editingCommentId === item.id ? '수정 중' : '수정'}</button>
                 <button class="admin-btn danger" type="button" data-delete-comment="${escapeHtml(item.id)}">삭제</button>
               </div>
@@ -632,7 +646,7 @@
     })
 
     const subTop = document.querySelector('.sub-top')
-    const adminTitleTrigger = document.querySelector('.sub-top-title')
+    const adminEntryTrigger = document.getElementById('adminEntryTrigger')
     let lastScrollY = window.scrollY
     let adminPressTimer = null
     let adminPressed = false
@@ -643,33 +657,34 @@
       adminPressTimer = null
     }
 
-    function startAdminPressTimer() {
+    function startAdminPressTimer(event) {
+      event.preventDefault()
       clearAdminPressTimer()
       adminPressed = false
       adminPressTimer = window.setTimeout(() => {
         adminPressed = true
-        if (isAdminUnlocked()) setAdminUnlocked(true)
-        else openAdminLoginModal()
-      }, 700)
+        openAdminLoginModal()
+      }, 2000)
     }
 
-    if (adminTitleTrigger) {
-      adminTitleTrigger.addEventListener('mousedown', startAdminPressTimer)
-      adminTitleTrigger.addEventListener('touchstart', startAdminPressTimer, { passive: true })
-      adminTitleTrigger.addEventListener('mouseup', clearAdminPressTimer)
-      adminTitleTrigger.addEventListener('mouseleave', clearAdminPressTimer)
-      adminTitleTrigger.addEventListener('touchend', clearAdminPressTimer)
-      adminTitleTrigger.addEventListener('touchcancel', clearAdminPressTimer)
-      adminTitleTrigger.addEventListener('click', event => {
-        if (!adminPressed) return
+    adminEntryTrigger?.addEventListener('mousedown', startAdminPressTimer)
+    adminEntryTrigger?.addEventListener('touchstart', startAdminPressTimer, { passive: false })
+    adminEntryTrigger?.addEventListener('mouseup', clearAdminPressTimer)
+    adminEntryTrigger?.addEventListener('mouseleave', clearAdminPressTimer)
+    adminEntryTrigger?.addEventListener('touchend', clearAdminPressTimer)
+    adminEntryTrigger?.addEventListener('touchcancel', clearAdminPressTimer)
+    adminEntryTrigger?.addEventListener('click', event => {
+      if (!adminPressed) {
         event.preventDefault()
-        adminPressed = false
-      })
-    }
+        return
+      }
+      event.preventDefault()
+      adminPressed = false
+    })
 
     feedEl.addEventListener('click', event => {
       const editTopicButton = event.target.closest('[data-edit-topic]')
-      if (!editTopicButton || !isAdminUnlocked()) return
+      if (!editTopicButton || !isAdminModeActive()) return
       const item = topics.find(topic => topic.id === editTopicButton.dataset.editTopic)
       if (item) fillTopicForm(item)
     })
@@ -736,7 +751,7 @@
 
     feedEl.addEventListener('click', async event => {
       const openEditButton = event.target.closest('[data-open-comment-edit]')
-      if (openEditButton && isAdminUnlocked()) {
+      if (openEditButton && isAdminModeActive()) {
         editingCommentId = openEditButton.dataset.openCommentEdit
         topics.forEach(topic => renderCommentsForTopic(topic.id))
         return
@@ -748,7 +763,7 @@
         return
       }
       const deleteButton = event.target.closest('[data-delete-comment]')
-      if (deleteButton && isAdminUnlocked()) {
+      if (deleteButton && isAdminModeActive()) {
         try {
           await remove(ref(db, `camp_topic_comments/${deleteButton.dataset.deleteComment}`))
           if (editingCommentId === deleteButton.dataset.deleteComment) editingCommentId = null
@@ -762,7 +777,7 @@
 
     feedEl.addEventListener('submit', async event => {
       const editForm = event.target.closest('.admin-comment-inline-form')
-      if (editForm && isAdminUnlocked()) {
+      if (editForm && isAdminModeActive()) {
         event.preventDefault()
         const id = editForm.dataset.commentId
         const existing = currentComments.find(comment => comment.id === id)
@@ -789,6 +804,7 @@
       event.preventDefault()
       if (adminPasswordInput.value === ADMIN_PASSWORD) {
         setAdminUnlocked(true)
+        setAdminModeActive(true)
         closeAdminLoginModal()
         hideAdminStatus()
       } else {
@@ -803,6 +819,7 @@
 
     logoutAdminBtn.addEventListener('click', () => {
       setAdminUnlocked(false)
+      setAdminModeActive(false)
       closeAdminLoginModal()
       hideAdminStatus()
       resetTopicForm()
@@ -812,7 +829,7 @@
 
     resetTopicForm()
     closeTopicForm()
-    setAdminUnlocked(isAdminUnlocked())
+    setAdminModeActive(false)
     window.addEventListener('scroll', () => {
       if (!subTop) return
       const currentScrollY = window.scrollY

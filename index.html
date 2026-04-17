@@ -38,6 +38,7 @@
     .nav-pill:hover { background: rgba(255,255,255,0.30); }
     .hero-main { position: relative; z-index: 2; text-align: center; padding: 0 12px 28px; margin-top: auto; }
 		.dday-wrap { display: inline-flex; align-items: center; gap: 9px; padding: 10px 16px; margin-bottom: 18px; border-radius: 999px; background: rgba(95, 118, 137, 0.28); border: 1px solid rgba(255,255,255,0.38); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: #ffffff; box-shadow: 0 10px 26px rgba(14, 45, 66, 0.16); }
+    .dday-trigger { border: none; cursor: pointer; }
 		.dday-label { font-size: 11px; font-weight: 900; letter-spacing: 0.12em; opacity: 0.98; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.20); }
 		.dday-value { font-size: 17px; font-weight: 900; letter-spacing: -0.4px; color: #8fe3ff; text-shadow: 0 2px 12px rgba(11, 55, 78, 0.35); }
 		.hero-sub { margin: 0 auto 28px; max-width: none; width: 100%; color: rgba(255,255,255,0.98); font-size: 14px; font-weight: 850; line-height: 1.25; letter-spacing: 0.01em; white-space: nowrap; text-align: center; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.18); }
@@ -141,10 +142,10 @@
 			</div>
 
 			<div class="hero-main">
-        <div class="dday-wrap">
+        <button type="button" class="dday-wrap dday-trigger" id="adminEntryBtn">
           <span class="dday-label">D-DAY</span>
           <span class="dday-value" id="ddayText">계산중...</span>
-        </div>
+        </button>
 
         <h1 class="hero-title">2026 SU JEJU</h1>
 
@@ -321,7 +322,7 @@
 		const topPanel = document.querySelector(".top-panel");
 		let lastScrollY = window.scrollY;
     const adminModal = document.getElementById("adminModal");
-    const adminTitleTrigger = document.querySelector(".panel-title");
+    const adminEntryBtn = document.getElementById("adminEntryBtn");
     const closeAdminBtn = document.getElementById("closeAdminBtn");
     const submitAdminBtn = document.getElementById("submitAdminBtn");
     const adminPasswordInput = document.getElementById("adminPasswordInput");
@@ -369,32 +370,37 @@
       }
     }
 
+    function clearAdminPressTimer() {
+      if (!adminPressTimer) return;
+      clearTimeout(adminPressTimer);
+      adminPressTimer = null;
+    }
+
     function startAdminPress(event) {
       event.preventDefault();
+      clearAdminPressTimer();
       adminPressed = false;
-      clearTimeout(adminPressTimer);
-      adminPressTimer = setTimeout(() => {
+      adminPressTimer = window.setTimeout(() => {
         adminPressed = true;
         openAdminModal();
-      }, 900);
+      }, 2000);
     }
 
-    function cancelAdminPress() {
-      clearTimeout(adminPressTimer);
-    }
-
-    adminTitleTrigger?.addEventListener("mousedown", startAdminPress);
-    adminTitleTrigger?.addEventListener("touchstart", startAdminPress, { passive: false });
-    adminTitleTrigger?.addEventListener("mouseup", cancelAdminPress);
-    adminTitleTrigger?.addEventListener("mouseleave", cancelAdminPress);
-    adminTitleTrigger?.addEventListener("touchend", cancelAdminPress);
-    adminTitleTrigger?.addEventListener("touchcancel", cancelAdminPress);
-    adminTitleTrigger?.addEventListener("click", (event) => {
-      if (adminPressed) {
+    adminEntryBtn?.addEventListener("mousedown", startAdminPress);
+    adminEntryBtn?.addEventListener("touchstart", startAdminPress, { passive: false });
+    adminEntryBtn?.addEventListener("mouseup", clearAdminPressTimer);
+    adminEntryBtn?.addEventListener("mouseleave", clearAdminPressTimer);
+    adminEntryBtn?.addEventListener("touchend", clearAdminPressTimer);
+    adminEntryBtn?.addEventListener("touchcancel", clearAdminPressTimer);
+    adminEntryBtn?.addEventListener("click", (event) => {
+      if (!adminPressed) {
         event.preventDefault();
-        adminPressed = false;
+        return;
       }
+      event.preventDefault();
+      adminPressed = false;
     });
+
     closeAdminBtn?.addEventListener("click", closeAdminModal);
     submitAdminBtn?.addEventListener("click", submitAdminPassword);
     adminPasswordInput?.addEventListener("keydown", (event) => {
