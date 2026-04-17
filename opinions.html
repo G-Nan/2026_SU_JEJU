@@ -127,17 +127,6 @@
       appId: '1:445858058251:web:a5efb44ca35b0686c2370e'
     }
 
-    const DEFAULT_TOPICS = [
-      { id: 'expect', title: '이번 캠프에서 가장 기대하는 것은?', guide: '이번 캠프에서 기대하는 한 가지를 편하게 적어주세요.', examples: ['더 가까워지는 시간', '깊은 나눔과 기도', '좋은 추억', '재충전'], sort_order: 10 },
-      { id: 'program', title: '꼭 있었으면 하는 프로그램은?', guide: '프로그램, 시간, 분위기 모두 괜찮습니다.', examples: ['조별 나눔', '저녁 자유교제', '찬양과 기도회', '레크레이션'], sort_order: 20 },
-      { id: 'less', title: '반대로 너무 많지 않았으면 하는 것은?', guide: '부담스럽거나 너무 빡빡하지 않았으면 하는 요소를 적어주세요.', examples: ['이동이 많은 일정', '긴 강의식 프로그램', '체력 소모가 큰 활동'], sort_order: 30 },
-      { id: 'mood', title: '어떤 분위기의 일정이 좋나요?', guide: '자유롭고 여유로운지, 균형형인지, 꽉 찬 일정이 좋은지 적어주세요.', examples: ['여유롭고 쉼이 있는 일정', '균형 있는 일정', '프로그램이 풍성한 일정'], sort_order: 40 },
-      { id: 'places', title: '제주에서 가보고 싶은 곳 / 해보고 싶은 것은?', guide: '관광지, 자연, 산책, 체험, 사진 스팟 모두 괜찮습니다.', examples: ['바닷가 산책', '오름', '예쁜 카페', '야경 보기'], sort_order: 50 },
-      { id: 'food', title: '제주에서 먹고 싶은 음식이 있나요?', guide: '음식, 간식, 카페 메뉴 모두 괜찮습니다.', examples: ['흑돼지', '갈치조림', '고기국수', '카페 디저트'], sort_order: 60 },
-      { id: 'care', title: '걱정되거나 배려가 필요한 점이 있나요?', guide: '편한 범위 안에서만 적어주세요.', examples: ['낯을 가리는 편', '체력이 약한 편', '늦게 합류할 수도 있음'], sort_order: 70 },
-      { id: 'free', title: '자유 의견', guide: '위 질문 외에도 전하고 싶은 생각을 자유롭게 남겨주세요.', examples: ['행사형보다 자연스러운 흐름', '자유 시간이 있었으면 좋겠음'], sort_order: 80 }
-    ]
-
     const app = initializeApp(firebaseConfig)
     const db = getDatabase(app)
     const commentsRef = ref(db, 'camp_topic_comments')
@@ -147,8 +136,8 @@
     const globalNoticeEl = document.getElementById('globalNotice')
     const nicknameStorageKey = 'camp_nickname'
 
-    let topics = [...DEFAULT_TOPICS]
-    let topicMap = Object.fromEntries(DEFAULT_TOPICS.map(topic => [topic.id, topic]))
+    let topics = []
+    let topicMap = {}
     let allCommentsGrouped = {}
     let expandedTopics = new Set()
 
@@ -191,6 +180,10 @@
     }
 
     function setCommentsMessage(message, isError = false) {
+      if (topics.length === 0) {
+        feedEl.innerHTML = `<article class="post"><div class="post-header"><h2 class="post-title">질문 준비 중</h2><p class="post-guide">${escapeHtml(message)}</p></div></article>`
+        return
+      }
       topics.forEach(topic => {
         const container = document.getElementById(`comments-${topic.id}`)
         if (!container) return
@@ -241,6 +234,19 @@
     }
 
     function renderFeed() {
+      if (topics.length === 0) {
+        feedEl.innerHTML = `
+          <article class="post">
+            <div class="post-header">
+              <div class="post-badge">Notice</div>
+              <h2 class="post-title">질문이 아직 등록되지 않았습니다.</h2>
+              <p class="post-guide">관리자 페이지에서 질문을 등록하면 여기에 바로 표시됩니다.</p>
+            </div>
+          </article>
+        `
+        return
+      }
+
       feedEl.innerHTML = topics.map((topic, index) => `
         <article class="post" id="post-${topic.id}">
           <div class="post-header">
@@ -387,13 +393,13 @@
     onValue(topicsRef, snapshot => {
       const data = snapshot.val()
       if (!data) {
-        topics = [...DEFAULT_TOPICS]
+        topics = []
       } else {
         const loadedTopics = Object.entries(data)
           .map(([key, value]) => normalizeTopic(key, value))
           .filter(topic => topic.id && topic.title)
           .sort((a, b) => a.sort_order - b.sort_order)
-        topics = loadedTopics.length > 0 ? loadedTopics : [...DEFAULT_TOPICS]
+        topics = loadedTopics
       }
 
       ensureTopicState()
@@ -401,10 +407,10 @@
       hydrateComments({})
     }, error => {
       console.error(error)
-      topics = [...DEFAULT_TOPICS]
+      topics = []
       ensureTopicState()
       renderFeed()
-      setCommentsMessage('질문을 불러오지 못했습니다. 기본 질문만 표시합니다.', true)
+      setCommentsMessage('질문을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.', true)
     })
 
     onValue(commentsRef, snapshot => {

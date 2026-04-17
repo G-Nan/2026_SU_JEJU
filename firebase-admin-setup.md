@@ -16,3 +16,9 @@
 - Firebase Authentication 사용
 - 관리자 계정 로그인
 - Realtime Database Rules를 관리자 기준으로 제한
+
+운영 원칙:
+- 초기 데이터 입력도 `admin.html`에서 직접 진행
+- 이후 수정도 `admin.html`에서만 진행
+- 운영 데이터의 기준은 Firebase Realtime Database
+- `firebase-seed.json`은 참고용 로컬 파일로만 보관
