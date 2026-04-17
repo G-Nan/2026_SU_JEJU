@@ -402,9 +402,12 @@
       return `${meridiem} ${Number(hour)}:${minute}`
     }
 
-    function formatDateLabel(team, monthValue, dayValue, startTime, endTime) {
-      if (!monthValue || !dayValue || !startTime || !endTime) return ''
-      return `${teamLabel(team)} · ${Number(monthValue)}월 ${Number(dayValue)}일 ${startTime}-${endTime}`
+    function formatDateLabel(team, monthValue, dayValue, startTime, endTime, status) {
+      if (!monthValue || !dayValue || !startTime) return ''
+      if (status === 'completed' && endTime) {
+        return `${teamLabel(team)} · ${Number(monthValue)}월 ${Number(dayValue)}일 ${startTime}-${endTime}`
+      }
+      return `${teamLabel(team)} · ${Number(monthValue)}월 ${Number(dayValue)}일 ${startTime}`
     }
 
     function teamLabel(team) {
@@ -414,18 +417,32 @@
     }
 
     function parseDateLabel(dateLabel = '') {
-      const match = dateLabel.match(/(\d{1,2})월 (\d{1,2})일 (오전|오후) (\d{1,2}):(\d{2})-(오전|오후) (\d{1,2}):(\d{2})/)
-      if (!match) return { month: '', day: '', startMeridiem: '오전', startHour: '1', startMinute: '00', endMeridiem: '오전', endHour: '1', endMinute: '00' }
-      const [, month, day, startMeridiem, startHour, startMinute, endMeridiem, endHour, endMinute] = match
+      const rangeMatch = dateLabel.match(/(\d{1,2})월 (\d{1,2})일 (오전|오후) (\d{1,2}):(\d{2})-(오전|오후) (\d{1,2}):(\d{2})/)
+      if (rangeMatch) {
+        const [, month, day, startMeridiem, startHour, startMinute, endMeridiem, endHour, endMinute] = rangeMatch
+        return {
+          month: String(Number(month)),
+          day: String(Number(day)),
+          startMeridiem,
+          startHour: String(Number(startHour)),
+          startMinute,
+          endMeridiem,
+          endHour: String(Number(endHour)),
+          endMinute
+        }
+      }
+      const singleMatch = dateLabel.match(/(\d{1,2})월 (\d{1,2})일 (오전|오후) (\d{1,2}):(\d{2})/)
+      if (!singleMatch) return { month: '', day: '', startMeridiem: '오전', startHour: '1', startMinute: '00', endMeridiem: '오전', endHour: '1', endMinute: '00' }
+      const [, month, day, startMeridiem, startHour, startMinute] = singleMatch
       return {
         month: String(Number(month)),
         day: String(Number(day)),
         startMeridiem,
         startHour: String(Number(startHour)),
         startMinute,
-        endMeridiem,
-        endHour: String(Number(endHour)),
-        endMinute
+        endMeridiem: startMeridiem,
+        endHour: String(Number(startHour)),
+        endMinute: startMinute
       }
     }
 
@@ -715,17 +732,18 @@
       const summaryLines = getBulletValues()
       const startTime = formatDisplayTime(logFields.startMeridiem.value, logFields.startHour.value, logFields.startMinute.value)
       const endTime = formatDisplayTime(logFields.endMeridiem.value, logFields.endHour.value, logFields.endMinute.value)
+      const requiresEndTime = logFields.status.value === 'completed'
       const payload = {
         team: logFields.team.value,
         status: logFields.status.value,
         sort_order: editingLogId ? (currentLogs.find(item => item.id === editingLogId)?.sort_order || nextSortOrder(currentLogs)) : nextSortOrder(currentLogs),
-        date_label: formatDateLabel(logFields.team.value, logFields.month.value, logFields.day.value, startTime, endTime),
+        date_label: formatDateLabel(logFields.team.value, logFields.month.value, logFields.day.value, startTime, endTime, logFields.status.value),
         title: logFields.title.value.trim(),
         summary_lines: summaryLines,
         created_at: editingLogId ? (currentLogs.find(item => item.id === editingLogId)?.created_at || new Date().toISOString()) : new Date().toISOString()
       }
 
-      if (!logFields.month.value || !logFields.day.value || !startTime || !endTime || !payload.title || payload.summary_lines.length === 0) {
+      if (!logFields.month.value || !logFields.day.value || !startTime || (requiresEndTime && !endTime) || !payload.title || payload.summary_lines.length === 0) {
         setStatus('회의일지 필수 항목을 모두 입력해 주세요.', true)
         return
       }
